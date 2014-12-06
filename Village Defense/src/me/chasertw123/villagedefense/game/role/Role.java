@@ -4,53 +4,87 @@ import me.chasertw123.villagedefense.game.abilities.Ability;
 
 import org.bukkit.inventory.ItemStack;
 
-public interface Role {
+public abstract class Role {
 
+	private String name;
+	private int bdr, bsb;
+	private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
+	private ItemStack itemStack;
+	
+	public Role(String name, int bdr, int bsb, Ability primaryAbility, Ability secondaryAbility,
+			Ability tertiaryAbility, Ability ultraAbility, ItemStack itemStack) {
+		
+		this.name = name;
+		this.bdr = bdr;
+		this.bsb = bsb;
+		this.primaryAbility = primaryAbility;
+		this.secondaryAbility = secondaryAbility;
+		this.tertiaryAbility = tertiaryAbility;
+		this.ultraAbility = ultraAbility;
+		this.itemStack = itemStack;
+	}
+	
 	/**
 	 * 
 	 * @return Name of role
 	 */
-	public String getName();
+	public String getName() {
+		return name;
+	}
 	
 	/**
 	 * 
 	 * @return Base damage reduction in percent
 	 */
-	public int getBaseDamageReduction();
+	public int getBaseDamageReduction() {
+		return bdr;
+	}
 	
 	/**
 	 * 
 	 * @return Base speed of ability in percent
 	 */
-	public int getBaseSpeedBoost();
+	public int getBaseSpeedBoost() {
+		return bsb;
+	}
 	
 	/**
 	 * 
 	 * @return Role's primary ability
 	 */
-	public Ability getPrimaryAbility();
+	public Ability getPrimaryAbility() {
+		return primaryAbility;
+	}
 	
 	/**
 	 * 
 	 * @return Role's secondary ability
 	 */
-	public Ability getSecondaryAbility();
+	public Ability getSecondaryAbility() {
+		return secondaryAbility;
+	}
 	
 	/**
 	 * 
 	 * @return Role's tertiary ability
 	 */
-	public Ability getTertiaryAbility();
+	public Ability getTertiaryAbility() {
+		return tertiaryAbility;
+	}
 	
 	/**
 	 * 
 	 * @return Role's ultra ability
 	 */
-	public Ability getUltraAbility();
+	public Ability getUltraAbility() {
+		return ultraAbility;
+	}
 	
 	/**
 	 * 
 	 * @return ItemStack representing role
 	 */
-	public ItemStack getItemStack();
+	public ItemStack getItemStack() {
+		return itemStack;
+	}
 }
