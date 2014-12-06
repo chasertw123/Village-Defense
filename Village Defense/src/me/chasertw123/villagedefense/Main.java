@@ -7,4 +7,6 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		System.out.println("You are about to witness the evolution of something awesome.");
 	}
+	
+	// TODO: Everything.
 }
