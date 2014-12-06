@@ -1,4 +1,4 @@
-package me.chasertw123.villagedefense.game.arena;
+package me.chasertw123.villagedefense.exceptions;
 
 public class ArenaCreationException extends Exception {
 

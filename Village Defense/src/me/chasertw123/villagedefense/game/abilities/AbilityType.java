@@ -1,6 +1,6 @@
 package me.chasertw123.villagedefense.game.abilities;
 
-public enum AbilitySlot {
+public enum AbilityType {
 
 	PRIMARY,
 	SECONDARY,
