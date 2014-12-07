@@ -8,6 +8,7 @@ import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public abstract class Role {
 
@@ -142,4 +143,10 @@ public abstract class Role {
 	public ItemStack getItemStack() {
 		return itemStack;
 	}
+	
+	/**
+	 * Banner/Block to use on head.
+	 * @return {@link ItemStack} with banner, used in {@link PlayerInventory#setHelmet(ItemStack)} when ingame.
+	 */
+	public abstract ItemStack getBanner();
 }
