@@ -35,8 +35,11 @@ public class Main extends JavaPlugin implements Listener {
 		if (role == null)
 			return;
 		
-		event.getPlayer().getInventory().addItem(role.getItemStack());
-		event.getPlayer().getInventory().addItem(role.getPrimaryAbility().getItemStack());
+		event.getPlayer().getInventory().setItem(0, role.getItemStack());
+		event.getPlayer().getInventory().setItem(1, role.getPrimaryAbility().getItemStack());
+		event.getPlayer().getInventory().setItem(2, role.getSecondaryAbility().getItemStack());
+		event.getPlayer().getInventory().setItem(3, role.getTertiaryAbility().getItemStack());
+		event.getPlayer().getInventory().setItem(4, role.getUltraAbility().getItemStack());
 	}
 	
 	/****************************************
