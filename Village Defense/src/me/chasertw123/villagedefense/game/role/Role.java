@@ -12,11 +12,11 @@ import org.bukkit.inventory.ItemStack;
 public abstract class Role {
 
 	private String name;
-	private int bdr, bsb;
+	private int bdr, bsb, bm;
 	private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
 	private ItemStack itemStack;
 	
-	public Role(String name, int bdr, int bsb, Ability primaryAbility, Ability secondaryAbility,
+	public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility,
 			Ability tertiaryAbility, Ability ultraAbility, ItemStack itemStack, String description) {
 		
 		this.name = name;
@@ -93,6 +93,14 @@ public abstract class Role {
 	 */
 	public int getBaseSpeedBoost() {
 		return bsb;
+	}
+	
+	/**
+	 * 
+	 * @return Base mana of ability
+	 */
+	public int getBaseMana() {
+		return bm;
 	}
 	
 	/**
