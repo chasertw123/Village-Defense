@@ -1,7 +1,9 @@
 package me.chasertw123.villagedefense.game.role;
 
 import me.chasertw123.villagedefense.game.abilities.Ability;
+import me.chasertw123.villagedefense.utils.FancyItemStack;
 
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Role {
@@ -12,7 +14,7 @@ public abstract class Role {
 	private ItemStack itemStack;
 	
 	public Role(String name, int bdr, int bsb, Ability primaryAbility, Ability secondaryAbility,
-			Ability tertiaryAbility, Ability ultraAbility, ItemStack itemStack) {
+			Ability tertiaryAbility, Ability ultraAbility, ItemStack itemStack, String description) {
 		
 		this.name = name;
 		this.bdr = bdr;
@@ -21,7 +23,14 @@ public abstract class Role {
 		this.secondaryAbility = secondaryAbility;
 		this.tertiaryAbility = tertiaryAbility;
 		this.ultraAbility = ultraAbility;
-		this.itemStack = itemStack;
+		
+		FancyItemStack is = new FancyItemStack(itemStack);
+		is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + name);
+		is.addFancyLore(description, ChatColor.WHITE.toString()).addLore("", ChatColor.WHITE + primaryAbility.getName(),
+				ChatColor.WHITE + secondaryAbility.getName(), ChatColor.WHITE + tertiaryAbility.getName(), ChatColor.WHITE 
+				+ ultraAbility.getName(), ChatColor.LIGHT_PURPLE + "Shift click for more information.");
+		
+		this.itemStack = is;
 	}
 	
 	/**

@@ -1,7 +1,9 @@
 package me.chasertw123.villagedefense.game.abilities;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
+import me.chasertw123.villagedefense.utils.FancyItemStack;
 
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Ability {
@@ -12,13 +14,13 @@ public abstract class Ability {
 	private AbilityType abilityType;
 	private ItemStack itemStack;
 	
-	public Ability(String name, int maxTier, int[] manaCost, int[] cooldown, AbilityType abilityType, ItemStack itemStack) throws AbilityCreationException {
+	public Ability(String name, int maxTier, int[] manaCost, int[] cooldown, AbilityType abilityType, ItemStack itemStack, String description) throws AbilityCreationException {
 		this.name = name;
 		this.maxTier = maxTier;
 		this.manaCost = manaCost;
 		this.cooldown = cooldown;
 		this.abilityType = abilityType;
-		this.itemStack = itemStack;
+		this.itemStack = new FancyItemStack(itemStack).addFancyLore(description, ChatColor.WHITE.toString());
 
 		if (manaCost.length != maxTier) 
 			throw new AbilityCreationException("Mana cost lenght is not valid for " + name + "! Manacost (" + manaCost.length 
@@ -90,7 +92,15 @@ public abstract class Ability {
 	 * @return ItemStack representing ability
 	 */
 	public ItemStack getItemStack() {
-		return itemStack.clone();
+		
+		FancyItemStack is = new FancyItemStack(itemStack);
+		
+		is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + getName() + ChatColor.BLUE + "" + ChatColor.BOLD + " [" 
+				+ ChatColor.GOLD + ChatColor.BOLD + "Level " + getTier() + ChatColor.BLUE + "" + ChatColor.BOLD + "]");
+		is.addLore("", ChatColor.BLUE + "Level: " + ChatColor.GOLD + getTier() + "/" + getMaxTier(), "",
+				ChatColor.BLUE + "Mana Cost: " + ChatColor.GOLD + getManaCost(), ChatColor.BLUE + "Cooldown: " + ChatColor.GOLD + getCooldown());
+		
+		return is;
 	}
 
 	/**
