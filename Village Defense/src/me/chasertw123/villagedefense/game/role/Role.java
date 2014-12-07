@@ -1,6 +1,9 @@
 package me.chasertw123.villagedefense.game.role;
 
+import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.game.abilities.Ability;
+import me.chasertw123.villagedefense.game.abilities.AbilityType;
+import me.chasertw123.villagedefense.game.abilities.NoAbility;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
@@ -19,16 +22,51 @@ public abstract class Role {
 		this.name = name;
 		this.bdr = bdr;
 		this.bsb = bsb;
-		this.primaryAbility = primaryAbility;
-		this.secondaryAbility = secondaryAbility;
-		this.tertiaryAbility = tertiaryAbility;
-		this.ultraAbility = ultraAbility;
+		
+		if (primaryAbility != null)
+			this.primaryAbility = primaryAbility;
+		
+		else try {
+				this.primaryAbility = new NoAbility(AbilityType.PRIMARY);
+			} catch (AbilityCreationException e) {
+				e.printStackTrace();
+			}
+		
+		if (secondaryAbility != null)
+			this.secondaryAbility = secondaryAbility;
+		
+		else try {
+			this.secondaryAbility = new NoAbility(AbilityType.SECONDARY);
+		} catch (AbilityCreationException e) {
+			e.printStackTrace();
+		}
+		
+		if (tertiaryAbility != null)
+			this.tertiaryAbility = tertiaryAbility;
+		
+		else try {
+			this.tertiaryAbility = new NoAbility(AbilityType.TERTIARY);
+		} catch (AbilityCreationException e) {
+			e.printStackTrace();
+		}
+		
+		if (ultraAbility != null)
+			this.ultraAbility = ultraAbility;
+		
+		else try {
+			this.ultraAbility = new NoAbility(AbilityType.ULTRA);
+		} catch (AbilityCreationException e) {
+			e.printStackTrace();
+		}
 		
 		FancyItemStack is = new FancyItemStack(itemStack);
 		is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + name);
-		is.addFancyLore(description, ChatColor.WHITE.toString()).addLore("", ChatColor.WHITE + primaryAbility.getName(),
-				ChatColor.WHITE + secondaryAbility.getName(), ChatColor.WHITE + tertiaryAbility.getName(), ChatColor.WHITE 
-				+ ultraAbility.getName(), ChatColor.LIGHT_PURPLE + "Shift click for more information.");
+		is.addFancyLore(description, ChatColor.WHITE.toString()).addLore("",
+				ChatColor.BLUE + "Primary Ability: " + ChatColor.GOLD + this.primaryAbility.getName(),
+				ChatColor.BLUE + "Secondary Ability: " + ChatColor.GOLD + this.secondaryAbility.getName(),
+				ChatColor.BLUE + "Tertiary Ability: " + ChatColor.GOLD + this.tertiaryAbility.getName(),
+				ChatColor.BLUE + "Ultra Ability: " + ChatColor.GOLD + this.ultraAbility.getName(), "",
+				ChatColor.LIGHT_PURPLE + "Shift right click for more info.");
 		
 		this.itemStack = is;
 	}

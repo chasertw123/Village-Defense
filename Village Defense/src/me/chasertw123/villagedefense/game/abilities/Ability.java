@@ -1,5 +1,6 @@
 package me.chasertw123.villagedefense.game.abilities;
 
+import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
@@ -134,6 +135,6 @@ public abstract class Ability {
 	 * 
 	 * @description Plays the ability
 	 */
-	public abstract void play(Object... args); 
+	public abstract void play(Main plugin, Object... args); 
 	
 }

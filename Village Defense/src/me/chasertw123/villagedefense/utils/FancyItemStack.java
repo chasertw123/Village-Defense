@@ -119,11 +119,15 @@ public class FancyItemStack extends ItemStack {
 		StringBuilder sb = new StringBuilder(lore);
 
 		int i = 0;
-		while (i + 30 < sb.length() && (i = sb.lastIndexOf(" ", i + 30)) != -1) {
-		    sb.replace(i, i + 1, "\n" + color);
+		while (i + 40 < sb.length() && (i = sb.lastIndexOf(" ", i + 40)) != -1) {
+		    sb.replace(i, i + 1, "\n");
 		}
 		
 		String[] newLore = sb.toString().split("\n");
-		return setLore(newLore);
+		
+		for (String s : newLore)
+			addLore(color + s);
+		
+		return this;
 	}
 }
