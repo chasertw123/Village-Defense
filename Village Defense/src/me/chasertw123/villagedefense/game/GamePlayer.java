@@ -2,10 +2,10 @@ package me.chasertw123.villagedefense.game;
 
 import java.util.UUID;
 
+import me.chasertw123.villagedefense.game.role.Role;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import me.chasertw123.villagedefense.game.role.Role;
 
 public class GamePlayer {
 
