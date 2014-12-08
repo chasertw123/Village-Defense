@@ -10,13 +10,6 @@ import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta
 
-import me.chasertw123.villagedefense.utils.FancyItemStack;
-
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 public class Tank extends Role {
 
 	public Tank() {
