@@ -11,7 +11,7 @@ public class GamePlayer {
 
 	private Role role;
 	private UUID player_uuid;
-	private int gold = 0, mana = 0, dr = 100, sb = 100;
+	private int gold = 0, mana = 0, maxMana = 0, dr = 100, sb = 100;
 	
 	/**
 	 * Makes a new {@link GamePlayer} instance
@@ -143,6 +143,44 @@ public class GamePlayer {
 	}
 
 	/**
+	 * Get max mana of {@link GamePlayer}
+	 * @return the max mana
+	 * @see #setMaxMana(int)
+	 */
+	public int getMaxMana() {
+		return maxMana;
+	}
+
+	/**
+	 * Update max mana
+	 * @param mana new max mana amount
+	 * @see #getMana()
+	 */
+	public void setMaxMana(int maxMana) {
+		this.maxMana = maxMana;
+	}
+
+	/**
+	 * Increment max mana with specified amount same as
+	 * <code>setMaxMana(getMaxMana() + amount)</code>
+	 * @param mana to add to total max
+	 * @see #setMaxMana(int)
+	 */
+	public void incrementMaxMana(int maxMana) {
+		setMaxMana(getMaxMana() + maxMana);
+	}
+
+	/**
+	 * Decrement max mana with specified amount same as
+	 * <code>setMaxMana(getMaxMana() - amount)</code>
+	 * @param mana to add to total max
+	 * @see #setMaxMana(int)
+	 */
+	public void decrementMaxMana(int maxMana) {
+		setMaxMana(getMaxMana() - maxMana);
+	}
+	
+	/**
 	 * Get mana of {@link GamePlayer}
 	 * @return the mana
 	 * @see #setMana(int)
@@ -153,7 +191,7 @@ public class GamePlayer {
 
 	/**
 	 * Update mana
-	 * @param mana new mana amound
+	 * @param mana new mana amount
 	 * @see #getMana()
 	 */
 	public void setMana(int mana) {
