@@ -37,7 +37,7 @@ public class GamePlayer {
 	 * @param player {@link UUID} of this {@link GamePlayer} instance
 	 */
 	public void setPlayer(UUID player) {
-		this.player_uuid=player;
+		this.player_uuid = player;
 	}
 	
 	/**
