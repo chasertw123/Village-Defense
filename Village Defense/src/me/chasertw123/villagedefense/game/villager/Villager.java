@@ -22,11 +22,13 @@ public abstract class Villager {
 	public void spawnVillager() {
 		setVil(placeVillagerInWorld());
 	}
+	
 	/**
 	 * Spawn him, use this when you manually update getVil()
 	 * @return {@link org.bukkit.entity.Villager} instance of spawned entity
 	 */
 	protected abstract org.bukkit.entity.Villager placeVillagerInWorld();
+	
 	/**
 	 * 
 	 * @return Inventory used when rightclicking

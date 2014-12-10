@@ -8,15 +8,16 @@ import org.bukkit.Location;
 
 public abstract class Building {
 
-	private int tier = 1;
+	private int tier = 1, maxTier;
 	private BuildingType type;
 	private Location center;
 	private ArrayList<Villager> villagers;
 	
-	public Building(BuildingType type, Location center, ArrayList<Villager> villagers) {
+	public Building(BuildingType type, Location center, ArrayList<Villager> villagers, int maxTier) {
 		this.type = type;
 		this.center = center;
 		this.villagers = villagers;
+		this.maxTier = maxTier;
 	}
 	
 	/**
@@ -28,13 +29,21 @@ public abstract class Building {
 	}
 
 	/**
-	 * 
+	 * Update tier of {@link Building}
 	 * @param tier, new tier of {@link Building}
 	 */
 	public void setTier(int tier) {
 		this.tier = tier;
 	}
 
+	/**
+	 * 
+	 * @return maxTier of {@link Building}
+	 */
+	public int getMaxTier() {
+		return maxTier;
+	}
+	
 	/**
 	 * 
 	 * @return {@link BuildingType} of {@link Building}
