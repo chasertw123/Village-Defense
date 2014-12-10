@@ -1,6 +1,7 @@
 package me.chasertw123.villagedefense;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
+import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.role.Healer;
 import me.chasertw123.villagedefense.game.role.Role;
 
@@ -13,12 +14,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin implements Listener {
 
 	private final String prefix = ChatColor.WHITE + "[" + ChatColor.GREEN + "VD" + ChatColor.WHITE + "]" + ChatColor.RESET;
+	private Arena arena;
 	
 	public void onEnable() {
 		
 		this.getServer().getPluginManager().registerEvents(this, this);
 		
 		System.out.println("You are about to witness the evolution of something awesome.");
+		
+		arena = new Arena(null, null);
 	}
 	
 	@EventHandler
@@ -69,5 +73,9 @@ public class Main extends JavaPlugin implements Listener {
 	
 	public String getPrefix() {
 		return prefix;
+	}
+	
+	public Arena getArena() {
+		return arena;
 	}
 }

@@ -1,5 +1,7 @@
 package me.chasertw123.villagedefense.game.villager;
 
+import me.chasertw123.villagedefense.game.GamePlayer;
+
 import org.bukkit.Location;
 import org.bukkit.inventory.Inventory;
 
@@ -30,10 +32,11 @@ public abstract class Villager {
 	protected abstract org.bukkit.entity.Villager placeVillagerInWorld();
 	
 	/**
-	 * 
+	 * Make an {@link Inventory} for a specific {@link GamePlayer}
+	 * @param player the {@link GamePlayer} opening the {@link Inventory}
 	 * @return Inventory used when rightclicking
 	 */
-	public abstract Inventory makeInventory();
+	public abstract Inventory makeInventory(GamePlayer player);
 
 	/**
 	 * 
