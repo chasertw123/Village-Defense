@@ -12,6 +12,7 @@ public class GamePlayer {
 	private Role role;
 	private UUID player_uuid;
 	private int gold = 0, mana = 0, maxMana = 0, dr = 100, sb = 100;
+	private boolean dead;
 	
 	/**
 	 * Makes a new {@link GamePlayer} instance
@@ -269,5 +270,21 @@ public class GamePlayer {
 	 */
 	public void updateManaBar() {
 		getPlayer().setLevel(mana);
+	}
+
+	/**
+	 * 
+	 * @return the dead
+	 */
+	public boolean isDead() {
+		return dead;
+	}
+
+	/**
+	 * Update if the player is alive
+	 * @param dead the dead to set
+	 */
+	public void setDead(boolean dead) {
+		this.dead = dead;
 	}
 }
