@@ -14,7 +14,7 @@ import org.bukkit.potion.PotionEffect;
 public abstract class Enemy {
 
 	private EntityType entityType;
-	private int minDroppedGold = 0, maxDroppedGold = 0;
+	private int minDroppedGold = 0, maxDroppedGold = 0, difficulty;
 	
 	private ItemStack weapon = null;
 	private ItemStack[] armor = null;
@@ -26,8 +26,9 @@ public abstract class Enemy {
 	 * @param minDroppedGold amount of gold dropped per kill
 	 * @param maxDroppedGold amount of gold dropped per kill
 	 */
-	public Enemy(EntityType entityType, int minDroppedGold, int maxDroppedGold) {
+	public Enemy(EntityType entityType, int difficulty, int minDroppedGold, int maxDroppedGold) {
 		this.entityType = entityType;
+		this.difficulty = difficulty;
 		this.minDroppedGold = minDroppedGold;
 		this.maxDroppedGold = maxDroppedGold;
 	}
@@ -38,6 +39,14 @@ public abstract class Enemy {
 	 */
 	public EntityType getEntityType() {
 		return entityType;
+	}
+	
+	/**
+	 * 
+	 * @return the difficulty level of this {@link Enemy} instance
+	 */
+	public int getDifficulty() {
+		return difficulty;
 	}
 	
 	/**
