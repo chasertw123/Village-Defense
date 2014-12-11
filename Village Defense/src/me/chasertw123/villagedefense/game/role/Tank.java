@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta
+import org.bukkit.inventory.meta.BannerMeta;
 
 public class Tank extends Role {
 

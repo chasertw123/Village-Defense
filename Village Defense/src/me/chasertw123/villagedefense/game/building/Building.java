@@ -2,6 +2,7 @@ package me.chasertw123.villagedefense.game.building;
 
 import java.util.ArrayList;
 
+import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
 import me.chasertw123.villagedefense.game.villager.Villager;
 
 import org.bukkit.Location;
@@ -13,11 +14,14 @@ public abstract class Building {
 	private Location center;
 	private ArrayList<Villager> villagers;
 	
-	public Building(BuildingType type, Location center, ArrayList<Villager> villagers, int maxTier) {
+	public Building(BuildingType type, Location center, ArrayList<Villager> villagers, int maxTier) throws BuildingCreationException {
 		this.type = type;
 		this.center = center;
 		this.villagers = villagers;
 		this.maxTier = maxTier;
+		
+		if (maxTier < 1)
+			throw new BuildingCreationException("A building's max tier is lower than one!");
 	}
 	
 	/**

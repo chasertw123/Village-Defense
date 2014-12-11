@@ -2,6 +2,7 @@ package me.chasertw123.villagedefense.game.building;
 
 import java.util.ArrayList;
 
+import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
 import me.chasertw123.villagedefense.game.villager.Villager;
 import me.chasertw123.villagedefense.game.villager.VillagerFarmer;
 
@@ -9,8 +10,8 @@ import org.bukkit.Location;
 
 public class BuildingFarmer extends Building {
 
-	public BuildingFarmer(Location center) {
-		super(BuildingType.FARMER, center, new ArrayList<Villager>());
+	public BuildingFarmer(Location center) throws BuildingCreationException {
+		super(BuildingType.FARMER, center, new ArrayList<Villager>(), 1);
 	}
 
 	@Override
