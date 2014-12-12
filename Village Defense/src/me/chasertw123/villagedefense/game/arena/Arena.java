@@ -8,56 +8,45 @@ import org.bukkit.Location;
 
 public class Arena {
 
-	private ArrayList<Building> buildings;
-	private Location centerSpawnLocation;
-	
-	/**
-	 * 
-	 * @param buildings List of buildings
-	 * @param spawnLocation Center of player spawns
-	 */
-	public Arena(ArrayList<Building> buildings, Location spawnLocation) { // Multiple or one?
-		setCenterSpawnLocation(spawnLocation);
-		this.setBuildings(buildings);
-	}
+    private ArrayList<Building> buildings;
+    private Location centerSpawnLocation;
 
-	/**
-	 * 
-	 * @return buildings of this arena
-	 */
-	public ArrayList<Building> getBuildings() {
-		return buildings;
-	}
+    /** @param buildings
+     *            List of buildings
+     * @param spawnLocation
+     *            Center of player spawns */
+    public Arena(ArrayList<Building> buildings, Location spawnLocation) {
+        setCenterSpawnLocation(spawnLocation);
+        this.setBuildings(buildings);
 
-	/**
-	 * 
-	 * @param buildings of this arena
-	 */
-	public void setBuildings(ArrayList<Building> buildings) {
-		this.buildings = buildings;
-	}
+        for (Building b : buildings)
+            b.buildFirstTier();
+    }
 
-	/**
-	 * 
-	 * @return Center spawn {@link Location}
-	 */
-	public Location getCenterSpawnLocation() {
-		return centerSpawnLocation.clone();
-	}
-	
-	/**
-	 * 
-	 * @return Random spawn {@link Location}
-	 */
-	public Location getRandomLocation() {
-		return getCenterSpawnLocation().add((Math.random() * 10) - 5, 0, (Math.random() * 10) - 5);
-	}
+    /** @return buildings of this arena */
+    public ArrayList<Building> getBuildings() {
+        return buildings;
+    }
 
-	/**
-	 * 
-	 * @param centerSpawnLocation New center spawn {@link Location}
-	 */
-	public void setCenterSpawnLocation(Location centerSpawnLocation) {
-		this.centerSpawnLocation = centerSpawnLocation;
-	}
+    /** @param buildings
+     *            of this arena */
+    public void setBuildings(ArrayList<Building> buildings) {
+        this.buildings = buildings;
+    }
+
+    /** @return Center spawn {@link Location} */
+    public Location getCenterSpawnLocation() {
+        return centerSpawnLocation.clone();
+    }
+
+    /** @return Random spawn {@link Location} */
+    public Location getRandomLocation() {
+        return getCenterSpawnLocation().add((Math.random() * 10) - 5, 0, (Math.random() * 10) - 5);
+    }
+
+    /** @param centerSpawnLocation
+     *            New center spawn {@link Location} */
+    public void setCenterSpawnLocation(Location centerSpawnLocation) {
+        this.centerSpawnLocation = centerSpawnLocation;
+    }
 }

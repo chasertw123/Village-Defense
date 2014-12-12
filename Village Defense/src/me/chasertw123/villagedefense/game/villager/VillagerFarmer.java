@@ -11,25 +11,25 @@ import org.bukkit.potion.PotionEffectType;
 
 public class VillagerFarmer extends Villager {
 
-	public VillagerFarmer(Location loc) {
-		super(loc);
-	}
+    public VillagerFarmer(Location loc) {
+        super(loc);
+    }
 
-	@Override
-	protected org.bukkit.entity.Villager placeVillagerInWorld() {
-		org.bukkit.entity.Villager vil = (org.bukkit.entity.Villager) getLoc().getWorld().spawnEntity(getLoc(), EntityType.VILLAGER);
-		
-		vil.setAdult();
-		vil.setProfession(Profession.FARMER);
-		vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
-		
-		return vil;
-	}
+    @Override
+    protected org.bukkit.entity.Villager placeVillagerInWorld() {
+        org.bukkit.entity.Villager vil = (org.bukkit.entity.Villager) getLoc().getWorld().spawnEntity(getLoc(), EntityType.VILLAGER);
 
-	@Override
-	public Inventory makeInventory(GamePlayer player) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        vil.setAdult();
+        vil.setProfession(Profession.FARMER);
+        vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
+
+        return vil;
+    }
+
+    @Override
+    public Inventory makeInventory(GamePlayer player) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 }

@@ -1,4 +1,5 @@
 name: Village Defense
-version: Broken As Hell
+version: 0.1
+depend: [WorldEdit]
 
 main: me.chasertw123.villagedefense.Main

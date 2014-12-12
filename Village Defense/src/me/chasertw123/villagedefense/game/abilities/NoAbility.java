@@ -10,12 +10,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class NoAbility extends Ability {
 
-	public NoAbility(AbilityType abilityType) throws AbilityCreationException {
-		super("No Ability", 1, new int[] {0}, new int[] {0}, abilityType, new ItemStack(Material.INK_SACK, 1, (short) 8), "This is a blank ability slot.");
-	}
+    public NoAbility(AbilityType abilityType) throws AbilityCreationException {
+        super("No Ability", 1, new int[] { 0 }, new int[] { 0 }, abilityType, new ItemStack(Material.INK_SACK, 1, (short) 8), "This is a blank ability slot.");
+    }
 
-	@Override
-	public void play(Main plugin, Object... args) {
-		((Player) args[0]).sendMessage(plugin.getPrefix() + ChatColor.GRAY + "This is not an ability.");
-	}
+    @Override
+    public void play(Main plugin, Object... args) {
+        ((Player) args[0]).sendMessage(plugin.getPrefix() + ChatColor.GRAY + "This is not an ability.");
+    }
 }
