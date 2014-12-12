@@ -1,6 +1,10 @@
 package me.chasertw123.villagedefense.game.role;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
+import me.chasertw123.villagedefense.exceptions.RoleCreationException;
 import me.chasertw123.villagedefense.game.abilities.Ability;
 import me.chasertw123.villagedefense.game.abilities.AbilityType;
 import me.chasertw123.villagedefense.game.abilities.NoAbility;
@@ -14,14 +18,20 @@ public abstract class Role {
 
     private String name;
     private int bdr, bsb, bm;
+    private HashMap<UpgradeType, Integer> maxTier;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
 
-    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, ItemStack itemStack, String description) {
+    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, HashMap<UpgradeType, Integer> maxTier, ItemStack itemStack, String description) throws RoleCreationException {
 
         this.name = name;
         this.bdr = bdr;
         this.bsb = bsb;
+        this.maxTier = maxTier;
+
+        for (Entry<UpgradeType, Integer> entry : maxTier.entrySet())
+            if (entry.getValue() < 1)
+                throw new RoleCreationException("Max tier of " + entry.getKey() + " is < 1");
 
         if (primaryAbility != null)
             this.primaryAbility = primaryAbility;
@@ -140,4 +150,71 @@ public abstract class Role {
      * {@link PlayerInventory#setHelmet(ItemStack)} when ingame.
      */
     public abstract ItemStack getBanner();
+
+    /**
+     * Get an {@link ItemStack} for {@link UpgradeType} for specified tier
+     * 
+     * @param type {@link UpgradeType} of {@link ItemStack}
+     * @param tier Tier of armor
+     * @return {@link ItemStack} representing {@link UpgradeType} of tier
+     */
+    public abstract ItemStack getItemStack(UpgradeType type, int tier);
+
+    /**
+     * Get price of {@link UpgradeType} for specified tier
+     * 
+     * @param type {@link UpgradeType}
+     * @param tier Tier of armor
+     * @return price of {@link UpgradeType} for tier
+     */
+    public abstract int getCost(UpgradeType type, int tier);
+
+    /**
+     * Set max tier of specified {@link UpgradeType} to tier
+     * 
+     * @param type {@link UpgradeType} to set
+     * @param tier new tier
+     */
+    public void setMaxTier(UpgradeType type, int tier) {
+        maxTier.put(type, tier);
+    }
+
+    /**
+     * Get max tier of specified {@link UpgradeType}
+     * 
+     * @param type {@link UpgradeType} to get max tier of
+     * @return max tier of {@link UpgradeType}
+     */
+    public int getMaxTier(UpgradeType type) {
+        return maxTier.get(type);
+    }
+
+    /**
+     * Set max tiers {@link HashMap}
+     * 
+     * @param maxTiers {@link HashMap} map of maxtiers
+     */
+    public void setMaxTiers(HashMap<UpgradeType, Integer> maxTiers) {
+        maxTier = maxTiers;
+    }
+
+    /**
+     * Get maxtiers map
+     * 
+     * @return {@link HashMap} of {@link UpgradeType} and it's corrisponding max
+     * tier
+     */
+    public HashMap<UpgradeType, Integer> getMaxTiers() {
+        return maxTier;
+    }
+
+    public static HashMap<UpgradeType, Integer> allOneMaxTiers() {
+        HashMap<UpgradeType, Integer> maxTier = new HashMap<>();
+
+        for (UpgradeType type : UpgradeType.values())
+            maxTier.put(type, 1);
+
+        return maxTier;
+    }
+
 }

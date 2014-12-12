@@ -1,5 +1,6 @@
 package me.chasertw123.villagedefense.game.role;
 
+import me.chasertw123.villagedefense.exceptions.RoleCreationException;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
@@ -12,8 +13,8 @@ import org.bukkit.inventory.meta.BannerMeta;
 
 public class Tank extends Role {
 
-    public Tank() {
-        super("Tank", 50, 85, 280, null, null, null, null, new ItemStack(Material.DIAMOND_CHESTPLATE), "This role acts as the main damage taker of the team. You have a medium amount of attack damage, tons of mana," + " and are highly resistant to damage, but you are a little slow.");
+    public Tank() throws RoleCreationException {
+        super("Tank", 50, 85, 280, null, null, null, null, allOneMaxTiers(), new ItemStack(Material.DIAMOND_CHESTPLATE), "This role acts as the main damage taker of the team. You have a medium amount of attack damage, tons of mana," + " and are highly resistant to damage, but you are a little slow.");
     }
 
     @Override
@@ -31,4 +32,107 @@ public class Tank extends Role {
         return itemStack;
     }
 
+    @Override
+    public ItemStack getItemStack(UpgradeType type, int tier) {
+
+        switch (type) {
+
+            case CHESTPLATE:
+                switch (tier) {
+
+                    case 1:
+                        return new FancyItemStack(Material.IRON_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Chestplate" + fancyTierString(tier));
+
+                    default:
+                        return null;
+                }
+
+            case LEGGINGS:
+                switch (tier) {
+
+                    case 1:
+                        return new FancyItemStack(Material.IRON_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Leggings" + fancyTierString(tier));
+
+                    default:
+                        return null;
+                }
+
+            case BOOTS:
+                switch (tier) {
+
+                    case 1:
+                        return new FancyItemStack(Material.IRON_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Boots" + fancyTierString(tier));
+
+                    default:
+                        return null;
+                }
+
+            case WEAPON:
+                switch (tier) {
+
+                    case 1:
+                        return new FancyItemStack(Material.IRON_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Weapon" + fancyTierString(tier));
+
+                    default:
+                        return null;
+                }
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public int getCost(UpgradeType type, int tier) {
+
+        switch (type) {
+
+            case CHESTPLATE:
+                switch (tier) {
+
+                    case 1:
+                        return 0;
+
+                    default:
+                        return 0;
+                }
+
+            case LEGGINGS:
+                switch (tier) {
+
+                    case 1:
+                        return 0;
+
+                    default:
+                        return 0;
+                }
+
+            case BOOTS:
+                switch (tier) {
+
+                    case 1:
+                        return 0;
+
+                    default:
+                        return 0;
+                }
+
+            case WEAPON:
+                switch (tier) {
+
+                    case 1:
+                        return 0;
+
+                    default:
+                        return 0;
+                }
+
+            default:
+                return 0;
+        }
+    }
+
+    private String fancyTierString(int tier) {
+        return ChatColor.BLUE + "" + ChatColor.BOLD + " [" + ChatColor.GOLD + ChatColor.BOLD + "Level " + tier + ChatColor.BLUE + "" + ChatColor.BOLD + "]";
+    }
 }

@@ -17,26 +17,26 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 public class SchematicUtil {
 
     public static void build(File file, Building b) {
-    	
+
         try {
-        	
+
             EditSession es = new EditSession(new BukkitWorld(b.getCenter().getWorld()), 999999999);
             CuboidClipboard cc = CuboidClipboard.loadSchematic(file);
             Vector v = new Vector(b.getCenter().getX(), b.getCenter().getY(), b.getCenter().getZ());
-            
+
             cc.setOrigin(v);
             cc.paste(es, v, false);
 
-            for (int x = v.getBlockX(); x < v.getBlockX()+cc.getWidth(); x++)
-                for (int y = v.getBlockY(); y < v.getBlockY()+ cc.getHeight(); y++)
-                    for (int z = v.getBlockZ(); z <  v.getBlockZ()+cc.getLength(); z++) {
-                    	
+            for (int x = v.getBlockX(); x < v.getBlockX() + cc.getWidth(); x++)
+                for (int y = v.getBlockY(); y < v.getBlockY() + cc.getHeight(); y++)
+                    for (int z = v.getBlockZ(); z < v.getBlockZ() + cc.getLength(); z++) {
+
                         Block bl = b.getCenter().getWorld().getBlockAt(x, y, z);
-                        
+
                         if (bl.getType() == Material.SPONGE) {
-                        	
+
                             bl.setType(Material.AIR);
-                            
+
                             b.getVillager().setLoc(new Location(b.getCenter().getWorld(), x, y, z).add(0.5, 0, 0.5));
                             b.getVillager().spawnVillager();
                         }

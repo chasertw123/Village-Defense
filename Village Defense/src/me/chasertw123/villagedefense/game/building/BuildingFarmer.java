@@ -18,10 +18,10 @@ public class BuildingFarmer extends Building {
     @Override
     public void levelUp() {
         // Build new tier, kill villagers, spawn new villager, update menus/
-    	if (getTier() >= getMaxTier())
-    		return;
-    	
-    	setTier(getTier() + 1);
+        if (getTier() >= getMaxTier())
+            return;
+
+        setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
         SchematicUtil.build(new File(Main.getInstance().getDataFolder(), "Farmer" + getTier() + ".schematic"), this);

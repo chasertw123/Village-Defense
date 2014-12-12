@@ -97,6 +97,15 @@ public abstract class Enemy {
     /**
      * Update the armor of this {@link Enemy} instance
      * 
+     * @param armor a 4 {@link ItemStack} array representing the armor
+     */
+    public void setArmorContents(ItemStack[] armor) {
+        this.armor = armor;
+    }
+
+    /**
+     * Update the armor of this {@link Enemy} instance
+     * 
      * @param helmet The {@link ItemStack} of the helmet
      * @param chestplate The {@link ItemStack} of the chestplate
      * @param leggings The {@link ItemStack} of the leggings
@@ -149,13 +158,13 @@ public abstract class Enemy {
         entity.setCustomName(customName);
         entity.setCustomNameVisible(true);
 
-        entity.getEquipment().setArmorContents(armor);
+        entity.getEquipment().setArmorContents(armor.clone());
         entity.getEquipment().setHelmetDropChance(0F);
         entity.getEquipment().setChestplateDropChance(0F);
         entity.getEquipment().setLeggingsDropChance(0F);
         entity.getEquipment().setBootsDropChance(0F);
 
-        entity.getEquipment().setItemInHand(weapon);
+        entity.getEquipment().setItemInHand(weapon.clone());
         entity.getEquipment().setItemInHandDropChance(0F);
 
         for (PotionEffect effect : potionEffects)

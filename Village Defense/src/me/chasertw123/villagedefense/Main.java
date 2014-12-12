@@ -2,7 +2,6 @@ package me.chasertw123.villagedefense;
 
 import java.util.ArrayList;
 
-import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.GamePlayer;
@@ -72,7 +71,7 @@ public class Main extends JavaPlugin implements Listener {
             event.getPlayer().getInventory().setItem(4, role.getUltraAbility().getItemStack());
             event.getPlayer().getInventory().setHelmet(role.getBanner());
 
-        } catch (AbilityCreationException e) {
+        } catch (VillageDefenseException e) {
             e.printStackTrace();
         }
     }
