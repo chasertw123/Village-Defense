@@ -1,6 +1,6 @@
 package me.chasertw123.villagedefense.exceptions;
 
-public class BuildingCreationException extends Exception {
+public class BuildingCreationException extends VillageDefenseException {
 
     private static final long serialVersionUID = -832160838356818672L;
 

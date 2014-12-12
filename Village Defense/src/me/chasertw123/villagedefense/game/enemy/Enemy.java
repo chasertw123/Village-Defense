@@ -3,7 +3,7 @@ package me.chasertw123.villagedefense.game.enemy;
 import java.util.Random;
 
 import me.chasertw123.villagedefense.Main;
-import me.chasertw123.villagedefense.exceptions.InvaildEnemySpawnException;
+import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,22 +52,22 @@ public abstract class Enemy {
     public int getDifficulty() {
         return difficulty;
     }
-    
+
     /**
      * 
      * @return the name of this {@link Enemy} instance
      */
     public String getCustomName() {
-    	return customName;
+        return customName;
     }
-    
+
     /**
      * Update name above {@link Enemy} head
      * 
      * @param customName the new name
      */
     public void setCustomName(String customName) {
-    	this.customName = customName;
+        this.customName = customName;
     }
 
     /**
@@ -130,23 +130,22 @@ public abstract class Enemy {
      * @param spawnLocation the {@link Location} the {@link Enemy} will spawn
      * @throws InvaildEnemySpawnException when is not a {@link LivingEntity}
      */
-    public void spawnEntity(Location spawnLocation, Main plugin) throws InvaildEnemySpawnException {
+    public void spawnEntity(Location spawnLocation, Main plugin) throws InvalidEnemySpawnExcpetion {
 
         Entity e = spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
 
         if (!(e instanceof LivingEntity)) {
             e.remove();
 
-            throw new InvaildEnemySpawnException("A " + entityType.toString() + " is not a Living entity. It must be" 
-            		+ " a living entity in order to spawn properly.");
+            throw new InvalidEnemySpawnExcpetion("A " + entityType.toString() + " is not a Living entity. It must be" + " a living entity in order to spawn properly.");
         }
 
         LivingEntity entity = (LivingEntity) e;
 
         entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, new Random().nextInt(maxDroppedGold) + 1))));
         for (MetadataValue mv : entity.getMetadata("gold"))
-        	Bukkit.broadcastMessage(mv.asString());
-        
+            Bukkit.broadcastMessage(mv.asString());
+
         entity.setCustomName(customName);
         entity.setCustomNameVisible(true);
 

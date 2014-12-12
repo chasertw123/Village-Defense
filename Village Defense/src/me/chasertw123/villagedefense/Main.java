@@ -3,6 +3,7 @@ package me.chasertw123.villagedefense;
 import java.util.ArrayList;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
+import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.arena.Arena;
@@ -42,17 +43,17 @@ public class Main extends JavaPlugin implements Listener {
             game = new Game(new Arena(buildings, Bukkit.getWorlds().get(0).getSpawnLocation().clone()), 1, 1);
 
             Tank t = new Tank();
-            
-    		t.spawnEntity(Bukkit.getWorlds().get(0).getSpawnLocation(), this);
-    			
-        } catch (Exception e) {
-        	e.printStackTrace();
-		}
+
+            t.spawnEntity(Bukkit.getWorlds().get(0).getSpawnLocation(), this);
+
+        } catch (VillageDefenseException e) {
+            e.printStackTrace();
+        }
     }
-    
+
     public void onDisable() {
-    	for (Building b : game.getArena().getBuildings())
-    		b.getVillager().getVil().remove();
+        for (Building b : game.getArena().getBuildings())
+            b.getVillager().getVil().remove();
     }
 
     @EventHandler
@@ -76,15 +77,14 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
-
     @EventHandler
     public void onPlayerJoin(PlayerInteractEntityEvent event) {
-    	if (event.getRightClicked() == game.getArena().getBuildings().get(0).getVillager().getVil()) {
-    		game.getArena().getBuildings().get(0).levelUp();
-    		Bukkit.broadcastMessage(event.getPlayer().getName() + " upgarded Farm to tier " + game.getArena().getBuildings().get(0).getTier());
-    	}
+        if (event.getRightClicked() == game.getArena().getBuildings().get(0).getVillager().getVil()) {
+            game.getArena().getBuildings().get(0).levelUp();
+            Bukkit.broadcastMessage(event.getPlayer().getName() + " upgarded Farm to tier " + game.getArena().getBuildings().get(0).getTier());
+        }
     }
-    	
+
     /** Console Messages **/
 
     public void sendConsoleInfo(String message) {
