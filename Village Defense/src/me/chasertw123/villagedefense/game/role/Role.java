@@ -70,54 +70,74 @@ public abstract class Role {
         this.itemStack = is;
     }
 
-    /** @return Name of role */
+    /**
+     * @return Name of role
+     */
     public String getName() {
         return name;
     }
 
-    /** @return Base damage reduction in percent */
+    /**
+     * @return Base damage reduction in percent
+     */
     public int getBaseDamageReduction() {
         return bdr;
     }
 
-    /** @return Base speed of ability in percent */
+    /**
+     * @return Base speed of ability in percent
+     */
     public int getBaseSpeedBoost() {
         return bsb;
     }
 
-    /** @return Base mana of ability */
+    /**
+     * @return Base mana of ability
+     */
     public int getBaseMana() {
         return bm;
     }
 
-    /** @return Role's primary ability */
+    /**
+     * @return Role's primary ability
+     */
     public Ability getPrimaryAbility() {
         return primaryAbility;
     }
 
-    /** @return Role's secondary ability */
+    /**
+     * @return Role's secondary ability
+     */
     public Ability getSecondaryAbility() {
         return secondaryAbility;
     }
 
-    /** @return Role's tertiary ability */
+    /**
+     * @return Role's tertiary ability
+     */
     public Ability getTertiaryAbility() {
         return tertiaryAbility;
     }
 
-    /** @return Role's ultra ability */
+    /**
+     * @return Role's ultra ability
+     */
     public Ability getUltraAbility() {
         return ultraAbility;
     }
 
-    /** @return ItemStack representing role */
+    /**
+     * @return ItemStack representing role
+     */
     public ItemStack getItemStack() {
         return itemStack;
     }
 
-    /** Banner/Block to use on head.
+    /**
+     * Banner/Block to use on head.
      * 
      * @return {@link ItemStack} with banner, used in
-     *         {@link PlayerInventory#setHelmet(ItemStack)} when ingame. */
+     * {@link PlayerInventory#setHelmet(ItemStack)} when ingame.
+     */
     public abstract ItemStack getBanner();
 }

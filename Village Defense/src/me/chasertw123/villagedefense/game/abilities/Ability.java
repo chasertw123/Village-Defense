@@ -30,43 +30,58 @@ public abstract class Ability {
             throw new AbilityCreationException("Cooldown lenght is not valid for " + name + "! Cooldown (" + cooldown.length + ") != max tier (" + maxTier + ")");
     }
 
-    /** @return Name of ability */
+    /**
+     * @return Name of ability
+     */
     public String getName() {
         return name;
     }
 
-    /** @return Get current tier of ability */
+    /**
+     * @return Get current tier of ability
+     */
     public int getTier() {
         return tier;
     }
 
-    /** @param New
-     *            tier */
+    /**
+     * @param New tier
+     */
     public void setTier(int tier) {
         this.tier = tier;
     }
 
-    /** @return Max tier of ability */
+    /**
+     * @return Max tier of ability
+     */
     public int getMaxTier() {
         return maxTier;
     }
 
-    /** @return Cooldown time per ability use */
+    /**
+     * @return Cooldown time per ability use
+     */
     public int getCooldown() {
         return cooldown[tier - 1];
     }
 
-    /** @return Mana Cost per ability use */
+    /**
+     * @return Mana Cost per ability use
+     */
     public int getManaCost() {
         return manaCost[tier - 1];
     }
 
-    /** @return AbilityType representing ability */
+    /**
+     * @return AbilityType representing ability
+     */
     public AbilityType getAbilityType() {
         return abilityType;
     }
 
-    /** @return ItemStack representing ability */
+    /**
+     * @return ItemStack representing ability
+     */
     public ItemStack getItemStack() {
 
         FancyItemStack is = new FancyItemStack(itemStack);
@@ -77,9 +92,11 @@ public abstract class Ability {
         return is;
     }
 
-    /** decrements cooldown
+    /**
+     * decrements cooldown
      * 
-     * @return decremented cooldown */
+     * @return decremented cooldown
+     */
     public int decrementCooldown() {
         if (timeRemaining > 0)
             return --timeRemaining;
@@ -87,19 +104,25 @@ public abstract class Ability {
             return timeRemaining;
     }
 
-    /** Resets cooldown.
+    /**
+     * Resets cooldown.
      * 
-     * @return cooldown */
+     * @return cooldown
+     */
     public int resetCooldown() {
         return timeRemaining = getCooldown();
     }
 
-    /** @return boolean if player can use ability */
+    /**
+     * @return boolean if player can use ability
+     */
     public boolean canUseAbility() {
         return timeRemaining == 0;
     }
 
-    /** @description Plays the ability */
+    /**
+     * @description Plays the ability
+     */
     public abstract void play(Main plugin, Object... args);
 
 }

@@ -11,10 +11,10 @@ public class Arena {
     private ArrayList<Building> buildings;
     private Location centerSpawnLocation;
 
-    /** @param buildings
-     *            List of buildings
-     * @param spawnLocation
-     *            Center of player spawns */
+    /**
+     * @param buildings List of buildings
+     * @param spawnLocation Center of player spawns
+     */
     public Arena(ArrayList<Building> buildings, Location spawnLocation) {
         setCenterSpawnLocation(spawnLocation);
         this.setBuildings(buildings);
@@ -23,29 +23,37 @@ public class Arena {
             b.buildFirstTier();
     }
 
-    /** @return buildings of this arena */
+    /**
+     * @return buildings of this arena
+     */
     public ArrayList<Building> getBuildings() {
         return buildings;
     }
 
-    /** @param buildings
-     *            of this arena */
+    /**
+     * @param buildings of this arena
+     */
     public void setBuildings(ArrayList<Building> buildings) {
         this.buildings = buildings;
     }
 
-    /** @return Center spawn {@link Location} */
+    /**
+     * @return Center spawn {@link Location}
+     */
     public Location getCenterSpawnLocation() {
         return centerSpawnLocation.clone();
     }
 
-    /** @return Random spawn {@link Location} */
+    /**
+     * @return Random spawn {@link Location}
+     */
     public Location getRandomLocation() {
         return getCenterSpawnLocation().add((Math.random() * 10) - 5, 0, (Math.random() * 10) - 5);
     }
 
-    /** @param centerSpawnLocation
-     *            New center spawn {@link Location} */
+    /**
+     * @param centerSpawnLocation New center spawn {@link Location}
+     */
     public void setCenterSpawnLocation(Location centerSpawnLocation) {
         this.centerSpawnLocation = centerSpawnLocation;
     }

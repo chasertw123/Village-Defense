@@ -69,9 +69,7 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
-    /**************************************** *
-     * Console Messages *
-     * * ****************************************/
+    /** Console Messages **/
 
     public void sendConsoleInfo(String message) {
         this.getLogger().info(message);
@@ -85,9 +83,7 @@ public class Main extends JavaPlugin implements Listener {
         this.getLogger().severe(message);
     }
 
-    /**************************************** *
-     * Getters and Setters *
-     * * ****************************************/
+    /** Getters and Setters **/
 
     public String getPrefix() {
         return prefix;
