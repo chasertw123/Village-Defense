@@ -2,18 +2,23 @@ package me.chasertw123.villagedefense.game.enemy;
 
 import java.util.Random;
 
+import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.InvaildEnemySpawnException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 
 public abstract class Enemy {
 
     private EntityType entityType;
+    private String customName = "";
     private int minDroppedGold = 0, maxDroppedGold = 0, difficulty;
 
     private ItemStack weapon = null;
@@ -46,6 +51,23 @@ public abstract class Enemy {
      */
     public int getDifficulty() {
         return difficulty;
+    }
+    
+    /**
+     * 
+     * @return the name of this {@link Enemy} instance
+     */
+    public String getCustomName() {
+    	return customName;
+    }
+    
+    /**
+     * Update name above {@link Enemy} head
+     * 
+     * @param customName the new name
+     */
+    public void setCustomName(String customName) {
+    	this.customName = customName;
     }
 
     /**
@@ -108,20 +130,25 @@ public abstract class Enemy {
      * @param spawnLocation the {@link Location} the {@link Enemy} will spawn
      * @throws InvaildEnemySpawnException when is not a {@link LivingEntity}
      */
-    public void spawnEntity(Location spawnLocation) throws InvaildEnemySpawnException {
+    public void spawnEntity(Location spawnLocation, Main plugin) throws InvaildEnemySpawnException {
 
         Entity e = spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
 
         if (!(e instanceof LivingEntity)) {
             e.remove();
 
-            throw new InvaildEnemySpawnException("A " + entityType.toString() + " is not a Living entity. It must be" + " a living entity in order to spawn properly.");
+            throw new InvaildEnemySpawnException("A " + entityType.toString() + " is not a Living entity. It must be" 
+            		+ " a living entity in order to spawn properly.");
         }
 
         LivingEntity entity = (LivingEntity) e;
 
-        entity.setCustomName(Math.max(minDroppedGold, new Random().nextInt(maxDroppedGold) + 1) + "");
-        entity.setCustomNameVisible(false);
+        entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, new Random().nextInt(maxDroppedGold) + 1))));
+        for (MetadataValue mv : entity.getMetadata("gold"))
+        	Bukkit.broadcastMessage(mv.asString());
+        
+        entity.setCustomName(customName);
+        entity.setCustomNameVisible(true);
 
         entity.getEquipment().setArmorContents(armor);
         entity.getEquipment().setHelmetDropChance(0F);

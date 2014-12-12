@@ -3,13 +3,12 @@ package me.chasertw123.villagedefense;
 import java.util.ArrayList;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
-import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
-import me.chasertw123.villagedefense.exceptions.GameCreationException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.building.BuildingFarmer;
+import me.chasertw123.villagedefense.game.enemy.Tank;
 import me.chasertw123.villagedefense.game.role.Healer;
 import me.chasertw123.villagedefense.game.role.Role;
 
@@ -18,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,15 +37,22 @@ public class Main extends JavaPlugin implements Listener {
         try {
             ArrayList<Building> buildings = new ArrayList<>();
 
-            buildings.add(new BuildingFarmer(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(0, 0, 20)));
+            buildings.add(new BuildingFarmer(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 0)));
 
             game = new Game(new Arena(buildings, Bukkit.getWorlds().get(0).getSpawnLocation().clone()), 1, 1);
 
-        } catch (GameCreationException e) {
-            e.printStackTrace();
-        } catch (BuildingCreationException e) {
-            e.printStackTrace();
-        }
+            Tank t = new Tank();
+            
+    		t.spawnEntity(Bukkit.getWorlds().get(0).getSpawnLocation(), this);
+    			
+        } catch (Exception e) {
+        	e.printStackTrace();
+		}
+    }
+    
+    public void onDisable() {
+    	for (Building b : game.getArena().getBuildings())
+    		b.getVillager().getVil().remove();
     }
 
     @EventHandler
@@ -69,6 +76,15 @@ public class Main extends JavaPlugin implements Listener {
         }
     }
 
+
+    @EventHandler
+    public void onPlayerJoin(PlayerInteractEntityEvent event) {
+    	if (event.getRightClicked() == game.getArena().getBuildings().get(0).getVillager().getVil()) {
+    		game.getArena().getBuildings().get(0).levelUp();
+    		Bukkit.broadcastMessage(event.getPlayer().getName() + " upgarded Farm to tier " + game.getArena().getBuildings().get(0).getTier());
+    	}
+    }
+    	
     /** Console Messages **/
 
     public void sendConsoleInfo(String message) {

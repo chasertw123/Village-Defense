@@ -22,6 +22,8 @@ public class VillagerFarmer extends Villager {
         vil.setAdult();
         vil.setProfession(Profession.FARMER);
         vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
+        vil.setCustomName("Rob");
+        vil.setCustomNameVisible(true);
 
         return vil;
     }
