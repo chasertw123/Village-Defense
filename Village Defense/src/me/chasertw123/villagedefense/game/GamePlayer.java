@@ -1,8 +1,10 @@
 package me.chasertw123.villagedefense.game;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import me.chasertw123.villagedefense.game.role.Role;
+import me.chasertw123.villagedefense.game.role.UpgradeType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,6 +14,7 @@ public class GamePlayer {
     private Role role;
     private UUID player_uuid;
     private int gold = 0, mana = 0, maxMana = 0, dr = 100, sb = 100;
+    private HashMap<UpgradeType, Integer> upgradeTiers;
     private boolean dead;
 
     /**
@@ -23,6 +26,11 @@ public class GamePlayer {
     public GamePlayer(Role role, UUID player_uuid) {
         this.role = role;
         this.player_uuid = player_uuid;
+
+        upgradeTiers = new HashMap<>();
+
+        for (UpgradeType type : UpgradeType.values())
+            upgradeTiers.put(type, 1);
     }
 
     /**
@@ -294,6 +302,7 @@ public class GamePlayer {
     }
 
     /**
+     * 
      * @return dead if player is death
      */
     public boolean isDead() {
@@ -307,5 +316,92 @@ public class GamePlayer {
      */
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    /**
+     * Get upgrade tier of specified {@link UpgradeType}
+     * 
+     * @param type {@link UpgradeType} to get upgrade tier of
+     * @return upgrade tier
+     */
+    public int getUpgradeTier(UpgradeType type) {
+        return upgradeTiers.get(type);
+    }
+
+    /**
+     * Get upgradetier {@link HashMap}
+     * 
+     * @return upgradeTier {@link HashMap}
+     */
+    public HashMap<UpgradeType, Integer> getUpgradeTiers() {
+        return upgradeTiers;
+    }
+
+    /**
+     * Set a upgrade tier
+     * 
+     * @param type {@link UpgradeType} type to set
+     * @param tier tier of
+     */
+    public void setUpgradeTier(UpgradeType type, int tier) {
+        upgradeTiers.put(type, tier);
+
+        switch (type) {
+
+            case CHESTPLATE:
+                getPlayer().getInventory().setChestplate(role.getItemStack(type, tier));
+                break;
+
+            case LEGGINGS:
+                getPlayer().getInventory().setLeggings(role.getItemStack(type, tier));
+                break;
+
+            case BOOTS:
+                getPlayer().getInventory().setBoots(role.getItemStack(type, tier));
+                break;
+
+            case WEAPON:
+                getPlayer().getInventory().setItem(0, role.getItemStack(type, tier));
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Set {@link HashMap} upgradetiers
+     * 
+     * @param upgradeTiers the upgradeTiers to set
+     */
+    public void setUpgradeTiers(HashMap<UpgradeType, Integer> upgradeTiers) {
+        this.upgradeTiers = upgradeTiers;
+
+        for (UpgradeType type : UpgradeType.values()) {
+
+            int tier = upgradeTiers.get(type);
+
+            switch (type) {
+
+                case CHESTPLATE:
+                    getPlayer().getInventory().setChestplate(role.getItemStack(type, tier));
+                    break;
+
+                case LEGGINGS:
+                    getPlayer().getInventory().setLeggings(role.getItemStack(type, tier));
+                    break;
+
+                case BOOTS:
+                    getPlayer().getInventory().setBoots(role.getItemStack(type, tier));
+                    break;
+
+                case WEAPON:
+                    getPlayer().getInventory().setItem(0, role.getItemStack(type, tier));
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 }

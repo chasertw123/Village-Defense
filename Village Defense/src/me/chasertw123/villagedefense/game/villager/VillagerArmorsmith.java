@@ -9,9 +9,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class VillagerFarmer extends Villager {
+public class VillagerArmorsmith extends Villager {
 
-    public VillagerFarmer(Location loc) {
+    public VillagerArmorsmith(Location loc) {
         super(loc);
     }
 
@@ -21,9 +21,9 @@ public class VillagerFarmer extends Villager {
         org.bukkit.entity.Villager vil = (org.bukkit.entity.Villager) getLoc().getWorld().spawnEntity(getLoc(), EntityType.VILLAGER);
 
         vil.setAdult();
-        vil.setProfession(Profession.FARMER);
+        vil.setProfession(Profession.BLACKSMITH);
         vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
-        vil.setCustomName("Rob");
+        vil.setCustomName("Bob");
         vil.setCustomNameVisible(true);
 
         return vil;
