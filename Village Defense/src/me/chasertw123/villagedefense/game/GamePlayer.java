@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import me.chasertw123.villagedefense.game.role.Role;
-import me.chasertw123.villagedefense.game.role.UpgradeType;
+import me.chasertw123.villagedefense.game.role.ToolType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,7 +14,7 @@ public class GamePlayer {
     private Role role;
     private UUID player_uuid;
     private int gold = 0, mana = 0, maxMana = 0, dr = 100, sb = 100;
-    private HashMap<UpgradeType, Integer> upgradeTiers;
+    private HashMap<ToolType, Integer> toolTiers;
     private boolean dead;
 
     /**
@@ -27,10 +27,10 @@ public class GamePlayer {
         this.role = role;
         this.player_uuid = player_uuid;
 
-        upgradeTiers = new HashMap<>();
+        toolTiers = new HashMap<>();
 
-        for (UpgradeType type : UpgradeType.values())
-            upgradeTiers.put(type, 1);
+        for (ToolType type : ToolType.values())
+            toolTiers.put(type, 1);
     }
 
     /**
@@ -319,32 +319,32 @@ public class GamePlayer {
     }
 
     /**
-     * Get upgrade tier of specified {@link UpgradeType}
+     * Get upgrade tier of specified {@link ToolType}
      * 
-     * @param type {@link UpgradeType} to get upgrade tier of
-     * @return upgrade tier
+     * @param type {@link ToolType} to get tool tier of
+     * @return tool tier
      */
-    public int getUpgradeTier(UpgradeType type) {
-        return upgradeTiers.get(type);
+    public int getToolTier(ToolType type) {
+        return toolTiers.get(type);
     }
 
     /**
-     * Get upgradetier {@link HashMap}
+     * Get toolTiers {@link HashMap}
      * 
-     * @return upgradeTier {@link HashMap}
+     * @return toolTiers {@link HashMap}
      */
-    public HashMap<UpgradeType, Integer> getUpgradeTiers() {
-        return upgradeTiers;
+    public HashMap<ToolType, Integer> getToolTiers() {
+        return toolTiers;
     }
 
     /**
      * Set a upgrade tier
      * 
-     * @param type {@link UpgradeType} type to set
+     * @param type {@link ToolType} type to set
      * @param tier tier of
      */
-    public void setUpgradeTier(UpgradeType type, int tier) {
-        upgradeTiers.put(type, tier);
+    public void setToolTier(ToolType type, int tier) {
+        toolTiers.put(type, tier);
 
         switch (type) {
 
@@ -372,14 +372,14 @@ public class GamePlayer {
     /**
      * Set {@link HashMap} upgradetiers
      * 
-     * @param upgradeTiers the upgradeTiers to set
+     * @param toolTiers the toolTiers to set
      */
-    public void setUpgradeTiers(HashMap<UpgradeType, Integer> upgradeTiers) {
-        this.upgradeTiers = upgradeTiers;
+    public void setToolTiers(HashMap<ToolType, Integer> toolTiers) {
+        this.toolTiers = toolTiers;
 
-        for (UpgradeType type : UpgradeType.values()) {
+        for (ToolType type : ToolType.values()) {
 
-            int tier = upgradeTiers.get(type);
+            int tier = toolTiers.get(type);
 
             switch (type) {
 

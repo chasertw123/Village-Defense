@@ -35,7 +35,7 @@ public class Healer extends Role {
     }
 
     @Override
-    public ItemStack getItemStack(UpgradeType type, int tier) {
+    public ItemStack getItemStack(ToolType type, int tier) {
 
         switch (type) {
 
@@ -85,7 +85,7 @@ public class Healer extends Role {
     }
 
     @Override
-    public int getCost(UpgradeType type, int tier) {
+    public int getCost(ToolType type, int tier) {
 
         switch (type) {
 

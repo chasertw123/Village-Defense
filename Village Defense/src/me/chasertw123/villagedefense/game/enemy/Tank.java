@@ -8,7 +8,7 @@ import org.bukkit.potion.PotionEffectType;
 public class Tank extends Enemy {
 
     public Tank() {
-        super(EntityType.IRON_GOLEM, 15, 8, 20);
+        super(EntityType.IRON_GOLEM, 15, 8, 20, false);
 
         super.setCustomName(ChatColor.LIGHT_PURPLE + "<insert_cool_name_here>");
         super.setPotionEffects(new PotionEffect[] { new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 2), new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 1) });

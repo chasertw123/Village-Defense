@@ -1,5 +1,6 @@
 package me.chasertw123.villagedefense.game.building;
 
+import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
 import me.chasertw123.villagedefense.game.villager.Villager;
 
@@ -61,13 +62,15 @@ public abstract class Building {
 
     /**
      * Level up an {@link Building} after setting the new tier.
+     * 
+     * @param plugin Instance of main class
      */
-    public abstract void levelUp();
+    public abstract void levelUp(Main plugin);
 
     /**
      * Initial startup tier, called on start of arena
      */
-    public abstract void buildFirstTier();
+    public abstract void buildFirstTier(Main plugin);
 
     /**
      * @return the villager

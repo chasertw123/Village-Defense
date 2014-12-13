@@ -18,18 +18,18 @@ public abstract class Role {
 
     private String name;
     private int bdr, bsb, bm;
-    private HashMap<UpgradeType, Integer> maxTier;
+    private HashMap<ToolType, Integer> maxTier;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
 
-    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, HashMap<UpgradeType, Integer> maxTier, ItemStack itemStack, String description) throws RoleCreationException {
+    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, HashMap<ToolType, Integer> maxTier, ItemStack itemStack, String description) throws RoleCreationException {
 
         this.name = name;
         this.bdr = bdr;
         this.bsb = bsb;
         this.maxTier = maxTier;
 
-        for (Entry<UpgradeType, Integer> entry : maxTier.entrySet())
+        for (Entry<ToolType, Integer> entry : maxTier.entrySet())
             if (entry.getValue() < 1)
                 throw new RoleCreationException("Max tier of " + entry.getKey() + " is < 1");
 
@@ -152,40 +152,40 @@ public abstract class Role {
     public abstract ItemStack getBanner();
 
     /**
-     * Get an {@link ItemStack} for {@link UpgradeType} for specified tier
+     * Get an {@link ItemStack} for {@link ToolType} for specified tier
      * 
-     * @param type {@link UpgradeType} of {@link ItemStack}
+     * @param type {@link ToolType} of {@link ItemStack}
      * @param tier Tier of armor
-     * @return {@link ItemStack} representing {@link UpgradeType} of tier
+     * @return {@link ItemStack} representing {@link ToolType} of tier
      */
-    public abstract ItemStack getItemStack(UpgradeType type, int tier);
+    public abstract ItemStack getItemStack(ToolType type, int tier);
 
     /**
-     * Get price of {@link UpgradeType} for specified tier
+     * Get price of {@link ToolType} for specified tier
      * 
-     * @param type {@link UpgradeType}
+     * @param type {@link ToolType}
      * @param tier Tier of armor
-     * @return price of {@link UpgradeType} for tier
+     * @return price of {@link ToolType} for tier
      */
-    public abstract int getCost(UpgradeType type, int tier);
+    public abstract int getCost(ToolType type, int tier);
 
     /**
-     * Set max tier of specified {@link UpgradeType} to tier
+     * Set max tier of specified {@link ToolType} to tier
      * 
-     * @param type {@link UpgradeType} to set
+     * @param type {@link ToolType} to set
      * @param tier new tier
      */
-    public void setMaxTier(UpgradeType type, int tier) {
+    public void setMaxTier(ToolType type, int tier) {
         maxTier.put(type, tier);
     }
 
     /**
-     * Get max tier of specified {@link UpgradeType}
+     * Get max tier of specified {@link ToolType}
      * 
-     * @param type {@link UpgradeType} to get max tier of
-     * @return max tier of {@link UpgradeType}
+     * @param type {@link ToolType} to get max tier of
+     * @return max tier of {@link ToolType}
      */
-    public int getMaxTier(UpgradeType type) {
+    public int getMaxTier(ToolType type) {
         return maxTier.get(type);
     }
 
@@ -194,24 +194,24 @@ public abstract class Role {
      * 
      * @param maxTiers {@link HashMap} map of maxtiers
      */
-    public void setMaxTiers(HashMap<UpgradeType, Integer> maxTiers) {
+    public void setMaxTiers(HashMap<ToolType, Integer> maxTiers) {
         maxTier = maxTiers;
     }
 
     /**
      * Get maxtiers map
      * 
-     * @return {@link HashMap} of {@link UpgradeType} and it's corrisponding max
+     * @return {@link HashMap} of {@link ToolType} and it's corrisponding max
      * tier
      */
-    public HashMap<UpgradeType, Integer> getMaxTiers() {
+    public HashMap<ToolType, Integer> getMaxTiers() {
         return maxTier;
     }
 
-    public static HashMap<UpgradeType, Integer> allOneMaxTiers() {
-        HashMap<UpgradeType, Integer> maxTier = new HashMap<>();
+    public static HashMap<ToolType, Integer> allOneMaxTiers() {
+        HashMap<ToolType, Integer> maxTier = new HashMap<>();
 
-        for (UpgradeType type : UpgradeType.values())
+        for (ToolType type : ToolType.values())
             maxTier.put(type, 1);
 
         return maxTier;

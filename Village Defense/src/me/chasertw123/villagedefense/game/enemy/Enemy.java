@@ -1,5 +1,6 @@
 package me.chasertw123.villagedefense.game.enemy;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import me.chasertw123.villagedefense.Main;
@@ -19,11 +20,15 @@ public abstract class Enemy {
 
     private EntityType entityType;
     private String customName = "";
-    private int minDroppedGold = 0, maxDroppedGold = 0, difficulty;
+    private boolean boss;
+    private int minDroppedGold, maxDroppedGold, difficulty;
 
     private ItemStack weapon = null;
     private ItemStack[] armor = null;
     private PotionEffect[] potionEffects = null;
+
+    public static ArrayList<Enemy> enemyObjects = new ArrayList<Enemy>();
+    public static ArrayList<Enemy> bossEnemyObjects = new ArrayList<Enemy>();
 
     /**
      * Makes a new {@link Enemy} instance
@@ -32,11 +37,18 @@ public abstract class Enemy {
      * @param minDroppedGold amount of gold dropped per kill
      * @param maxDroppedGold amount of gold dropped per kill
      */
-    public Enemy(EntityType entityType, int difficulty, int minDroppedGold, int maxDroppedGold) {
+    public Enemy(EntityType entityType, int difficulty, int minDroppedGold, int maxDroppedGold, boolean boss) {
         this.entityType = entityType;
         this.difficulty = difficulty;
         this.minDroppedGold = minDroppedGold;
         this.maxDroppedGold = maxDroppedGold;
+        this.boss = boss;
+
+        if (boss)
+            bossEnemyObjects.add(this);
+
+        else
+            enemyObjects.add(this);
     }
 
     /**
@@ -51,6 +63,14 @@ public abstract class Enemy {
      */
     public int getDifficulty() {
         return difficulty;
+    }
+
+    /**
+     * 
+     * @return {@link Boolean} of boss
+     */
+    public boolean isBoss() {
+        return boss;
     }
 
     /**
@@ -158,13 +178,16 @@ public abstract class Enemy {
         entity.setCustomName(customName);
         entity.setCustomNameVisible(true);
 
-        entity.getEquipment().setArmorContents(armor.clone());
+        if (armor != null)
+            entity.getEquipment().setArmorContents(armor.clone());
+
+        if (weapon != null)
+            entity.getEquipment().setItemInHand(weapon.clone());
+
         entity.getEquipment().setHelmetDropChance(0F);
         entity.getEquipment().setChestplateDropChance(0F);
         entity.getEquipment().setLeggingsDropChance(0F);
         entity.getEquipment().setBootsDropChance(0F);
-
-        entity.getEquipment().setItemInHand(weapon.clone());
         entity.getEquipment().setItemInHandDropChance(0F);
 
         for (PotionEffect effect : potionEffects)

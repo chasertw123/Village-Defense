@@ -1,6 +1,6 @@
 package me.chasertw123.villagedefense.game.role;
 
-public enum UpgradeType {
+public enum ToolType {
 
     BOOTS, LEGGINGS, CHESTPLATE, WEAPON;
 }

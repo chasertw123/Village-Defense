@@ -1,11 +1,18 @@
 package me.chasertw123.villagedefense.game.wave;
 
+import java.util.Random;
+
+import me.chasertw123.villagedefense.Main;
+import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
+import me.chasertw123.villagedefense.game.enemy.Enemy;
+
 import org.bukkit.Bukkit;
 
 public class Wave {
 
     private int wave, difficulty;
     private boolean bossWave;
+    private Main plugin;
 
     /**
      * Create a new instance of {@link Wave}
@@ -14,10 +21,11 @@ public class Wave {
      * @param difficulty the level of difficulty
      * @param bossWave boolean of if it ia a boss wave
      */
-    public Wave(int wave, int difficulty, boolean bossWave) {
+    public Wave(int wave, int difficulty, boolean bossWave, Main plugin) {
         this.wave = wave;
         this.difficulty = difficulty;
         this.bossWave = bossWave;
+        this.plugin = plugin;
 
         Bukkit.getServer().getPluginManager().callEvent(new WaveCreateEvent(this));
     }
@@ -59,5 +67,30 @@ public class Wave {
      */
     public void setBossWave(boolean bossWave) {
         this.bossWave = bossWave;
+    }
+
+    public void startWave() throws InvalidEnemySpawnExcpetion {
+
+        Random r = new Random();
+        int currentDifficulty = 0;
+
+        while (currentDifficulty < difficulty) {
+
+            Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.enemyObjects.size()));
+
+            currentDifficulty += e.getDifficulty();
+            e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin);
+        }
+
+        currentDifficulty = 0;
+
+        if (isBossWave())
+            while (currentDifficulty < difficulty) {
+
+                Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.bossEnemyObjects.size()));
+
+                currentDifficulty += e.getDifficulty();
+                e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin);
+            }
     }
 }

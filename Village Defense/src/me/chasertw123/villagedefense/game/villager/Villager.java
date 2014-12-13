@@ -3,6 +3,7 @@ package me.chasertw123.villagedefense.game.villager;
 import me.chasertw123.villagedefense.game.GamePlayer;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 
 public abstract class Villager {
@@ -21,9 +22,12 @@ public abstract class Villager {
      * Spawn him, use this when spawning him, updates getVil()
      */
     public void spawnVillager() {
-        if (vil != null && vil.getHealth() > 0) {
-            vil.setHealth(0);
-            vil.remove();
+        if (getVil() != null) {
+            for (Entity e : getVil().getNearbyEntities(1, 1, 1))
+                if (e.getPassenger() == getVil())
+                    e.remove();
+
+            getVil().remove();
         }
 
         setVil(placeVillagerInWorld());

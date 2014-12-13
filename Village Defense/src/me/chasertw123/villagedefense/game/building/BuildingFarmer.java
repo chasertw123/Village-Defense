@@ -16,7 +16,7 @@ public class BuildingFarmer extends Building {
     }
 
     @Override
-    public void levelUp() {
+    public void levelUp(Main plugin) {
         // Build new tier, kill villagers, spawn new villager, update menus/
         if (getTier() >= getMaxTier())
             return;
@@ -24,13 +24,13 @@ public class BuildingFarmer extends Building {
         setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(Main.getInstance().getDataFolder(), "Farmer" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder(), "Farmer" + getTier() + ".schematic"), this);
 
     }
 
     @Override
-    public void buildFirstTier() {
+    public void buildFirstTier(Main plugin) {
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(Main.getInstance().getDataFolder(), "Farmer" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder(), "Farmer" + getTier() + ".schematic"), this);
     }
 }
