@@ -1,5 +1,6 @@
 package me.chasertw123.villagedefense.game.role;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -21,6 +22,19 @@ public abstract class Role {
     private HashMap<ToolType, Integer> maxTier;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
+
+    public static ArrayList<Class<? extends Role>> roleClasses = new ArrayList<Class<? extends Role>>();
+
+    public static void registerRole(Class<? extends Role> role) {
+        roleClasses.add(role);
+
+        try {
+            Role r = role.newInstance();
+            System.out.println("Loaded role " + r.getName());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, HashMap<ToolType, Integer> maxTier, ItemStack itemStack, String description) throws RoleCreationException {
 

@@ -3,12 +3,14 @@ package me.chasertw123.villagedefense;
 import java.io.File;
 import java.util.ArrayList;
 
+import me.chasertw123.villagedefense.commands.VillageDefenseCmd;
 import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.building.BuildingFarmer;
 import me.chasertw123.villagedefense.game.enemy.Tank;
+import me.chasertw123.villagedefense.game.role.Role;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,9 +28,16 @@ public class Main extends JavaPlugin implements Listener {
 
     public void onEnable() {
 
+        Role.registerRole(me.chasertw123.villagedefense.game.role.Archer.class);
+        Role.registerRole(me.chasertw123.villagedefense.game.role.Assassin.class);
+        Role.registerRole(me.chasertw123.villagedefense.game.role.Healer.class);
+        Role.registerRole(me.chasertw123.villagedefense.game.role.Mage.class);
+        Role.registerRole(me.chasertw123.villagedefense.game.role.Tank.class);
+
         System.out.println("You are about to witness the evolution of something awesome.");
 
         this.getServer().getPluginManager().registerEvents(this, this);
+        this.getCommand("VillageDefense").setExecutor(new VillageDefenseCmd(this));
 
         new File(getDataFolder().getAbsolutePath() + File.separator + "schematics" + File.separator).mkdirs();
 

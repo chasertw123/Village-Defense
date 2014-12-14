@@ -6,14 +6,12 @@ import java.util.Random;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 
 public abstract class Enemy {
@@ -172,8 +170,8 @@ public abstract class Enemy {
         LivingEntity entity = (LivingEntity) e;
 
         entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, new Random().nextInt(maxDroppedGold) + 1))));
-        for (MetadataValue mv : entity.getMetadata("gold"))
-            Bukkit.broadcastMessage(mv.asString());
+        //for (MetadataValue mv : entity.getMetadata("gold"))
+        //Bukkit.broadcastMessage(mv.asString());
 
         entity.setCustomName(customName);
         entity.setCustomNameVisible(true);
