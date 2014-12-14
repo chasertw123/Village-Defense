@@ -25,17 +25,6 @@ public abstract class Role {
 
     public static ArrayList<Class<? extends Role>> roleClasses = new ArrayList<Class<? extends Role>>();
 
-    public static void registerRole(Class<? extends Role> role) {
-        roleClasses.add(role);
-
-        try {
-            Role r = role.newInstance();
-            System.out.println("Loaded role " + r.getName());
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, HashMap<ToolType, Integer> maxTier, ItemStack itemStack, String description) throws RoleCreationException {
 
         this.name = name;
@@ -222,6 +211,11 @@ public abstract class Role {
         return maxTier;
     }
 
+    /**
+     * Set all max tiers to one
+     * 
+     * @return {@link HashMap} of tier 1 {@link ToolType}
+     */
     public static HashMap<ToolType, Integer> allOneMaxTiers() {
         HashMap<ToolType, Integer> maxTier = new HashMap<>();
 
@@ -229,6 +223,22 @@ public abstract class Role {
             maxTier.put(type, 1);
 
         return maxTier;
+    }
+
+    /**
+     * Add a {@link Role} to an {@link ArrayList}
+     * 
+     * @param role the {@link Class} to add to {@link Role} {@link ArrayList}
+     */
+    public static void registerRole(Class<? extends Role> role) {
+        roleClasses.add(role);
+
+        try {
+            Role r = role.newInstance();
+            System.out.println("Loaded role " + r.getName());
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 }

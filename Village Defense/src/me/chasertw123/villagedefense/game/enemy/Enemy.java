@@ -167,11 +167,10 @@ public abstract class Enemy {
             throw new InvalidEnemySpawnExcpetion("A " + entityType.toString() + " is not a Living entity. It must be" + " a living entity in order to spawn properly.");
         }
 
+        Random random = new Random();
         LivingEntity entity = (LivingEntity) e;
 
-        entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, new Random().nextInt(maxDroppedGold) + 1))));
-        //for (MetadataValue mv : entity.getMetadata("gold"))
-        //Bukkit.broadcastMessage(mv.asString());
+        entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, random.nextInt(maxDroppedGold) + 1))));
 
         entity.setCustomName(customName);
         entity.setCustomNameVisible(true);

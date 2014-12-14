@@ -16,9 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
@@ -28,13 +26,13 @@ public class Main extends JavaPlugin implements Listener {
 
     public void onEnable() {
 
+        System.out.println("You are about to witness the evolution of something awesome.");
+
         Role.registerRole(me.chasertw123.villagedefense.game.role.Archer.class);
         Role.registerRole(me.chasertw123.villagedefense.game.role.Assassin.class);
         Role.registerRole(me.chasertw123.villagedefense.game.role.Healer.class);
         Role.registerRole(me.chasertw123.villagedefense.game.role.Mage.class);
         Role.registerRole(me.chasertw123.villagedefense.game.role.Tank.class);
-
-        System.out.println("You are about to witness the evolution of something awesome.");
 
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getCommand("VillageDefense").setExecutor(new VillageDefenseCmd(this));
@@ -69,20 +67,6 @@ public class Main extends JavaPlugin implements Listener {
 
                 b.getVillager().getVil().remove();
             }
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerInteractEntityEvent event) {
-
-        if (event.getRightClicked() == game.getArena().getBuildings().get(0).getVillager().getVil()) {
-
-            event.setCancelled(true);
-
-            if (game.getArena().getBuildings().get(0).getTier() < game.getArena().getBuildings().get(0).getMaxTier()) {
-                game.getArena().getBuildings().get(0).levelUp(this);
-                Bukkit.broadcastMessage(event.getPlayer().getName() + " upgarded Farm to tier " + game.getArena().getBuildings().get(0).getTier());
-            }
-        }
     }
 
     /** Console Messages **/
