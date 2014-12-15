@@ -28,11 +28,20 @@ public class Main extends JavaPlugin implements Listener {
 
         System.out.println("You are about to witness the evolution of something awesome.");
 
-        Role.registerRole(me.chasertw123.villagedefense.game.role.Archer.class);
-        Role.registerRole(me.chasertw123.villagedefense.game.role.Assassin.class);
-        Role.registerRole(me.chasertw123.villagedefense.game.role.Healer.class);
-        Role.registerRole(me.chasertw123.villagedefense.game.role.Mage.class);
-        Role.registerRole(me.chasertw123.villagedefense.game.role.Tank.class);
+        if (this.getConfig().getBoolean("disabled-roles.archer"))
+            Role.registerRole(me.chasertw123.villagedefense.game.role.Archer.class);
+
+        if (this.getConfig().getBoolean("disabled-roles.assassin"))
+            Role.registerRole(me.chasertw123.villagedefense.game.role.Assassin.class);
+
+        if (this.getConfig().getBoolean("disabled-roles.healer"))
+            Role.registerRole(me.chasertw123.villagedefense.game.role.Healer.class);
+
+        if (this.getConfig().getBoolean("disabled-roles.mage"))
+            Role.registerRole(me.chasertw123.villagedefense.game.role.Mage.class);
+
+        if (this.getConfig().getBoolean("disabled-roles.tank"))
+            Role.registerRole(me.chasertw123.villagedefense.game.role.Tank.class);
 
         this.getServer().getPluginManager().registerEvents(this, this);
         this.getCommand("VillageDefense").setExecutor(new VillageDefenseCmd(this));

@@ -1,0 +1,7 @@
+disabled-roles:
+  archer: false
+  assassin: false
+  healer: false
+  mage: false
+  tank: false
+  
