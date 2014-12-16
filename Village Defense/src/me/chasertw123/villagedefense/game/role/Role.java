@@ -1,14 +1,15 @@
 package me.chasertw123.villagedefense.game.role;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.exceptions.RoleCreationException;
 import me.chasertw123.villagedefense.game.abilities.Ability;
 import me.chasertw123.villagedefense.game.abilities.AbilityType;
 import me.chasertw123.villagedefense.game.abilities.NoAbility;
+import me.chasertw123.villagedefense.game.tools.Tool;
+import me.chasertw123.villagedefense.game.tools.ToolSet;
+import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
@@ -19,22 +20,39 @@ public abstract class Role {
 
     private String name;
     private int bdr, bsb, bm;
-    private HashMap<ToolType, Integer> maxTier;
+    private ArrayList<ToolSet> toolSets;
+    //private HashMap<ToolType, Integer> maxTier;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
 
     public static ArrayList<Class<? extends Role>> roleClasses = new ArrayList<Class<? extends Role>>();
 
-    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, HashMap<ToolType, Integer> maxTier, ItemStack itemStack, String description) throws RoleCreationException {
+    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, ArrayList<ToolSet> toolSets, ItemStack itemStack, String description) throws RoleCreationException {
 
         this.name = name;
         this.bdr = bdr;
         this.bsb = bsb;
-        this.maxTier = maxTier;
+        this.toolSets = toolSets;
 
-        for (Entry<ToolType, Integer> entry : maxTier.entrySet())
-            if (entry.getValue() < 1)
-                throw new RoleCreationException("Max tier of " + entry.getKey() + " is < 1");
+        int chestplate = 0, leggings = 0, boots = 0, weapon = 0;
+
+        for (ToolSet toolSet : toolSets) {
+
+            if (toolSet.getToolType() == ToolType.CHESTPLATE)
+                ++chestplate;
+
+            else if (toolSet.getToolType() == ToolType.LEGGINGS)
+                ++leggings;
+
+            else if (toolSet.getToolType() == ToolType.BOOTS)
+                ++boots;
+
+            else if (toolSet.getToolType() == ToolType.WEAPON)
+                ++weapon;
+        }
+
+        if (chestplate != 1 || leggings != 1 || boots != 1 || weapon != 1)
+            throw new RoleCreationException("Too many or too little ToolSets have been set!");
 
         if (primaryAbility != null)
             this.primaryAbility = primaryAbility;
@@ -155,74 +173,75 @@ public abstract class Role {
     public abstract ItemStack getBanner();
 
     /**
-     * Get an {@link ItemStack} for {@link ToolType} for specified tier
+     * Get the {@link ToolSet} {@link ArrayList} of this {@link Role}
      * 
-     * @param type {@link ToolType} of {@link ItemStack}
-     * @param tier Tier of armor
-     * @return {@link ItemStack} representing {@link ToolType} of tier
+     * @return {@link ToolSet} {@link ArrayList} of this {@link Role} instance
      */
-    public abstract ItemStack getItemStack(ToolType type, int tier);
-
-    /**
-     * Get price of {@link ToolType} for specified tier
-     * 
-     * @param type {@link ToolType}
-     * @param tier Tier of armor
-     * @return price of {@link ToolType} for tier
-     */
-    public abstract int getCost(ToolType type, int tier);
-
-    /**
-     * Set max tier of specified {@link ToolType} to tier
-     * 
-     * @param type {@link ToolType} to set
-     * @param tier new tier
-     */
-    public void setMaxTier(ToolType type, int tier) {
-        maxTier.put(type, tier);
+    public ArrayList<ToolSet> getToolSets() {
+        return toolSets;
     }
 
     /**
-     * Get max tier of specified {@link ToolType}
+     * Get the {@link ToolSet} for specified {@link ToolType}
      * 
-     * @param type {@link ToolType} to get max tier of
-     * @return max tier of {@link ToolType}
+     * @param toolType {@link ToolType} of {@link ToolSet}
+     * @return {@link ToolSet} of the specified {@link ToolType}
      */
-    public int getMaxTier(ToolType type) {
-        return maxTier.get(type);
+    public ToolSet getToolSet(ToolType toolType) {
+        for (ToolSet toolSet : toolSets)
+            if (toolType == toolSet.getToolType())
+                return toolSet;
+
+        return null;
     }
 
     /**
-     * Set max tiers {@link HashMap}
+     * Get the max tier {@link Integer} for a {@link ToolType}
      * 
-     * @param maxTiers {@link HashMap} map of maxtiers
+     * @param toolType {@link ToolType} to get {@link Integer} max tier of
+     * @return max tier {@link Integer} for {@link ToolType}
      */
-    public void setMaxTiers(HashMap<ToolType, Integer> maxTiers) {
-        maxTier = maxTiers;
+    public int getMaxTier(ToolType toolType) {
+        return getToolSet(toolType).getMaxTier();
     }
 
     /**
-     * Get maxtiers map
+     * Get {@link ItemStack} of a certain tier {@link Integer} {@link Tool} of a
+     * certain {@link ToolType}
      * 
-     * @return {@link HashMap} of {@link ToolType} and it's corrisponding max
-     * tier
+     * @param toolType {@link ToolType} of the {@link Tool} you want to get
+     * @param toolTier {@link Integer} of the {@link Tool} you want to get
+     * @return {@link ItemStack} of a certain tier {@link Integer} {@link Tool}
+     * of a certain {@link ToolType}
      */
-    public HashMap<ToolType, Integer> getMaxTiers() {
-        return maxTier;
+    public ItemStack getItemStack(ToolType toolType, int toolTier) {
+        return getToolSet(toolType).getTool(toolTier).getItemStack();
     }
 
     /**
-     * Set all max tiers to one
+     * Get cost {@link Integer} of a certain tier {@link Integer} {@link Tool}
+     * of a certain {@link ToolType}
      * 
-     * @return {@link HashMap} of tier 1 {@link ToolType}
+     * @param toolType {@link ToolType} of the {@link Tool} you want to get
+     * @param toolTier {@link Integer} of the {@link Tool} you want to get
+     * @return cost {@link Integer} of a certain tier {@link Integer}
+     * {@link Tool} of a certain {@link ToolType}
      */
-    public static HashMap<ToolType, Integer> allOneMaxTiers() {
-        HashMap<ToolType, Integer> maxTier = new HashMap<>();
+    public int getCost(ToolType toolType, int toolTier) {
+        return getToolSet(toolType).getTool(toolTier).getCost();
+    }
 
-        for (ToolType type : ToolType.values())
-            maxTier.put(type, 1);
-
-        return maxTier;
+    /**
+     * Get required building tier {@link Integer} of a certain tier
+     * {@link Integer} {@link Tool} of a certain {@link ToolType}
+     * 
+     * @param toolType {@link ToolType} of the {@link Tool} you want to get
+     * @param toolTier {@link Integer} of the {@link Tool} you want to get
+     * @return required building tier {@link Integer} of a certain tier
+     * {@link Integer} {@link Tool} of a certain {@link ToolType}
+     */
+    public int getBuildingTier(ToolType toolType, int toolTier) {
+        return getToolSet(toolType).getTool(toolTier).getRequiredBuildingTier();
     }
 
     /**

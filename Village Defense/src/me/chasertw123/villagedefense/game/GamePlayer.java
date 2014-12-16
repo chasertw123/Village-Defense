@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import me.chasertw123.villagedefense.game.role.Role;
-import me.chasertw123.villagedefense.game.role.ToolType;
+import me.chasertw123.villagedefense.game.tools.ToolType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

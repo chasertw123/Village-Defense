@@ -1,7 +1,7 @@
 package me.chasertw123.villagedefense.game.villager;
 
 import me.chasertw123.villagedefense.game.GamePlayer;
-import me.chasertw123.villagedefense.game.role.ToolType;
+import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.Bukkit;

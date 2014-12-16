@@ -1,4 +1,4 @@
-package me.chasertw123.villagedefense.game.role;
+package me.chasertw123.villagedefense.game.tools;
 
 public enum ToolType {
 

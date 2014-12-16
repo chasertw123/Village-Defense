@@ -1,7 +1,12 @@
 package me.chasertw123.villagedefense.game.role;
 
+import java.util.ArrayList;
+
 import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.abilities.Heal;
+import me.chasertw123.villagedefense.game.tools.Tool;
+import me.chasertw123.villagedefense.game.tools.ToolSet;
+import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
@@ -15,7 +20,7 @@ import org.bukkit.inventory.meta.BannerMeta;
 public class Healer extends Role {
 
     public Healer() throws VillageDefenseException {
-        super("Healer", 100, 110, 280, new Heal(), null, null, null, allOneMaxTiers(), new ItemStack(Material.INK_SACK, 1, (short) 10), "This role acts as support healing and buffing their allies. You have high mana but low attack damage and a slight speed boost.");
+        super("Healer", 100, 110, 280, new Heal(), null, null, null, setToolSets(), new ItemStack(Material.INK_SACK, 1, (short) 10), "This role acts as support healing and buffing their allies. You have high mana but low attack damage and a slight speed boost.");
     }
 
     @Override
@@ -34,107 +39,19 @@ public class Healer extends Role {
         return itemStack;
     }
 
-    @Override
-    public ItemStack getItemStack(ToolType type, int tier) {
+    private static ArrayList<ToolSet> setToolSets() {
 
-        switch (type) {
+        ArrayList<ToolSet> toolSets = new ArrayList<ToolSet>();
 
-            case CHESTPLATE:
-                switch (tier) {
+        toolSets.add(new ToolSet(ToolType.CHESTPLATE, new Tool(new FancyItemStack(Material.LEATHER_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Chestplate" + fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.LEGGINGS, new Tool(new FancyItemStack(Material.LEATHER_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Leggings" + fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.BOOTS, new Tool(new FancyItemStack(Material.LEATHER_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Boots" + fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.WEAPON, new Tool(new FancyItemStack(Material.WOOD_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Weapon" + fancyTierString(1)), 0, 1)));
 
-                    case 1:
-                        return new FancyItemStack(Material.LEATHER_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Chestplate" + fancyTierString(tier));
-
-                    default:
-                        return null;
-                }
-
-            case LEGGINGS:
-                switch (tier) {
-
-                    case 1:
-                        return new FancyItemStack(Material.LEATHER_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Leggings" + fancyTierString(tier));
-
-                    default:
-                        return null;
-                }
-
-            case BOOTS:
-                switch (tier) {
-
-                    case 1:
-                        return new FancyItemStack(Material.LEATHER_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Boots" + fancyTierString(tier));
-
-                    default:
-                        return null;
-                }
-
-            case WEAPON:
-                switch (tier) {
-
-                    case 1:
-                        return new FancyItemStack(Material.WOOD_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Healer Weapon" + fancyTierString(tier));
-
-                    default:
-                        return null;
-                }
-
-            default:
-                return null;
-        }
+        return toolSets;
     }
 
-    @Override
-    public int getCost(ToolType type, int tier) {
-
-        switch (type) {
-
-            case CHESTPLATE:
-                switch (tier) {
-
-                    case 1:
-                        return 0;
-
-                    default:
-                        return 0;
-                }
-
-            case LEGGINGS:
-                switch (tier) {
-
-                    case 1:
-                        return 0;
-
-                    default:
-                        return 0;
-                }
-
-            case BOOTS:
-                switch (tier) {
-
-                    case 1:
-                        return 0;
-
-                    default:
-                        return 0;
-                }
-
-            case WEAPON:
-                switch (tier) {
-
-                    case 1:
-                        return 0;
-
-                    default:
-                        return 0;
-                }
-
-            default:
-                return 0;
-        }
-    }
-
-    private String fancyTierString(int tier) {
+    private static String fancyTierString(int tier) {
         return ChatColor.BLUE + "" + ChatColor.BOLD + " [" + ChatColor.GOLD + ChatColor.BOLD + "Level " + tier + ChatColor.BLUE + "" + ChatColor.BOLD + "]";
     }
 
