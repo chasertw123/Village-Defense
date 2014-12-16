@@ -2,16 +2,18 @@ package me.chasertw123.villagedefense.game.arena;
 
 import java.util.ArrayList;
 
-import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.role.Role;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -19,7 +21,7 @@ public class RoleSelect {
 
     private EntityType entityType;
     private Location spawnLocation;
-    private Role role;
+    private Class<? extends Role> role;
     private LivingEntity entity;
 
     public static ArrayList<RoleSelect> roleSelectObjects = new ArrayList<RoleSelect>();
@@ -32,7 +34,7 @@ public class RoleSelect {
      * @param role the {@link Role} selected when the {@link Entity} is
      * interacted with
      */
-    public RoleSelect(Location spawnLocation, EntityType entityType, Role role) {
+    public RoleSelect(Location spawnLocation, EntityType entityType, Class<? extends Role> role) {
         this.spawnLocation = spawnLocation;
         this.entityType = entityType;
         this.role = role;
@@ -44,7 +46,7 @@ public class RoleSelect {
      * 
      * @return the {@link Role} of this {@link RoleSelect} instance
      */
-    public Role getRole() {
+    public Class<? extends Role> getRole() {
         return role;
     }
 
@@ -65,41 +67,13 @@ public class RoleSelect {
     }
 
     /**
-     * Spawn {@link Entity} with {@link FixedMetadataValue}
-     * 
-     * @param plugin {@link Plugin} for setting {@link FixedMetadataValue}
-     */
-    @Deprecated
-    public void spawnEntity(Main plugin) {
-
-        Entity e = spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
-
-        if (!(e instanceof LivingEntity))
-            e.remove();
-
-        LivingEntity entity = (LivingEntity) e;
-
-        this.entity = entity;
-
-        /*
-         * Most likly not needed because we are tracking the entity
-         * entity.setMetadata("roleselect", new FixedMetadataValue(plugin, role.getName()));
-         */
-
-        entity.setCustomName(ChatColor.LIGHT_PURPLE + role.getName());
-        entity.setCustomNameVisible(true);
-
-        entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255));
-        entity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 255));
-    }
-
-    /**
      * 
      * Spawn {@link Entity} without {@link FixedMetadataValue}
      */
     public void spawnEntity() {
 
-        Entity e = spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
+        ArmorStand as = (ArmorStand) spawnLocation.getWorld().spawnEntity(spawnLocation.clone().subtract(0, 1.4812500178814, 0), EntityType.ARMOR_STAND);
+        Entity e = spawnLocation.getWorld().spawnEntity(spawnLocation.clone(), entityType);
 
         if (!(e instanceof LivingEntity))
             e.remove();
@@ -108,11 +82,21 @@ public class RoleSelect {
 
         this.entity = entity;
 
-        entity.setCustomName(ChatColor.LIGHT_PURPLE + role.getName());
+        if (entity instanceof Monster) {
+            ((Monster) entity).getEquipment().setHelmet(new ItemStack(Material.STONE_BUTTON));
+            ((Monster) entity).getEquipment().setHelmetDropChance(0F);
+        }
+
+        entity.setCustomName(ChatColor.LIGHT_PURPLE + role.getSimpleName());
         entity.setCustomNameVisible(true);
 
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255));
         entity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 255));
+
+        as.setPassenger(entity);
+        as.setVisible(false);
+        as.setGravity(false);
+        as.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 255));
     }
 
 }

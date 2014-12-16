@@ -1,6 +1,7 @@
 package me.chasertw123.villagedefense.game.role;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.exceptions.RoleCreationException;
@@ -13,6 +14,7 @@ import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -25,13 +27,31 @@ public abstract class Role {
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
 
-    public static ArrayList<Class<? extends Role>> roleClasses = new ArrayList<Class<? extends Role>>();
+    public static HashMap<Class<? extends Role>, EntityType> roleClasses = new HashMap<Class<? extends Role>, EntityType>();
 
+    /**
+     * Create a role instance
+     * 
+     * @param name of {@link Role}
+     * @param bdr base damage reduction of {@link Role}
+     * @param bsb base speed boost of {@link Role}
+     * @param bm base mana of {@link Role}
+     * @param primaryAbility Primary {@link Ability} of {@link Role}
+     * @param secondaryAbility Secondary {@link Ability} of {@link Role}
+     * @param tertiaryAbility Tertiary {@link Ability} of {@link Role}
+     * @param ultraAbility Ultra {@link Ability} of {@link Role}
+     * @param toolSets {@link ArrayList} of {@link ToolSet} for {@link Role}
+     * @param itemStack {@link ItemStack} logo
+     * @param description Description of {@link Role}
+     * 
+     * @throws RoleCreationException when failed to create.
+     */
     public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, ArrayList<ToolSet> toolSets, ItemStack itemStack, String description) throws RoleCreationException {
 
         this.name = name;
         this.bdr = bdr;
         this.bsb = bsb;
+        this.bm = bm;
         this.toolSets = toolSets;
 
         int chestplate = 0, leggings = 0, boots = 0, weapon = 0;
@@ -249,12 +269,12 @@ public abstract class Role {
      * 
      * @param role the {@link Class} to add to {@link Role} {@link ArrayList}
      */
-    public static void registerRole(Class<? extends Role> role) {
-        roleClasses.add(role);
+    public static void registerRole(Class<? extends Role> role, EntityType type) {
+        roleClasses.put(role, type);
 
         try {
             Role r = role.newInstance();
-            System.out.println("Loaded role " + r.getName());
+            System.out.println("Loaded role: " + r.getName());
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }

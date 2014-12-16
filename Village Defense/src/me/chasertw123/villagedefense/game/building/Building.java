@@ -1,5 +1,7 @@
 package me.chasertw123.villagedefense.game.building;
 
+import java.util.ArrayList;
+
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
 import me.chasertw123.villagedefense.game.villager.Villager;
@@ -12,12 +14,16 @@ public abstract class Building {
     private BuildingType type;
     private Location center;
     private Villager villager;
+    private String name;
+
+    public static ArrayList<Class<? extends Building>> buildingClasses = new ArrayList<Class<? extends Building>>();
 
     public Building(BuildingType type, Location center, Villager villager, int maxTier) throws BuildingCreationException {
         this.type = type;
         this.center = center;
         this.villager = villager;
         this.maxTier = maxTier;
+        this.name = this.getClass().getSimpleName();
 
         if (maxTier < 1)
             throw new BuildingCreationException("A building's max tier is lower than one!");
@@ -84,5 +90,26 @@ public abstract class Building {
      */
     public void setVillager(Villager villager) {
         this.villager = villager;
+    }
+
+    /**
+     * Get name of {@link Building}
+     * 
+     * @return name of {@link Building}
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Add a {@link Building} to an {@link ArrayList}
+     * 
+     * @param building the {@link Class} to add to {@link Building}
+     * {@link ArrayList}
+     */
+    public static void registerBuilding(Class<? extends Building> building) {
+        buildingClasses.add(building);
+
+        System.out.println("Registered building: " + building.getSimpleName());
     }
 }

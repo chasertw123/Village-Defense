@@ -1,8 +1,10 @@
 package me.chasertw123.villagedefense.game.arena;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import me.chasertw123.villagedefense.Main;
+import me.chasertw123.villagedefense.exceptions.ArenaCreationException;
 import me.chasertw123.villagedefense.game.building.Building;
 
 import org.bukkit.Location;
@@ -16,15 +18,42 @@ public class Arena {
     /**
      * @param buildings List of buildings
      * @param spawnLocation Center of player spawns
+     * @throws ArenaCreationException When arena failed to create
      */
-    public Arena(ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Main plugin) {
+    public Arena(ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Main plugin) throws ArenaCreationException {
+
+        Boolean[] bools = new Boolean[Building.buildingClasses.size()];
+        Arrays.fill(bools, false);
+
+        for (Building building : buildings)
+            for (int i = 0; i < Building.buildingClasses.size(); i++) {
+                Class<? extends Building> b = Building.buildingClasses.get(i);
+
+                if (building.getClass().equals(b))
+                    if (bools[i])
+                        throw new ArenaCreationException("Duplicate building " + b.getSimpleName());
+                    else
+                        bools[i] = true;
+            }
+
+        for (int i = 0; i < bools.length; i++)
+            if (!bools[i])
+                throw new ArenaCreationException("Missing " + Building.buildingClasses.get(i).getSimpleName());
+
+        if (spawnLocation == null)
+            throw new ArenaCreationException("The arena spawn location cannot be null");
+
+        // TODO: More fail safes
+
         setCenterSpawnLocation(spawnLocation);
+
         this.setBuildings(buildings);
 
         for (Building b : buildings)
             b.buildFirstTier(plugin);
 
         this.setEnemySpawnPoints(enemySpawnPoints);
+
     }
 
     /**

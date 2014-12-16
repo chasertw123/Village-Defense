@@ -6,4 +6,4 @@ main: me.chasertw123.villagedefense.Main
 commands: 
   VillageDefense:
     default: op
-    alias: vd
+    aliases: [vd, villaged, vdefense]
