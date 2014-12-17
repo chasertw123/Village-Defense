@@ -4,4 +4,7 @@ disabled-roles:
   healer: false
   mage: false
   tank: false
+players:
+  min: 2
+  max: 12
   

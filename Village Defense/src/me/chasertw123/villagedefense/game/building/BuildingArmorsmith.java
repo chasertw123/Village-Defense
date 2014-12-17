@@ -12,7 +12,7 @@ import org.bukkit.Location;
 public class BuildingArmorsmith extends Building {
 
     public BuildingArmorsmith(Location center) throws BuildingCreationException {
-        super(BuildingType.ARMORSMITH, center, new VillagerArmorsmith(center), 3);
+        super(BuildingType.ARMORSMITH, center, new VillagerArmorsmith(center), 1);
     }
 
     @Override

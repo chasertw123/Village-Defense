@@ -22,7 +22,6 @@ public class VillageDefenseCmd implements CommandExecutor {
         this.plugin = plugin;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -49,7 +48,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                         sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
                         return true;
                     } else {
-                        List<String> ls = (List<String>) plugin.getArenaConfig().getList("enemyspawns", new ArrayList<String>());
+                        List<String> ls = (plugin.getArenaConfig().contains("enemyspawns")) ? plugin.getArenaConfig().getStringList("enemyspawns") : new ArrayList<String>();
                         ls.add(LocationUtils.serializeLoc(((Player) sender).getLocation()));
                         plugin.getArenaConfig().set("enemyspawns", ls);
                         plugin.saveArenaConfig();
@@ -67,7 +66,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                         sender.sendMessage(plugin.getPrefix() + "This is not a number!");
                         return true;
                     } else {
-                        List<String> ls = (List<String>) plugin.getArenaConfig().getList("enemyspawns", new ArrayList<String>());
+                        List<String> ls = (plugin.getArenaConfig().contains("enemyspawns")) ? plugin.getArenaConfig().getStringList("enemyspawns") : new ArrayList<String>();
                         try {
                             ls.remove(Integer.parseInt(args[2]));
                             plugin.getArenaConfig().set("enemyspawns", ls);

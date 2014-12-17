@@ -93,6 +93,9 @@ public class RoleSelect {
         entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255));
         entity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 255));
 
+        entity.setRemoveWhenFarAway(false);
+        as.setRemoveWhenFarAway(false);
+
         as.setPassenger(entity);
         as.setVisible(false);
         as.setGravity(false);

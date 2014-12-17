@@ -2,6 +2,7 @@ package me.chasertw123.villagedefense;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import me.chasertw123.villagedefense.commands.VillageDefenseCmd;
@@ -10,20 +11,14 @@ import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.arena.RoleSelect;
 import me.chasertw123.villagedefense.game.building.Building;
-import me.chasertw123.villagedefense.game.building.BuildingArmorsmith;
-import me.chasertw123.villagedefense.game.building.BuildingBrewery;
-import me.chasertw123.villagedefense.game.building.BuildingButcher;
-import me.chasertw123.villagedefense.game.building.BuildingChurch;
-import me.chasertw123.villagedefense.game.building.BuildingFarmer;
-import me.chasertw123.villagedefense.game.building.BuildingTownhall;
-import me.chasertw123.villagedefense.game.building.BuildingWeaponsmith;
-import me.chasertw123.villagedefense.game.enemy.Tank;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
+import me.chasertw123.villagedefense.listeners.PlayerDisconnect;
 import me.chasertw123.villagedefense.listeners.PlayerInteractEntity;
+import me.chasertw123.villagedefense.listeners.PlayerJoin;
+import me.chasertw123.villagedefense.listeners.PlayerLogin;
 import me.chasertw123.villagedefense.utils.LocationUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -31,6 +26,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
@@ -44,7 +40,12 @@ public class Main extends JavaPlugin implements Listener {
 
         System.out.println("You are about to witness the evolution of something awesome.");
 
-        getServer().getPluginManager().registerEvents(new EntityTarget(this), this);
+        PluginManager pm = this.getServer().getPluginManager();
+
+        pm.registerEvents(new EntityTarget(this), this);
+        pm.registerEvents(new PlayerJoin(this), this);
+        pm.registerEvents(new PlayerDisconnect(this), this);
+        pm.registerEvents(new PlayerLogin(this), this);
 
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingArmorsmith.class);
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingBrewery.class);
@@ -85,33 +86,49 @@ public class Main extends JavaPlugin implements Listener {
         try {
 
             for (Class<? extends Role> r : Role.roleClasses.keySet())
-                new RoleSelect(LocationUtils.deserializeLoc(arenayml.getString("roleselector." + r.getSimpleName())), Role.roleClasses.get(r), r).spawnEntity();
+                if (arenayml.contains("roleselector." + r.getSimpleName()))
+                    new RoleSelect(LocationUtils.deserializeLoc(arenayml.getString("roleselector." + r.getSimpleName())), Role.roleClasses.get(r), r).spawnEntity();
 
-            ArrayList<Building> buildings = new ArrayList<Building>();
-            ArrayList<Location> enemyLocations = new ArrayList<Location>();
+            ArrayList<Building> buildings = new ArrayList<>();
 
-            buildings.add(new BuildingArmorsmith(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 0)));
-            buildings.add(new BuildingBrewery(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 10)));
-            buildings.add(new BuildingButcher(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 20)));
-            buildings.add(new BuildingChurch(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 30)));
-            buildings.add(new BuildingFarmer(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 40)));
-            buildings.add(new BuildingTownhall(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 50)));
-            buildings.add(new BuildingWeaponsmith(Bukkit.getWorlds().get(0).getSpawnLocation().clone().add(20, 0, 60)));
-            enemyLocations.add(Bukkit.getWorlds().get(0).getSpawnLocation().clone());
+            for (Class<? extends Building> b : Building.buildingClasses)
+                if (arenayml.contains("buildings." + b.getSimpleName()))
+                    buildings.add(b.getDeclaredConstructor(Location.class).newInstance(LocationUtils.deserializeLoc(arenayml.getString("buildings." + b.getSimpleName()))));
 
-            game = new Game(new Arena(buildings, enemyLocations, Bukkit.getWorlds().get(0).getSpawnLocation().clone(), this), 1, 1);
+            ArrayList<Location> enemySpawnPoints = new ArrayList<>();
 
-            Tank t = new Tank();
-            t.spawnEntity(Bukkit.getWorlds().get(0).getSpawnLocation(), this);
+            if (arenayml.contains("enemyspawns"))
+                for (String s : arenayml.getStringList("enemyspawns"))
+                    enemySpawnPoints.add(LocationUtils.deserializeLoc(s));
+
+            Location spawnLocation = null;
+            if (arenayml.contains("spawn"))
+                spawnLocation = LocationUtils.deserializeLoc(arenayml.getString("spawn"));
+
+            Arena a = new Arena(buildings, enemySpawnPoints, spawnLocation, this);
+            game = new Game(a, this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0);
 
         } catch (VillageDefenseException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
             e.printStackTrace();
         }
     }
 
     public void onDisable() {
 
-        for (Building b : game.getArena().getBuildings())
+        for (Building b : game.getArena().getBuildings()) {
+            b.getVillager().getLoc().getChunk().load();
             if (b.getVillager().getVil() != null) {
                 for (Entity e : b.getVillager().getVil().getNearbyEntities(1, 1, 1))
                     if (e.getPassenger() == b.getVillager().getVil())
@@ -119,8 +136,10 @@ public class Main extends JavaPlugin implements Listener {
 
                 b.getVillager().getVil().remove();
             }
+        }
 
-        for (RoleSelect rs : RoleSelect.roleSelectObjects)
+        for (RoleSelect rs : RoleSelect.roleSelectObjects) {
+            rs.getSpawnLocation().getChunk().load();
             if (rs.getEntity() != null) {
                 for (Entity e : rs.getEntity().getNearbyEntities(1, 1, 1))
                     if (e.getPassenger() == rs.getEntity())
@@ -128,6 +147,7 @@ public class Main extends JavaPlugin implements Listener {
 
                 rs.getEntity().remove();
             }
+        }
     }
 
     /** Console Messages **/

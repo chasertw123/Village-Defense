@@ -22,12 +22,19 @@ public class Game {
      * incorrectly
      */
     public Game(Arena arena, int minPlayers, int maxPlayers) throws GameCreationException {
-        this.arena = arena;
-        this.minPlayers = minPlayers;
-        this.maxPlayers = maxPlayers;
+
+        if (arena == null)
+            throw new GameCreationException("The arena cannot be null!");
+
+        if (minPlayers == 0 || maxPlayers == 0)
+            throw new GameCreationException("Either minimum players or maximum players was set to 0!");
 
         if (minPlayers > maxPlayers)
             throw new GameCreationException("The minimum amount of players is larger than the maximum." + " (MinPlayers: " + minPlayers + " > MaxPlayers: " + maxPlayers);
+
+        this.arena = arena;
+        this.minPlayers = minPlayers;
+        this.maxPlayers = maxPlayers;
     }
 
     /**
