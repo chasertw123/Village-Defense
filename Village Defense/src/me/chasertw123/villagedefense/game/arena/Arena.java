@@ -43,17 +43,15 @@ public class Arena {
         if (spawnLocation == null)
             throw new ArenaCreationException("The arena spawn location cannot be null");
 
-        // TODO: More fail safes
+        if (enemySpawnPoints.size() < 1)
+            throw new ArenaCreationException("There needs to be atleast 1 enemy spawnpoint set");
 
-        setCenterSpawnLocation(spawnLocation);
-
+        this.setCenterSpawnLocation(spawnLocation);
         this.setBuildings(buildings);
+        this.setEnemySpawnPoints(enemySpawnPoints);
 
         for (Building b : buildings)
             b.buildFirstTier(plugin);
-
-        this.setEnemySpawnPoints(enemySpawnPoints);
-
     }
 
     /**

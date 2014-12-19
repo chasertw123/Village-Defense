@@ -2,8 +2,10 @@ package me.chasertw123.villagedefense.game;
 
 import java.util.ArrayList;
 
+import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.GameCreationException;
 import me.chasertw123.villagedefense.game.arena.Arena;
+import me.chasertw123.villagedefense.timers.LobbyTimer;
 
 public class Game {
 
@@ -35,6 +37,7 @@ public class Game {
         this.arena = arena;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
+        this.gameState = GameState.LOBBY;
     }
 
     /**
@@ -89,5 +92,11 @@ public class Game {
      */
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public void startGame(Main plugin) {
+
+        new LobbyTimer(plugin);
+
     }
 }

@@ -40,6 +40,8 @@ public class Main extends JavaPlugin implements Listener {
 
         System.out.println("You are about to witness the evolution of something awesome.");
 
+        this.saveDefaultConfig();
+
         PluginManager pm = this.getServer().getPluginManager();
 
         pm.registerEvents(new EntityTarget(this), this);

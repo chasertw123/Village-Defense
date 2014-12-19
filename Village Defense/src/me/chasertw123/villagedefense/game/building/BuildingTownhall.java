@@ -12,7 +12,7 @@ import org.bukkit.Location;
 public class BuildingTownhall extends Building {
 
     public BuildingTownhall(Location center) throws BuildingCreationException {
-        super(BuildingType.TOWNHALL, center, new VillagerMayor(center), 3);
+        super(BuildingType.TOWNHALL, center, new VillagerMayor(center), 1);
     }
 
     @Override

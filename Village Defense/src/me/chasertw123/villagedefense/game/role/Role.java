@@ -23,7 +23,6 @@ public abstract class Role {
     private String name;
     private int bdr, bsb, bm;
     private ArrayList<ToolSet> toolSets;
-    //private HashMap<ToolType, Integer> maxTier;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
 
