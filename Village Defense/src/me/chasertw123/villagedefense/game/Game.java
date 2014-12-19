@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.GameCreationException;
 import me.chasertw123.villagedefense.game.arena.Arena;
+import me.chasertw123.villagedefense.game.wave.Wave;
 import me.chasertw123.villagedefense.timers.LobbyTimer;
 
 public class Game {
 
     private Arena arena;
     private int minPlayers, maxPlayers;
+
     private GameState gameState = GameState.DISABLED;
+    private Wave wave;
+
     private ArrayList<GamePlayer> players = new ArrayList<GamePlayer>();
 
     /**
@@ -41,6 +45,7 @@ public class Game {
     }
 
     /**
+     * 
      * @return the {@link Arena} the game is taking place in
      */
     public Arena getArena() {
@@ -48,6 +53,7 @@ public class Game {
     }
 
     /**
+     * 
      * @return boolean of if the {@link Game} is full
      */
     public boolean isFull() {
@@ -58,6 +64,7 @@ public class Game {
     }
 
     /**
+     * 
      * @return the minimum of players in this instance of {@link Game}
      */
     public int getMinPlayers() {
@@ -65,6 +72,7 @@ public class Game {
     }
 
     /**
+     * 
      * @return the maximum of players in this instance of {@link Game}
      */
     public int getMaxPlayers() {
@@ -72,6 +80,7 @@ public class Game {
     }
 
     /**
+     * 
      * @return a {@link GamePlayer} array list for the {@link Game} instance
      */
     public ArrayList<GamePlayer> getPlayers() {
@@ -79,6 +88,7 @@ public class Game {
     }
 
     /**
+     * 
      * @return the {@link GameState} that the {@link Game} instance has set
      */
     public GameState getGameState() {
@@ -94,9 +104,27 @@ public class Game {
         this.gameState = gameState;
     }
 
+    /**
+     * 
+     * @return the current {@link Wave} instance
+     */
+    public Wave getWave() {
+        return wave;
+    }
+
+    /**
+     * Update the current {@link Wave}
+     * 
+     * @param wave a new instance of {@link Wave}
+     */
+    public void setWave(Wave wave) {
+        this.wave = wave;
+    }
+
     public void startGame(Main plugin) {
 
         new LobbyTimer(plugin);
 
     }
+
 }

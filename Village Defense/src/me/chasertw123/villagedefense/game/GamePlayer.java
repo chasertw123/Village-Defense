@@ -8,6 +8,7 @@ import me.chasertw123.villagedefense.game.tools.ToolType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 public class GamePlayer {
 
@@ -15,7 +16,7 @@ public class GamePlayer {
     private UUID player_uuid;
     private int gold = 0, mana = 0, maxMana = 0, dr = 100, sb = 100;
     private HashMap<ToolType, Integer> toolTiers;
-    private boolean dead;
+    private boolean dead = false, arrow = false;
 
     /**
      * Makes a new {@link GamePlayer} instance
@@ -316,6 +317,24 @@ public class GamePlayer {
      */
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    /**
+     * 
+     * @return {@link Boolean} if player needs arrow
+     */
+    public boolean needsArrow() {
+        return arrow;
+    }
+
+    /**
+     * Set if the {@link GamePlayer} has an arrow in their {@link Inventory}
+     * 
+     * @param arrow {@link Boolean} if {@link GamePlayer} needs an arrow in
+     * their {@link Inventory}ory
+     */
+    public void setNeedsArrow(boolean arrow) {
+        this.arrow = arrow;
     }
 
     /**

@@ -9,9 +9,9 @@ import me.chasertw123.villagedefense.commands.VillageDefenseCmd;
 import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.arena.Arena;
-import me.chasertw123.villagedefense.game.arena.RoleSelect;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
+import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
 import me.chasertw123.villagedefense.listeners.PlayerDisconnect;
 import me.chasertw123.villagedefense.listeners.PlayerInteractEntity;
@@ -51,7 +51,6 @@ public class Main extends JavaPlugin implements Listener {
 
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingArmorsmith.class);
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingBrewery.class);
-        Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingButcher.class);
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingChurch.class);
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingTownhall.class);
         Building.registerBuilding(me.chasertw123.villagedefense.game.building.BuildingWeaponsmith.class);

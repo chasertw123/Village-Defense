@@ -1,7 +1,7 @@
 package me.chasertw123.villagedefense.listeners;
 
 import me.chasertw123.villagedefense.Main;
-import me.chasertw123.villagedefense.game.arena.RoleSelect;
+import me.chasertw123.villagedefense.game.role.RoleSelect;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

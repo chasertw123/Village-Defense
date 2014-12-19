@@ -79,7 +79,7 @@ public class Arena {
      * @return Random spawn {@link Location}
      */
     public Location getRandomLocation() {
-        return getCenterSpawnLocation().add((Math.random() * 10) - 5, 0, (Math.random() * 10) - 5);
+        return getCenterSpawnLocation().clone().add((Math.random() * 10) - 5, 0, (Math.random() * 10) - 5);
     }
 
     /**

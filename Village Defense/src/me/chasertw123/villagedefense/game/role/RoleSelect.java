@@ -1,8 +1,6 @@
-package me.chasertw123.villagedefense.game.arena;
+package me.chasertw123.villagedefense.game.role;
 
 import java.util.ArrayList;
-
-import me.chasertw123.villagedefense.game.role.Role;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
