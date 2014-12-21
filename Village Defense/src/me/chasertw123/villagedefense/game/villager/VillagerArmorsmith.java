@@ -24,7 +24,6 @@ public class VillagerArmorsmith extends Villager {
 
         vil.setAdult();
         vil.setProfession(Profession.BLACKSMITH);
-        // vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
         vil.setCustomName("Jeff");
         vil.setCustomNameVisible(true);
         as.setPassenger(vil);

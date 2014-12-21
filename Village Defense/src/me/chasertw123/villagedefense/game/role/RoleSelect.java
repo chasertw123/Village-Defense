@@ -9,7 +9,9 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.MagmaCube;
 import org.bukkit.entity.Monster;
+import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -84,6 +86,12 @@ public class RoleSelect {
             ((Monster) entity).getEquipment().setHelmet(new ItemStack(Material.STONE_BUTTON));
             ((Monster) entity).getEquipment().setHelmetDropChance(0F);
         }
+
+        if (entity instanceof Slime)
+            ((Slime) entity).setSize(3);
+
+        else if (entity instanceof MagmaCube)
+            ((MagmaCube) entity).setSize(3);
 
         entity.setCustomName(ChatColor.LIGHT_PURPLE + role.getSimpleName());
         entity.setCustomNameVisible(true);

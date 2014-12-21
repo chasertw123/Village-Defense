@@ -28,7 +28,6 @@ public class VillagerWeaponsmith extends Villager {
 
         vil.setAdult();
         vil.setProfession(Profession.BLACKSMITH);
-        // vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
         vil.setCustomName("Lob");
         vil.setCustomNameVisible(true);
         as.setPassenger(vil);
@@ -47,6 +46,10 @@ public class VillagerWeaponsmith extends Villager {
         if (player.getToolTier(ToolType.WEAPON) >= player.getRole().getMaxTier(ToolType.WEAPON))
             for (int slot = 0; slot < inv.getSize(); slot++)
                 inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Your weapon has reached it's max level!"));
+
+        else if (player.getRole().getBuildingTier(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON) + 1) < getBuilding().getTier())
+            for (int slot = 0; slot < inv.getSize(); slot++)
+                inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Building level too low to upgrade your weapon!"));
 
         else {
 

@@ -24,7 +24,6 @@ public class VillagerBrewer extends Villager {
 
         vil.setAdult();
         vil.setProfession(Profession.LIBRARIAN);
-        // vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
         vil.setCustomName("Bob");
         vil.setCustomNameVisible(true);
         as.setPassenger(vil);

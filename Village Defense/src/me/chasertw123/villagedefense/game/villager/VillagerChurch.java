@@ -24,7 +24,6 @@ public class VillagerChurch extends Villager {
 
         vil.setAdult();
         vil.setProfession(Profession.PRIEST);
-        // vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
         vil.setCustomName("Jesus");
         vil.setCustomNameVisible(true);
         as.setPassenger(vil);

@@ -24,7 +24,6 @@ public class VillagerMayor extends Villager {
 
         vil.setAdult();
         vil.setProfession(Profession.PRIEST);
-        // vil.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 100, true));
         vil.setCustomName("God");
         vil.setCustomNameVisible(true);
         as.setPassenger(vil);

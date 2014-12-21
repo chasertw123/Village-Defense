@@ -19,14 +19,17 @@ public abstract class Building {
     public static ArrayList<Class<? extends Building>> buildingClasses = new ArrayList<Class<? extends Building>>();
 
     public Building(BuildingType type, Location center, Villager villager, int maxTier) throws BuildingCreationException {
+
+        if (maxTier < 1)
+            throw new BuildingCreationException("A building's max tier is lower than one!");
+
         this.type = type;
         this.center = center;
         this.villager = villager;
         this.maxTier = maxTier;
         this.name = this.getClass().getSimpleName();
 
-        if (maxTier < 1)
-            throw new BuildingCreationException("A building's max tier is lower than one!");
+        villager.setBuilding(this);
     }
 
     /**
