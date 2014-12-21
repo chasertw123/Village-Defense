@@ -3,6 +3,7 @@ package me.chasertw123.villagedefense.game.wave;
 import java.util.Random;
 
 import me.chasertw123.villagedefense.Main;
+import me.chasertw123.villagedefense.events.WaveCreateEvent;
 import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
 import me.chasertw123.villagedefense.game.enemy.Enemy;
 

@@ -14,6 +14,7 @@ import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
+import me.chasertw123.villagedefense.listeners.GameStart;
 import me.chasertw123.villagedefense.listeners.PlayerDisconnect;
 import me.chasertw123.villagedefense.listeners.PlayerInteractEntity;
 import me.chasertw123.villagedefense.listeners.PlayerJoin;
@@ -47,6 +48,8 @@ public class Main extends JavaPlugin implements Listener {
 
         pm.registerEvents(new EntityDamageByEntity(this), this);
         pm.registerEvents(new EntityTarget(this), this);
+        pm.registerEvents(new GameStart(this), this);
+        pm.registerEvents(new PlayerInteractEntity(this), this);
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerDisconnect(this), this);
         pm.registerEvents(new PlayerLogin(this), this);
@@ -73,7 +76,6 @@ public class Main extends JavaPlugin implements Listener {
         if (!this.getConfig().getBoolean("disabled-roles.tank"))
             Role.registerRole(me.chasertw123.villagedefense.game.role.Tank.class, EntityType.IRON_GOLEM);
 
-        this.getServer().getPluginManager().registerEvents(new PlayerInteractEntity(this), this);
         this.getCommand("VillageDefense").setExecutor(new VillageDefenseCmd(this));
 
         new File(getDataFolder().getAbsolutePath() + File.separator + "schematics" + File.separator).mkdirs();

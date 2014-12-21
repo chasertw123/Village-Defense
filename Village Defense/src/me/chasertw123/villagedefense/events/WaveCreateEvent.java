@@ -1,4 +1,6 @@
-package me.chasertw123.villagedefense.game.wave;
+package me.chasertw123.villagedefense.events;
+
+import me.chasertw123.villagedefense.game.wave.Wave;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

@@ -34,22 +34,26 @@ public class LobbyTimer extends BukkitRunnable {
     public void run() {
 
         if (timeLeft == 0) {
-            cancel(); // TODO: move to next phase
+            cancel();
 
             for (GamePlayer gp : plugin.getGame().getPlayers()) {
 
-                if (gp.getRole() == null)
+                if (gp.getRole() == null) {
                     gp.setRole(getRandomRole());
+                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "The have recieved the " + ChatColor.BLUE + gp.getRole().getName() + ChatColor.YELLOW + " role randomly!");
+                }
 
                 ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
                 gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1);
+
+                new GameTimer(plugin);
             }
 
             return;
         }
 
         for (GamePlayer gp : plugin.getGame().getPlayers())
-            ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.AQUA + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
+            ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.BLUE + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
 
         timeLeft--;
 

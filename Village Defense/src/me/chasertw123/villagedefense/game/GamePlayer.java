@@ -357,6 +357,27 @@ public class GamePlayer {
     }
 
     /**
+     * Send the {@link GamePlayer} a message without getting the {@link Player}
+     * 
+     * @param message the {@link String} message you wish to send the
+     * {@link GamePlayer}
+     */
+    public void sendMessage(String message) {
+        getPlayer().sendMessage(message);
+    }
+
+    /**
+     * Tell if a {@link GamePlayer} is equal to a {@link Player}
+     * 
+     * @param player {@link Player} to compare to {@link GamePlayer}
+     * @return {@link Boolean} of if {@link GamePlayer} is equal to a
+     * {@link Player}
+     */
+    public boolean isEqualToPlayer(Player player) {
+        return getPlayer().getName().equals(player.getName());
+    }
+
+    /**
      * Set a upgrade tier
      * 
      * @param type {@link ToolType} type to set
