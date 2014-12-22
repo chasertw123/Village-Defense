@@ -46,8 +46,9 @@ public class LobbyTimer extends BukkitRunnable {
                 ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
                 gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1);
 
-                new GameTimer(plugin);
             }
+
+            new GameTimer(plugin);
 
             return;
         }

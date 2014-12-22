@@ -1,5 +1,6 @@
 package me.chasertw123.villagedefense.game.wave;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import me.chasertw123.villagedefense.Main;
@@ -8,12 +9,14 @@ import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
 import me.chasertw123.villagedefense.game.enemy.Enemy;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 
 public class Wave {
 
     private int wave, difficulty;
     private boolean bossWave;
     private Main plugin;
+    private ArrayList<LivingEntity> enemies = new ArrayList<>();
 
     /**
      * Create a new instance of {@link Wave}
@@ -75,23 +78,57 @@ public class Wave {
         Random r = new Random();
         int currentDifficulty = 0;
 
-        while (currentDifficulty < difficulty) {
+        while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
 
             Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.enemyObjects.size()));
 
             currentDifficulty += e.getDifficulty();
-            e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin);
+            enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
+
         }
 
         currentDifficulty = 0;
 
-        if (isBossWave())
-            while (currentDifficulty < difficulty) {
+        if (Enemy.bossEnemyObjects.size() > 0 && isBossWave())
+            while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
 
                 Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.bossEnemyObjects.size()));
 
                 currentDifficulty += e.getDifficulty();
-                e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin);
+                enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
             }
+    }
+
+    /**
+     * Get current progress of wave
+     * 
+     * @return {@link Float} value of this {@link Wave}
+     */
+    public float getProgress() {
+        int livingCount = 0;
+        for (LivingEntity le : enemies)
+            if (le != null && !le.isDead())
+                livingCount++;
+
+        if (livingCount == 0)
+            return 0f;
+
+        return enemies.size() / livingCount;
+    }
+
+    /**
+     * @return the enemies a {@link ArrayList} of {@link LivingEntity} that are
+     * spawned from {@link Enemy}
+     */
+    public ArrayList<LivingEntity> getEnemies() {
+        return enemies;
+    }
+
+    /**
+     * @param enemies the enemies to set new {@link ArrayList} of
+     * {@link LivingEntity}
+     */
+    public void setEnemies(ArrayList<LivingEntity> enemies) {
+        this.enemies = enemies;
     }
 }

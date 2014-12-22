@@ -155,9 +155,10 @@ public abstract class Enemy {
      * Spawn the {@link Enemy} at the {@link Location}
      * 
      * @param spawnLocation the {@link Location} the {@link Enemy} will spawn
+     * @return {@link LivingEntity} spawned by this method
      * @throws InvaildEnemySpawnException when is not a {@link LivingEntity}
      */
-    public void spawnEntity(Location spawnLocation, Main plugin) throws InvalidEnemySpawnExcpetion {
+    public LivingEntity spawnEntity(Location spawnLocation, Main plugin) throws InvalidEnemySpawnExcpetion {
 
         Entity e = spawnLocation.getWorld().spawnEntity(spawnLocation, entityType);
 
@@ -187,11 +188,14 @@ public abstract class Enemy {
         entity.getEquipment().setBootsDropChance(0F);
         entity.getEquipment().setItemInHandDropChance(0F);
 
-        for (PotionEffect effect : potionEffects)
-            entity.addPotionEffect(effect);
+        if (potionEffects != null)
+            for (PotionEffect effect : potionEffects)
+                entity.addPotionEffect(effect);
 
         entity.setFireTicks(0);
         entity.setHealth(entity.getMaxHealth());
         entity.setCanPickupItems(false);
+
+        return entity;
     }
 }

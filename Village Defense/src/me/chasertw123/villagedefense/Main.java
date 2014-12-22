@@ -10,6 +10,8 @@ import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
+import me.chasertw123.villagedefense.game.enemy.Minion;
+import me.chasertw123.villagedefense.game.enemy.Tank;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
@@ -89,6 +91,9 @@ public class Main extends JavaPlugin implements Listener {
         arenayml = YamlConfiguration.loadConfiguration(arenaFile);
 
         try {
+
+            new Minion();
+            new Tank();
 
             for (Class<? extends Role> r : Role.roleClasses.keySet())
                 if (arenayml.contains("roleselector." + r.getSimpleName()))

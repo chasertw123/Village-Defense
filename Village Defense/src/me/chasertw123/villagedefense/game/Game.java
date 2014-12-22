@@ -123,6 +123,7 @@ public class Game {
 
     public void startGame(Main plugin) {
 
+        setGameState(GameState.STARTING);
         new LobbyTimer(plugin);
 
     }

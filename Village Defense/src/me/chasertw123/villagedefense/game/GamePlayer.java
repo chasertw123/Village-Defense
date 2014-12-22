@@ -25,7 +25,7 @@ public class GamePlayer {
      * @param player_uuid {@link UUID} of the new {@link GamePlayer} instance
      */
     public GamePlayer(Role role, UUID player_uuid) {
-        this.role = role;
+        setRole(role);
         this.player_uuid = player_uuid;
 
         toolTiers = new HashMap<>();
@@ -103,9 +103,13 @@ public class GamePlayer {
     public void setRole(Role role) {
         this.role = role;
 
-        dr = role.getBaseDamageReduction();
-        sb = role.getBaseSpeedBoost();
-        mana = role.getBaseMana();
+        if (role != null) {
+            getPlayer().getInventory().setHelmet(role.getBanner());
+
+            dr = role.getBaseDamageReduction();
+            sb = role.getBaseSpeedBoost();
+            mana = role.getBaseMana();
+        }
     }
 
     /**
