@@ -73,32 +73,6 @@ public class Wave {
         this.bossWave = bossWave;
     }
 
-    public void startWave() throws InvalidEnemySpawnExcpetion {
-
-        Random r = new Random();
-        int currentDifficulty = 0;
-
-        while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
-
-            Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.enemyObjects.size()));
-
-            currentDifficulty += e.getDifficulty();
-            enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
-
-        }
-
-        currentDifficulty = 0;
-
-        if (Enemy.bossEnemyObjects.size() > 0 && isBossWave())
-            while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
-
-                Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.bossEnemyObjects.size()));
-
-                currentDifficulty += e.getDifficulty();
-                enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
-            }
-    }
-
     /**
      * Get current progress of wave
      * 
@@ -130,5 +104,31 @@ public class Wave {
      */
     public void setEnemies(ArrayList<LivingEntity> enemies) {
         this.enemies = enemies;
+    }
+
+    public void startWave() throws InvalidEnemySpawnExcpetion {
+
+        Random r = new Random();
+        int currentDifficulty = 0;
+
+        while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
+
+            Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.enemyObjects.size()));
+
+            currentDifficulty += e.getDifficulty();
+            enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
+
+        }
+
+        currentDifficulty = 0;
+
+        if (Enemy.bossEnemyObjects.size() > 0 && isBossWave())
+            while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
+
+                Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.bossEnemyObjects.size()));
+
+                currentDifficulty += e.getDifficulty();
+                enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
+            }
     }
 }

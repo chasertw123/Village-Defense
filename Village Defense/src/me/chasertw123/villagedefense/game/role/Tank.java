@@ -7,6 +7,7 @@ import me.chasertw123.villagedefense.game.tools.Tool;
 import me.chasertw123.villagedefense.game.tools.ToolSet;
 import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
+import me.chasertw123.villagedefense.utils.StringUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -41,15 +42,11 @@ public class Tank extends Role {
 
         ArrayList<ToolSet> toolSets = new ArrayList<ToolSet>();
 
-        toolSets.add(new ToolSet(ToolType.CHESTPLATE, new Tool(new FancyItemStack(Material.IRON_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Chestplate" + fancyTierString(1)), 0, 1)));
-        toolSets.add(new ToolSet(ToolType.LEGGINGS, new Tool(new FancyItemStack(Material.IRON_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Leggings" + fancyTierString(1)), 0, 1)));
-        toolSets.add(new ToolSet(ToolType.BOOTS, new Tool(new FancyItemStack(Material.IRON_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Boots" + fancyTierString(1)), 0, 1)));
-        toolSets.add(new ToolSet(ToolType.WEAPON, new Tool(new FancyItemStack(Material.IRON_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Weapon" + fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.CHESTPLATE, new Tool(new FancyItemStack(Material.IRON_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Chestplate" + StringUtils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.LEGGINGS, new Tool(new FancyItemStack(Material.IRON_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Leggings" + StringUtils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.BOOTS, new Tool(new FancyItemStack(Material.IRON_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Boots" + StringUtils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.WEAPON, new Tool(new FancyItemStack(Material.IRON_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Tank Weapon" + StringUtils.fancyTierString(1)), 0, 1)));
 
         return toolSets;
-    }
-
-    private static String fancyTierString(int tier) {
-        return ChatColor.BLUE + "" + ChatColor.BOLD + " [" + ChatColor.GOLD + ChatColor.BOLD + "Level " + tier + ChatColor.BLUE + "" + ChatColor.BOLD + "]";
     }
 }
