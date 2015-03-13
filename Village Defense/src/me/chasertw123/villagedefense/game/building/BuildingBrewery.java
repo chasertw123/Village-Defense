@@ -24,13 +24,13 @@ public class BuildingBrewery extends Building {
         setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder(), "Brewery" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Brewery" + getTier() + ".schematic"), this);
 
     }
 
     @Override
     public void buildFirstTier(Main plugin) {
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder(), "Brewery" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Brewery" + getTier() + ".schematic"), this);
     }
 }

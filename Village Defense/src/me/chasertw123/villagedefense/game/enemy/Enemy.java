@@ -6,10 +6,13 @@ import java.util.Random;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -18,7 +21,7 @@ public abstract class Enemy {
 
     private EntityType entityType;
     private String customName = "";
-    private boolean boss;
+    private boolean boss, baby;
     private int minDroppedGold, maxDroppedGold, difficulty;
 
     private ItemStack weapon = null;
@@ -35,18 +38,24 @@ public abstract class Enemy {
      * @param minDroppedGold amount of gold dropped per kill
      * @param maxDroppedGold amount of gold dropped per kill
      */
-    public Enemy(EntityType entityType, int difficulty, int minDroppedGold, int maxDroppedGold, boolean boss) {
+    public Enemy(EntityType entityType, int difficulty, int minDroppedGold, int maxDroppedGold) {
         this.entityType = entityType;
         this.difficulty = difficulty;
         this.minDroppedGold = minDroppedGold;
         this.maxDroppedGold = maxDroppedGold;
-        this.boss = boss;
+        this.boss = false;
 
-        if (boss)
-            bossEnemyObjects.add(this);
+        enemyObjects.add(this);
+    }
 
-        else
-            enemyObjects.add(this);
+    public Enemy(EntityType entityType, int minDroppedGold, int maxDroppedGold) {
+        this.entityType = entityType;
+        this.difficulty = -1;
+        this.minDroppedGold = minDroppedGold;
+        this.maxDroppedGold = maxDroppedGold;
+        this.boss = true;
+
+        bossEnemyObjects.add(this);
     }
 
     /**
@@ -86,6 +95,23 @@ public abstract class Enemy {
      */
     public void setCustomName(String customName) {
         this.customName = customName;
+    }
+
+    /**
+     * 
+     * @return if this {@link Enemy} is a baby
+     */
+    public boolean isBaby() {
+        return baby;
+    }
+
+    /**
+     * Update if the entity should be a baby
+     * 
+     * @param baby {@link Boolean} of if baby
+     */
+    public void setBaby(boolean baby) {
+        this.baby = baby;
     }
 
     /**
@@ -173,7 +199,7 @@ public abstract class Enemy {
 
         entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, random.nextInt(maxDroppedGold) + 1))));
 
-        entity.setCustomName(customName);
+        entity.setCustomName((boss ? ChatColor.YELLOW + "[" + ChatColor.BLUE + "BOSS" + ChatColor.YELLOW + "]" : "") + customName);
         entity.setCustomNameVisible(true);
 
         if (armor != null)
@@ -191,6 +217,12 @@ public abstract class Enemy {
         if (potionEffects != null)
             for (PotionEffect effect : potionEffects)
                 entity.addPotionEffect(effect);
+
+        if (entity instanceof Zombie)
+            ((Zombie) entity).setBaby(baby);
+
+        else if (entity instanceof PigZombie)
+            ((PigZombie) entity).setBaby(baby);
 
         entity.setFireTicks(0);
         entity.setHealth(entity.getMaxHealth());

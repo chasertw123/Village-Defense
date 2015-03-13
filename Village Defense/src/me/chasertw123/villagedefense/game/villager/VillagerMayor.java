@@ -1,7 +1,10 @@
 package me.chasertw123.villagedefense.game.villager;
 
+import java.util.Random;
+
 import me.chasertw123.villagedefense.game.GamePlayer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -12,8 +15,14 @@ import org.bukkit.potion.PotionEffectType;
 
 public class VillagerMayor extends Villager {
 
+    private String[] names = { "Randy", "Jeffery", "Bill", "Billy", "John" };
+    private String name;
+
     public VillagerMayor(Location loc) {
         super(loc);
+
+        Random random = new Random();
+        name = names[random.nextInt(names.length)];
     }
 
     @Override
@@ -23,8 +32,8 @@ public class VillagerMayor extends Villager {
         org.bukkit.entity.Villager vil = (org.bukkit.entity.Villager) getLoc().getWorld().spawnEntity(getLoc(), EntityType.VILLAGER);
 
         vil.setAdult();
-        vil.setProfession(Profession.PRIEST);
-        vil.setCustomName("God");
+        vil.setProfession(Profession.LIBRARIAN);
+        vil.setCustomName(ChatColor.BLUE + "Mayor " + name);
         vil.setCustomNameVisible(true);
         as.setPassenger(vil);
         as.setVisible(false);

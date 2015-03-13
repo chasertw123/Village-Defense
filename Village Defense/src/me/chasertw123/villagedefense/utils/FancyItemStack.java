@@ -4,10 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class FancyItemStack extends ItemStack {
+
+    public FancyItemStack(Material material) {
+        super(material);
+    }
 
     public FancyItemStack(Material material, int amount, short data, String display) {
         super(material, amount, data);
@@ -128,6 +133,12 @@ public class FancyItemStack extends ItemStack {
 
         for (String s : newLore)
             addLore(color + s);
+
+        return this;
+    }
+
+    public FancyItemStack addUnsafeEnchant(Enchantment ench, int level) {
+        super.addUnsafeEnchantment(ench, level);
 
         return this;
     }

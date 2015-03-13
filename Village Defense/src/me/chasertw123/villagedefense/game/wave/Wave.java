@@ -6,9 +6,11 @@ import java.util.Random;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.events.WaveCreateEvent;
 import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
+import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.enemy.Enemy;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 
 public class Wave {
@@ -79,7 +81,9 @@ public class Wave {
      * @return {@link Float} value of this {@link Wave}
      */
     public float getProgress() {
+
         int livingCount = 0;
+
         for (LivingEntity le : enemies)
             if (le != null && !le.isDead())
                 livingCount++;
@@ -111,24 +115,26 @@ public class Wave {
         Random r = new Random();
         int currentDifficulty = 0;
 
-        while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
+        while (currentDifficulty < difficulty) {
 
             Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.enemyObjects.size()));
 
-            currentDifficulty += e.getDifficulty();
-            enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
-
+            if (e.getDifficulty() + currentDifficulty <= difficulty) {
+                currentDifficulty += e.getDifficulty();
+                enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
+            }
         }
 
         currentDifficulty = 0;
 
-        if (Enemy.bossEnemyObjects.size() > 0 && isBossWave())
-            while (currentDifficulty < ((bossWave) ? difficulty / 2 : difficulty)) {
+        if (Enemy.bossEnemyObjects.size() > 0 && isBossWave()) {
 
-                Enemy e = Enemy.enemyObjects.get(r.nextInt(Enemy.bossEnemyObjects.size()));
+            Enemy e = Enemy.bossEnemyObjects.get(r.nextInt(Enemy.bossEnemyObjects.size()));
 
-                currentDifficulty += e.getDifficulty();
-                enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
-            }
+            enemies.add(e.spawnEntity(plugin.getGame().getArena().getEnemySpawnPoints().get(r.nextInt(plugin.getGame().getArena().getEnemySpawnPoints().size())), plugin));
+
+            for (GamePlayer gp : plugin.getGame().getPlayers())
+                gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "A " + ChatColor.BLUE + ChatColor.stripColor(e.getCustomName()) + ChatColor.YELLOW + " has spawned!");
+        }
     }
 }

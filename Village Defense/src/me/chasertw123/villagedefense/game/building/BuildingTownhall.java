@@ -24,13 +24,13 @@ public class BuildingTownhall extends Building {
         setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder(), "Townhall" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Townhall" + getTier() + ".schematic"), this);
 
     }
 
     @Override
     public void buildFirstTier(Main plugin) {
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder(), "Townhall" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Townhall" + getTier() + ".schematic"), this);
     }
 }

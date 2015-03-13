@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import me.chasertw123.villagedefense.commands.VillageDefenseCmd;
 import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
+import me.chasertw123.villagedefense.game.GamePlayer;
+import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.enemy.Minion;
 import me.chasertw123.villagedefense.game.enemy.Tank;
+import me.chasertw123.villagedefense.game.enemy.boss.BabyTerror;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
@@ -23,12 +26,14 @@ import me.chasertw123.villagedefense.listeners.PlayerJoin;
 import me.chasertw123.villagedefense.listeners.PlayerLogin;
 import me.chasertw123.villagedefense.utils.LocationUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -92,8 +97,12 @@ public class Main extends JavaPlugin implements Listener {
 
         try {
 
+            // Regular Monsters
             new Minion();
             new Tank();
+
+            // Boss Monsters
+            new BabyTerror();
 
             for (Class<? extends Role> r : Role.roleClasses.keySet())
                 if (arenayml.contains("roleselector." + r.getSimpleName()))
@@ -132,6 +141,22 @@ public class Main extends JavaPlugin implements Listener {
             e.printStackTrace();
         } catch (SecurityException e) {
             e.printStackTrace();
+        }
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+
+            this.getGame().getPlayers().add(new GamePlayer(null, p));
+
+            if (this.getGame().getPlayers().size() >= this.getGame().getMinPlayers() && this.getGame().getGameState() == GameState.LOBBY)
+                this.getGame().startGame(this);
+
+            else if (this.getGame().getGameState() == GameState.DISABLED)
+                Bukkit.broadcastMessage(this.getPrefix() + ChatColor.RED + "**Warning the game has not been set up yet** ");
+
+            else if (this.getGame().getPlayers().size() < this.getGame().getMinPlayers()) {
+                int amount = this.getGame().getMinPlayers() - this.getGame().getPlayers().size();
+                Bukkit.broadcastMessage(this.getPrefix() + "We need " + amount + " more player" + ((amount == 1) ? "" : "s") + " to join!");
+            }
         }
     }
 

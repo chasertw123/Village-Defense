@@ -9,6 +9,7 @@ import me.chasertw123.villagedefense.game.role.RoleSelect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -47,11 +48,14 @@ public class PlayerInteractEntity implements Listener {
 
                                 if (gp.getRole() == null || !gp.getRole().getName().equals(role.getName())) {
                                     gp.setRole(role);
+                                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
                                     event.getPlayer().sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have selected the " + ChatColor.BLUE + role.getName() + ChatColor.YELLOW + " role!");
                                 }
 
-                                else
+                                else {
                                     gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You already have the role " + ChatColor.BLUE + role.getName() + ChatColor.YELLOW + " selected!");
+                                    event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.CREEPER_HISS, 1F, 1F);
+                                }
                             }
                     } catch (InstantiationException | IllegalAccessException e) {
                     }

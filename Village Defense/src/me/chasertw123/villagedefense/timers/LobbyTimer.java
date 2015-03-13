@@ -25,7 +25,7 @@ public class LobbyTimer extends BukkitRunnable {
         timeLeft = plugin.getConfig().contains("timers.lobby") ? plugin.getConfig().getInt("timers.lobby") : 30;
 
         for (GamePlayer gp : plugin.getGame().getPlayers())
-            gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.LEVEL_UP, 1, 1);
+            gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
 
         this.runTaskTimer(plugin, 20L, 20L);
     }
@@ -44,7 +44,7 @@ public class LobbyTimer extends BukkitRunnable {
                 }
 
                 ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
-                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1, 1);
+                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
 
             }
 

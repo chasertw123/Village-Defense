@@ -62,10 +62,10 @@ public class GameTimer extends BukkitRunnable {
         if (plugin.getGame().getWave().getProgress() < 0.1) {
 
             if (secondsTillNextWave == -1) {
-                secondsTillNextWave = 15;
+                secondsTillNextWave = plugin.getConfig().contains("timers.between-waves") ? plugin.getConfig().getInt("timers.between-waves") : 15;
 
                 for (GamePlayer gp : plugin.getGame().getPlayers())
-                    ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + "15" + ChatColor.YELLOW + " seconds");
+                    ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " seconds");
 
                 return;
             }

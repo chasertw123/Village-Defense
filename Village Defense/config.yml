@@ -9,3 +9,4 @@ players:
   max: 12
 timers:
   lobby: 30
+  between-waves: 15
