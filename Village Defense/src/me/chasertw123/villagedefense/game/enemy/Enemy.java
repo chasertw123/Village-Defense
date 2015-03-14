@@ -35,6 +35,7 @@ public abstract class Enemy {
      * Makes a new {@link Enemy} instance
      * 
      * @param entityType {@link EntityType} of the new {@link Enemy} instance
+     * @param difficulty the level of difficulty this {@link Enemy} instance is
      * @param minDroppedGold amount of gold dropped per kill
      * @param maxDroppedGold amount of gold dropped per kill
      */
@@ -48,6 +49,13 @@ public abstract class Enemy {
         enemyObjects.add(this);
     }
 
+    /**
+     * Makes a new boss {@link Enemy} instance
+     * 
+     * @param entityType {@link EntityType} of the new {@link Enemy} instance
+     * @param minDroppedGold amount of gold dropped per kill
+     * @param maxDroppedGold amount of gold dropped per kill
+     */
     public Enemy(EntityType entityType, int minDroppedGold, int maxDroppedGold) {
         this.entityType = entityType;
         this.difficulty = -1;
