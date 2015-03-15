@@ -15,34 +15,29 @@ import org.bukkit.entity.Player;
 public class StatsManager {
 
     private Main plugin;
+
     private FileConfiguration statsyml;
     private File statsFile;
 
     private HashMap<UUID, Integer[]> stats = new HashMap<UUID, Integer[]>();
 
-    private HashMap<UUID, Integer> mobKills = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> deaths = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> gamesPlayed = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> wavesPlayed = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> wavesWon = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> wavesLost = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> totalGoldEarned = new HashMap<UUID, Integer>();
-    private HashMap<UUID, Integer> totalGoldSpent = new HashMap<UUID, Integer>();
-
     public StatsManager() {
-        statsFile = new File(plugin.getDataFolder().getAbsoluteFile() + File.separator + "stats.yml");
 
-        try {
-            statsFile.createNewFile();
-        } catch (IOException e) {
-            plugin.sendConsoleSevere("Failed to generate stats.yml!");
-        }
+        if (!plugin.usesSQL()) {
 
-        statsyml = YamlConfiguration.loadConfiguration(statsFile);
+            statsFile = new File(plugin.getDataFolder().getAbsoluteFile() + File.separator + "stats.yml");
 
-        if (!plugin.usesSQL())
+            try {
+                statsFile.createNewFile();
+            } catch (IOException e) {
+                plugin.sendConsoleSevere("Failed to generate stats.yml!");
+            }
+
+            statsyml = YamlConfiguration.loadConfiguration(statsFile);
+
             for (Player p : Bukkit.getOnlinePlayers())
                 this.addStatsToMap(p);
+        }
 
         else {
 
@@ -52,58 +47,78 @@ public class StatsManager {
     }
 
     public int getStat(Stat stat, Player p) {
+        return stats.get(p.getUniqueId())[stat.ordinal()];
+    }
 
-        int amount = 0;
+    public void setStat(Stat stat, int i, Player p) {
 
         switch (stat) {
 
             case MOBKILLS:
-                amount = mobKills.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { i, getStat(Stat.DEATHS, p), getStat(Stat.GAMESPLAYED, p), getStat(Stat.WAVESPLAYED, p), getStat(Stat.WAVESWON, p), getStat(Stat.WAVESLOST, p), getStat(Stat.TOTALGOLDEARNED, p), getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case DEATHS:
-                amount = deaths.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), i, getStat(Stat.GAMESPLAYED, p), getStat(Stat.WAVESPLAYED, p), getStat(Stat.WAVESWON, p), getStat(Stat.WAVESLOST, p), getStat(Stat.TOTALGOLDEARNED, p), getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case GAMESPLAYED:
-                amount = gamesPlayed.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), getStat(Stat.DEATHS, p), i, getStat(Stat.WAVESPLAYED, p), getStat(Stat.WAVESWON, p), getStat(Stat.WAVESLOST, p), getStat(Stat.TOTALGOLDEARNED, p), getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case WAVESPLAYED:
-                amount = wavesPlayed.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), getStat(Stat.DEATHS, p), getStat(Stat.GAMESPLAYED, p), i, getStat(Stat.WAVESWON, p), getStat(Stat.WAVESLOST, p), getStat(Stat.TOTALGOLDEARNED, p), getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case WAVESWON:
-                amount = wavesWon.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), getStat(Stat.DEATHS, p), getStat(Stat.GAMESPLAYED, p), getStat(Stat.WAVESPLAYED, p), i, getStat(Stat.WAVESLOST, p), getStat(Stat.TOTALGOLDEARNED, p), getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case WAVESLOST:
-                amount = wavesLost.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), getStat(Stat.DEATHS, p), getStat(Stat.GAMESPLAYED, p), getStat(Stat.WAVESPLAYED, p), getStat(Stat.WAVESWON, p), i, getStat(Stat.TOTALGOLDEARNED, p), getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case TOTALGOLDEARNED:
-                amount = totalGoldEarned.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), getStat(Stat.DEATHS, p), getStat(Stat.GAMESPLAYED, p), getStat(Stat.WAVESPLAYED, p), getStat(Stat.WAVESWON, p), getStat(Stat.WAVESLOST, p), i, getStat(Stat.TOTALGOLDSPENT, p) });
                 break;
 
             case TOTALGOLDSPENT:
-                amount = totalGoldSpent.get(p.getUniqueId());
+                stats.put(p.getUniqueId(), new Integer[] { getStat(Stat.MOBKILLS, p), getStat(Stat.DEATHS, p), getStat(Stat.GAMESPLAYED, p), getStat(Stat.WAVESPLAYED, p), getStat(Stat.WAVESWON, p), getStat(Stat.WAVESLOST, p), getStat(Stat.TOTALGOLDEARNED, p), i });
                 break;
 
             default:
                 break;
         }
+    }
 
-        return amount;
+    public void incrementStat(Stat stat, int i, Player p) {
+        this.setStat(stat, this.getStat(stat, p) + i, p);
+    }
+
+    public void incrementStat(Stat stat, Player p) {
+        this.setStat(stat, this.getStat(stat, p) + 1, p);
+    }
+
+    public void decrementStat(Stat stat, int i, Player p) {
+        this.setStat(stat, this.getStat(stat, p) - i, p);
+    }
+
+    public void decrementStat(Stat stat, Player p) {
+        this.setStat(stat, this.getStat(stat, p) - 1, p);
     }
 
     public void addStatsToMap(Player p) {
 
         if (!plugin.usesSQL()) {
 
-            FileConfiguration config = plugin.getConfig();
+            if (!statsyml.contains(p.getUniqueId().toString())) {
+                stats.put(p.getUniqueId(), new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 });
+                this.saveStats(p);
+                return;
+            }
 
-            for (String key : config.getConfigurationSection(p.getUniqueId().toString()).getKeys(false))
-                stats.put(p.getUniqueId(), new Integer[] { config.getInt(key + Stat.MOBKILLS.toString().toLowerCase()), config.getInt(key + Stat.DEATHS.toString().toLowerCase()), config.getInt(key + Stat.GAMESPLAYED.toString().toLowerCase()), config.getInt(key + Stat.WAVESPLAYED.toString().toLowerCase()), config.getInt(key + Stat.WAVESWON.toString().toLowerCase()), config.getInt(key + Stat.WAVESLOST.toString().toLowerCase()), config.getInt(key + Stat.TOTALGOLDEARNED.toString().toLowerCase()), config.getInt(key + Stat.TOTALGOLDSPENT.toString().toLowerCase()) });
+            for (String key : statsyml.getConfigurationSection(p.getUniqueId().toString()).getKeys(false))
+                stats.put(p.getUniqueId(), new Integer[] { statsyml.getInt(key + "." + Stat.MOBKILLS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.DEATHS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.GAMESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESWON.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESLOST.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDEARNED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDSPENT.toString().toLowerCase()) });
         }
 
         else {
@@ -117,7 +132,7 @@ public class StatsManager {
 
         if (!plugin.usesSQL()) {
             for (Stat stat : Stat.values())
-                plugin.getConfig().set(p.getUniqueId().toString() + stat.toString().toLowerCase(), stat.ordinal());
+                plugin.getConfig().set(p.getUniqueId().toString() + "." + stat.toString().toLowerCase(), stat.ordinal());
 
             try {
                 statsyml.save(statsFile);
