@@ -24,6 +24,7 @@ public class PlayerJoin implements Listener {
 
         event.setJoinMessage("");
 
+        plugin.getStatsManager().addStatsToMap(event.getPlayer());
         plugin.getGame().getPlayers().add(new GamePlayer(null, event.getPlayer()));
 
         if (plugin.getGame().getPlayers().size() >= plugin.getGame().getMinPlayers() && plugin.getGame().getGameState() == GameState.LOBBY)

@@ -2,7 +2,15 @@ package me.chasertw123.villagedefense.stats;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.UUID;
 
 import me.chasertw123.villagedefense.Main;
@@ -16,12 +24,18 @@ public class StatsManager {
 
     private Main plugin;
 
+    // FlatFIile
     private FileConfiguration statsyml;
     private File statsFile;
 
+    // MYSQL
+    private Connection c;
+
     private HashMap<UUID, Integer[]> stats = new HashMap<UUID, Integer[]>();
 
-    public StatsManager() {
+    public StatsManager(Main plugin) {
+
+        this.plugin = plugin;
 
         if (!plugin.usesSQL()) {
 
@@ -34,16 +48,36 @@ public class StatsManager {
             }
 
             statsyml = YamlConfiguration.loadConfiguration(statsFile);
-
-            for (Player p : Bukkit.getOnlinePlayers())
-                this.addStatsToMap(p);
         }
 
         else {
 
-            // TODO: Setup SQL Database
+            this.openConnection();
+
+            if (c == null)
+                return;
+
+            try {
+
+                Class.forName("com.mysql.jdbc.Driver");
+
+                Statement stmt = c.createStatement();
+                String sql = "CREATE TABLE IF NOT EXISTS villagedefense (uuid VARCHAR(36) not NULL, mobkills INT(64), deaths INT(64), gamesplayed INT(64), wavesplayed INT(64), waveswon INT(64), waveslost INT(64), totalgoldearned INT(64), totalgoldspent INT(64), PRIMARY KEY (uuid))";
+
+                stmt.executeUpdate(sql);
+
+            } catch (SQLException se) {
+                se.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                this.closeConnection();
+            }
 
         }
+
+        for (Player p : Bukkit.getOnlinePlayers())
+            this.addStatsToMap(p);
     }
 
     public int getStat(Stat stat, Player p) {
@@ -123,8 +157,45 @@ public class StatsManager {
 
         else {
 
-            // TODO: Add SQL stats to map
+            if (!this.containsPlayer(p)) {
+                stats.put(p.getUniqueId(), new Integer[] { 0, 0, 0, 0, 0, 0, 0, 0 });
+                this.saveStats(p);
+                return;
+            }
 
+            ArrayList<Integer> s = new ArrayList<Integer>();
+
+            this.openConnection();
+
+            try {
+
+                for (Stat stat : Stat.values()) {
+
+                    PreparedStatement current = c.prepareStatement("SELECT " + stat.toString().toLowerCase() + " FROM `villagedefense` WHERE uuid=?;");
+
+                    current.setString(1, p.getName());
+
+                    ResultSet result = current.executeQuery();
+                    result.next();
+
+                    s.add(result.getInt(stat.toString().toLowerCase()));
+
+                    current.close();
+                    result.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                this.closeConnection();
+            }
+
+            Integer[] s2 = new Integer[s.size()];
+            Iterator<Integer> iterator = s.iterator();
+
+            for (int i = 0; i < s2.length; i++)
+                s2[i] = iterator.next().intValue();
+
+            stats.put(p.getUniqueId(), s2);
         }
     }
 
@@ -143,8 +214,73 @@ public class StatsManager {
 
         else {
 
-            // TODO: Save to SQL Database
+            this.openConnection();
 
+            if (!this.containsPlayer(p))
+                return;
+
+            try {
+
+                for (Stat stat : Stat.values()) {
+
+                    PreparedStatement stmt = c.prepareStatement("UPDATE `villagedefense` SET " + stat.toString().toLowerCase() + "=? WHERE uuid=?");
+
+                    stmt.setInt(1, this.getStat(stat, p));
+                    stmt.setString(2, p.getUniqueId().toString());
+                    stmt.executeUpdate();
+                    stmt.close();
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                this.closeConnection();
+            }
+        }
+    }
+
+    public synchronized void openConnection() {
+
+        FileConfiguration config = plugin.getConfig();
+
+        try {
+            c = DriverManager.getConnection("jdbc:mysql://" + config.getString("sql.ip") + ":" + config.getString("sql.port") + "/" + config.getString("sql.database"), config.getString("sql.username"), config.getString("sql.password"));
+        } catch (Exception e) {
+            plugin.sendConsoleSevere("Failed to open the connection to the MySQL server!");
+        }
+    }
+
+    public synchronized void closeConnection() {
+
+        try {
+            c.close();
+        } catch (Exception e) {
+            plugin.sendConsoleSevere("Failed to close the connection to the MySQL server!");
+        }
+    }
+
+    public synchronized boolean containsPlayer(Player p) {
+
+        this.openConnection();
+
+        try {
+
+            PreparedStatement sql = c.prepareStatement("SELECT * FROM `villagedefense` WHERE uuid=?;");
+            sql.setString(1, p.getUniqueId().toString());
+
+            ResultSet result = sql.executeQuery();
+            boolean hasPlayer = result.next();
+
+            sql.close();
+            result.close();
+
+            return hasPlayer;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            this.closeConnection();
         }
     }
 }

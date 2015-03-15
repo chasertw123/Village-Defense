@@ -24,6 +24,7 @@ import me.chasertw123.villagedefense.listeners.PlayerDisconnect;
 import me.chasertw123.villagedefense.listeners.PlayerInteractEntity;
 import me.chasertw123.villagedefense.listeners.PlayerJoin;
 import me.chasertw123.villagedefense.listeners.PlayerLogin;
+import me.chasertw123.villagedefense.stats.StatsManager;
 import me.chasertw123.villagedefense.utils.LocationUtils;
 
 import org.bukkit.Bukkit;
@@ -41,9 +42,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin implements Listener {
 
     private final String prefix = ChatColor.WHITE + "[" + ChatColor.GREEN + "VD" + ChatColor.WHITE + "]" + ChatColor.RESET + " ";
+
     private FileConfiguration arenayml;
     private File arenaFile = new File(getDataFolder().getAbsoluteFile() + File.separator + "arena.yml");
+
     private Game game;
+    private StatsManager statsManager;
+
     private boolean usesSQL;
 
     public void onEnable() {
@@ -52,7 +57,9 @@ public class Main extends JavaPlugin implements Listener {
 
         this.saveDefaultConfig();
 
-        usesSQL = this.getConfig().contains("sql.use") ? this.getConfig().getBoolean("sql.use") : false;
+        usesSQL = this.getConfig().getBoolean("sql.use", false);
+
+        statsManager = new StatsManager(this);
 
         PluginManager pm = this.getServer().getPluginManager();
 
@@ -210,6 +217,10 @@ public class Main extends JavaPlugin implements Listener {
 
     public Game getGame() {
         return game;
+    }
+
+    public StatsManager getStatsManager() {
+        return statsManager;
     }
 
     public boolean usesSQL() {
