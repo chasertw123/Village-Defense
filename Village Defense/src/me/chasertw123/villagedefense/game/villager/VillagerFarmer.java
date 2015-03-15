@@ -68,7 +68,7 @@ public class VillagerFarmer extends Villager {
             inv.setItem(8, getFoodItem(Material.COOKED_BEEF, 8, 3, 75, 4, 1.6));
         }
 
-        else {
+        else if (getBuilding().getTier() == 4) {
             inv.setItem(0, getFoodItem(Material.GOLDEN_APPLE, 1, 4, 100, 2, 2.4));
             inv.setItem(2, getFoodItem(Material.GOLDEN_APPLE, 2, 4, 100, 2, 2.4));
             inv.setItem(4, getFoodItem(Material.GOLDEN_APPLE, 4, 4, 100, 2, 2.4));

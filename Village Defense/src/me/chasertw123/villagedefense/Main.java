@@ -44,12 +44,15 @@ public class Main extends JavaPlugin implements Listener {
     private FileConfiguration arenayml;
     private File arenaFile = new File(getDataFolder().getAbsoluteFile() + File.separator + "arena.yml");
     private Game game;
+    private boolean usesSQL;
 
     public void onEnable() {
 
         System.out.println("You are about to witness the evolution of something awesome.");
 
         this.saveDefaultConfig();
+
+        usesSQL = this.getConfig().contains("sql.use") ? this.getConfig().getBoolean("sql.use") : false;
 
         PluginManager pm = this.getServer().getPluginManager();
 
@@ -207,6 +210,10 @@ public class Main extends JavaPlugin implements Listener {
 
     public Game getGame() {
         return game;
+    }
+
+    public boolean usesSQL() {
+        return usesSQL;
     }
 
     /** YAML Manager **/

@@ -10,3 +10,10 @@ players:
 timers:
   lobby: 30
   between-waves: 15
+sql:
+  use: false
+  ip: localhost
+  port: 3306
+  username: root
+  password: 
+  database: minecraft
