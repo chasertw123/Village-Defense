@@ -105,6 +105,15 @@ public abstract class Ability {
     }
 
     /**
+     * Get cooldown time left
+     * 
+     * @return time {@link Ability} is unable to be used for
+     */
+    public int getTimeRemaining() {
+        return timeRemaining;
+    }
+
+    /**
      * Resets cooldown.
      * 
      * @return cooldown

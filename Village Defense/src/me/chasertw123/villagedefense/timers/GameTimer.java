@@ -49,6 +49,8 @@ public class GameTimer extends BukkitRunnable {
 
             gp.setToolTiers(toolTiers);
             gp.getPlayer().teleport(plugin.getGame().getArena().getRandomLocation());
+
+            gp.setMana(gp.getMaxMana());
         }
 
         playWave(new Wave(wave, difficulty, false, plugin));
@@ -58,6 +60,25 @@ public class GameTimer extends BukkitRunnable {
 
     @Override
     public void run() {
+
+        int regen = r.nextInt(5) + 3;
+
+        for (GamePlayer gp : plugin.getGame().getPlayers()) {
+
+            if (gp.getMana() + regen > gp.getMaxMana()) {
+
+                if (gp.getMana() < gp.getMaxMana())
+                    gp.setMana(gp.getMaxMana());
+            }
+
+            else
+                gp.setMana(gp.getMana() + regen);
+
+            gp.getRole().getPrimaryAbility().decrementCooldown();
+            gp.getRole().getSecondaryAbility().decrementCooldown();
+            gp.getRole().getTertiaryAbility().decrementCooldown();
+            gp.getRole().getUltraAbility().decrementCooldown();
+        }
 
         if (plugin.getGame().getWave().getProgress() < 0.1) {
 

@@ -111,6 +111,7 @@ public class GamePlayer {
             dr = role.getBaseDamageReduction();
             sb = role.getBaseSpeedBoost();
             mana = role.getBaseMana();
+            maxMana = role.getBaseMana();
         }
     }
 
@@ -159,7 +160,7 @@ public class GamePlayer {
      * @see #setGold(int)
      */
     public void decrementGold(int gold) {
-        setMana(getMana() - mana);
+        setGold(getMana() - gold);
     }
 
     /**
@@ -305,7 +306,14 @@ public class GamePlayer {
      * @see {@link #getMana()} to get and {@link #setMana(int)} to set value
      */
     public void updateManaBar() {
-        getPlayer().setLevel(mana);
+
+        float percent = (float) getMana() / getMaxMana();
+
+        if (percent >= 1)
+            percent = 0.9999F;
+
+        getPlayer().setExp(percent);
+        getPlayer().setLevel(getMana());
     }
 
     /**

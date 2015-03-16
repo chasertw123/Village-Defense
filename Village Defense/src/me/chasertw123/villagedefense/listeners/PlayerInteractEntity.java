@@ -10,6 +10,7 @@ import me.chasertw123.villagedefense.game.role.RoleSelect;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -24,6 +25,49 @@ public class PlayerInteractEntity implements Listener {
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+
+        if (plugin.getGame().getGameState() == GameState.INGAME) {
+
+            if (event.getPlayer().getItemInHand() != null) {
+
+                GamePlayer gp = plugin.getGame().getGamePlayer(event.getPlayer());
+                Role role = gp.getRole();
+
+                if (role == null)
+                    return;
+
+                if (role.getName().equals("Healer")) {
+
+                    if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(role.getPrimaryAbility().getItemStack().getItemMeta().getDisplayName())) {
+
+                        if (!role.getPrimaryAbility().canUseAbility()) {
+                            gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
+                            return;
+                        }
+
+                        if (gp.getMana() < role.getPrimaryAbility().getManaCost()) {
+                            gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "Not enough mana!");
+                            gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
+                            return;
+                        }
+
+                        if (!(event.getRightClicked() instanceof Player))
+                            return;
+
+                        Player healed = (Player) event.getRightClicked();
+
+                        if (healed.getHealth() >= healed.getMaxHealth()) {
+                            gp.sendMessage(plugin.getPrefix() + healed.getName() + " already has full health!");
+                            return;
+                        }
+
+                        role.getPrimaryAbility().play(plugin, gp.getPlayer(), healed);
+                        return;
+                    }
+                }
+
+            }
+        }
 
         /* Upgrading buildings, debug code */
         for (Building b : plugin.getGame().getArena().getBuildings())

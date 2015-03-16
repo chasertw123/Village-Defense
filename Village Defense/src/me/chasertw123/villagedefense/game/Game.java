@@ -8,6 +8,9 @@ import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.wave.Wave;
 import me.chasertw123.villagedefense.timers.LobbyTimer;
 
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+
 public class Game {
 
     private Arena arena;
@@ -89,6 +92,19 @@ public class Game {
 
     /**
      * 
+     * @param player The {@link Player} you wish to get from {@link GamePlayer}
+     * @return {@link GamePlayer} from specified {@link Player}
+     */
+    public GamePlayer getGamePlayer(Player player) {
+        for (GamePlayer gp : this.getPlayers())
+            if (gp.isEqualToPlayer(player))
+                return gp;
+
+        return null;
+    }
+
+    /**
+     * 
      * @return the {@link GameState} that the {@link Game} instance has set
      */
     public GameState getGameState() {
@@ -121,6 +137,10 @@ public class Game {
         this.wave = wave;
     }
 
+    /**
+     * 
+     * @param plugin {@link JavaPlugin} of program
+     */
     public void startGame(Main plugin) {
 
         setGameState(GameState.STARTING);

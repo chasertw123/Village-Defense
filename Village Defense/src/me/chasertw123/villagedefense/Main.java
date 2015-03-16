@@ -21,6 +21,7 @@ import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
 import me.chasertw123.villagedefense.listeners.GameStart;
 import me.chasertw123.villagedefense.listeners.PlayerDisconnect;
+import me.chasertw123.villagedefense.listeners.PlayerInteract;
 import me.chasertw123.villagedefense.listeners.PlayerInteractEntity;
 import me.chasertw123.villagedefense.listeners.PlayerJoin;
 import me.chasertw123.villagedefense.listeners.PlayerLogin;
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new EntityDamageByEntity(this), this);
         pm.registerEvents(new EntityTarget(this), this);
         pm.registerEvents(new GameStart(this), this);
+        pm.registerEvents(new PlayerInteract(this), this);
         pm.registerEvents(new PlayerInteractEntity(this), this);
         pm.registerEvents(new PlayerJoin(this), this);
         pm.registerEvents(new PlayerDisconnect(this), this);
