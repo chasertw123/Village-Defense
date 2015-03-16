@@ -155,6 +155,7 @@ public class Main extends JavaPlugin implements Listener {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
+            this.getStatsManager().addStatsToMap(p);
             this.getGame().getPlayers().add(new GamePlayer(null, p));
 
             if (this.getGame().getPlayers().size() >= this.getGame().getMinPlayers() && this.getGame().getGameState() == GameState.LOBBY)
@@ -171,6 +172,9 @@ public class Main extends JavaPlugin implements Listener {
     }
 
     public void onDisable() {
+
+        for (Player p : Bukkit.getOnlinePlayers())
+            this.getStatsManager().saveStats(p);
 
         for (Building b : game.getArena().getBuildings()) {
             b.getVillager().getLoc().getChunk().load();

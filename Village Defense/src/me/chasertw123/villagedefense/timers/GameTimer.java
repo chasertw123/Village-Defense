@@ -27,7 +27,7 @@ public class GameTimer extends BukkitRunnable {
     private Random r = new Random();
 
     public GameTimer(Main plugin) {
-        difficulty = (plugin.getGame().getPlayers().size() * 10) + 5;
+        difficulty = (plugin.getGame().getPlayers().size() * 12) + 5;
         this.plugin = plugin;
 
         plugin.getGame().setGameState(GameState.INGAME);
@@ -73,7 +73,7 @@ public class GameTimer extends BukkitRunnable {
             else if (secondsTillNextWave == 0) {
 
                 secondsTillNextWave = -1;
-                difficulty = difficulty + r.nextInt(15) + 5;
+                difficulty = difficulty + r.nextInt(15) + (5 * plugin.getGame().getPlayers().size());
                 ++wave;
 
                 playWave(new Wave(wave, difficulty, wave % 5 == 0, plugin));

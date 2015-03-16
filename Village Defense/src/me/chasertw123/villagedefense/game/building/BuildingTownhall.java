@@ -24,13 +24,18 @@ public class BuildingTownhall extends Building {
         setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Townhall" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Townhall" + getTier() + ".schematic"), this, true);
 
     }
 
     @Override
     public void buildFirstTier(Main plugin) {
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Townhall" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Townhall" + getTier() + ".schematic"), this, false);
+    }
+
+    @Override
+    public int costToUpgrade(int tier) {
+        return tier == 1 ? 0 : ((tier - 1) * 2500) - 500;
     }
 }

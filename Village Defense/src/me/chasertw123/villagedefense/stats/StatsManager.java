@@ -24,7 +24,7 @@ public class StatsManager {
 
     private Main plugin;
 
-    // FlatFIile
+    // FlatFile
     private FileConfiguration statsyml;
     private File statsFile;
 
@@ -117,8 +117,7 @@ public class StatsManager {
             }
 
             for (String key : statsyml.getConfigurationSection(p.getUniqueId().toString()).getKeys(false))
-                stats.put(p.getUniqueId(), new PlayerStats(statsyml.getInt(key + "." + Stat.MOBKILLS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.DEATHS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.GAMESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "."
-                    + Stat.WAVESWON.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESLOST.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDEARNED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDSPENT.toString().toLowerCase())));
+                stats.put(p.getUniqueId(), new PlayerStats(statsyml.getInt(key + "." + Stat.MOBKILLS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.DEATHS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.GAMESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESWON.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESLOST.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDEARNED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDSPENT.toString().toLowerCase())));
         }
 
         else {
@@ -169,13 +168,14 @@ public class StatsManager {
 
         if (!plugin.usesSQL()) {
             for (Stat stat : Stat.values())
-                plugin.getConfig().set(p.getUniqueId().toString() + "." + stat.toString().toLowerCase(), stat.ordinal());
+                statsyml.set(p.getUniqueId().toString() + "." + stat.toString().toLowerCase(), this.getStat(stat, p));
 
             try {
                 statsyml.save(statsFile);
             } catch (IOException e) {
                 plugin.sendConsoleSevere("Failed to save stats.yml!");
             }
+
         }
 
         else {

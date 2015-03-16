@@ -1,6 +1,7 @@
 package me.chasertw123.villagedefense.stats;
 
 public class PlayerStats {
+
     private int mobKills, deaths, gamesPlayed, wavesPlayed, wavesWon, wavesLost, totalGoldEarned, totalGoldSpent;
 
     public PlayerStats(int mobKills, int deaths, int gamesPlayed, int wavesPlayed, int wavesWon, int wavesLost, int totalGoldEarned, int totalGoldSpent) {
@@ -82,20 +83,28 @@ public class PlayerStats {
     public int getStat(Stat stat) {
 
         switch (stat) {
+
             case DEATHS:
                 return getDeaths();
+
             case GAMESPLAYED:
                 return getGamesPlayed();
+
             case MOBKILLS:
                 return getMobKills();
+
             case TOTALGOLDEARNED:
                 return getTotalGoldEarned();
+
             case TOTALGOLDSPENT:
                 return getTotalGoldSpent();
+
             case WAVESLOST:
                 return getWavesLost();
+
             case WAVESPLAYED:
                 return getWavesPlayed();
+
             case WAVESWON:
                 return getWavesWon();
         }
@@ -105,22 +114,38 @@ public class PlayerStats {
 
     public void setStat(Stat stat, int i) {
         switch (stat) {
+
             case DEATHS:
                 setDeaths(i);
+                break;
+
             case GAMESPLAYED:
                 setGamesPlayed(i);
+                break;
+
             case MOBKILLS:
                 setMobKills(i);
+                break;
+
             case TOTALGOLDEARNED:
                 setTotalGoldEarned(i);
+                break;
+
             case TOTALGOLDSPENT:
                 setTotalGoldSpent(i);
+                break;
+
             case WAVESLOST:
                 setWavesLost(i);
+                break;
+
             case WAVESPLAYED:
                 setWavesPlayed(i);
+                break;
+
             case WAVESWON:
                 setWavesWon(i);
+                break;
         }
     }
 }

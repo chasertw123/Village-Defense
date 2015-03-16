@@ -4,6 +4,7 @@ import java.util.Random;
 
 import me.chasertw123.villagedefense.game.GamePlayer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -45,8 +46,10 @@ public class VillagerMayor extends Villager {
 
     @Override
     public Inventory makeInventory(GamePlayer player) {
-        // TODO Auto-generated method stub
-        return null;
+
+        Inventory inv = Bukkit.createInventory(null, 9, ChatColor.UNDERLINE + "Building Upgrade Menu");
+
+        return inv;
     }
 
 }

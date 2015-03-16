@@ -29,6 +29,11 @@ public class PlayerInteractEntity implements Listener {
         for (Building b : plugin.getGame().getArena().getBuildings())
             if (event.getRightClicked() == b.getVillager().getVil()) {
 
+                for (GamePlayer gp : plugin.getGame().getPlayers())
+                    if (gp.isEqualToPlayer(event.getPlayer())) {
+                        gp.getPlayer().openInventory(b.getVillager().makeInventory(gp));
+                    }
+
                 if (b.getTier() < b.getMaxTier()) {
                     b.levelUp(plugin);
                     Bukkit.broadcastMessage(plugin.getPrefix() + event.getPlayer().getName() + " upgarded " + b.getName() + " to tier " + b.getTier());

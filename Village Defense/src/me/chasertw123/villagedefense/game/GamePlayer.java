@@ -104,6 +104,8 @@ public class GamePlayer {
         this.role = role;
 
         if (role != null) {
+            getPlayer().getInventory().clear();
+            getPlayer().getInventory().setArmorContents(null);
             getPlayer().getInventory().setHelmet(role.getBanner());
 
             dr = role.getBaseDamageReduction();

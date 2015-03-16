@@ -28,9 +28,9 @@ public class Heal extends Ability {
                 pl.spigot().playEffect(healed.getLocation().clone().add(0, 1.8, 0), Effect.HEART, 0, 0, 0, 0, 0, 1, 5, 1);
 
             if (healer == healed)
-                healer.sendMessage(plugin.getPrefix() + "You healed yourself");
+                healer.sendMessage(plugin.getPrefix() + "You healed yourself!");
             else
-                healed.sendMessage(plugin.getPrefix() + healer.getName() + " healed you");
+                healed.sendMessage(plugin.getPrefix() + healer.getName() + " healed you!");
         }
     }
 

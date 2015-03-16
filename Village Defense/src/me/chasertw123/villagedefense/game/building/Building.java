@@ -82,6 +82,14 @@ public abstract class Building {
     public abstract void buildFirstTier(Main plugin);
 
     /**
+     * Get the cost to upgrade to a tier
+     * 
+     * @param tier the tier you wish to get the cost to upgrade to
+     * @return the amount it cost to upgrade to tier
+     */
+    public abstract int costToUpgrade(int tier);
+
+    /**
      * @return the villager
      */
     public Villager getVillager() {

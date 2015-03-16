@@ -42,7 +42,7 @@ public class VillagerFarmer extends Villager {
     @Override
     public Inventory makeInventory(GamePlayer player) {
 
-        Inventory inv = Bukkit.createInventory(null, 9, ChatColor.UNDERLINE + "Food Menu");
+        Inventory inv = Bukkit.createInventory(null, 9, ChatColor.UNDERLINE + "Food Upgrade Menu");
 
         if (getBuilding().getTier() == 1) {
             inv.setItem(0, getFoodItem(Material.APPLE, 1, 1, 25, 2, 0.6));
@@ -80,6 +80,6 @@ public class VillagerFarmer extends Villager {
     }
 
     private FancyItemStack getFoodItem(Material material, int amount, int tier, int priceperunit, double foodheal, double nourishment) {
-        return new FancyItemStack(material, amount, ChatColor.GREEN + "" + ChatColor.BOLD + "Food" + StringUtils.fancyTierString(tier)).addLore("", ChatColor.GOLD + "Food Bar Slots Filled: " + ChatColor.BLUE + foodheal, ChatColor.GOLD + "Saturation: " + ChatColor.BLUE + nourishment, ChatColor.GOLD + "Amount: " + ChatColor.BLUE + amount, "", ChatColor.GOLD + "Price: " + ChatColor.BLUE + (amount * priceperunit));
+        return new FancyItemStack(material, amount, ChatColor.GREEN + "" + ChatColor.BOLD + "Food" + StringUtils.fancyTierString(tier)).addLore("", ChatColor.GOLD + "Food Bars Filled: " + ChatColor.BLUE + foodheal, ChatColor.GOLD + "Saturation: " + ChatColor.BLUE + nourishment, ChatColor.GOLD + "Amount: " + ChatColor.BLUE + amount, "", ChatColor.GOLD + "Price: " + ChatColor.BLUE + (amount * priceperunit));
     }
 }

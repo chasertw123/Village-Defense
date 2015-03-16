@@ -24,13 +24,18 @@ public class BuildingBrewery extends Building {
         setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Brewery" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Brewery" + getTier() + ".schematic"), this, true);
 
     }
 
     @Override
     public void buildFirstTier(Main plugin) {
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Brewery" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Brewery" + getTier() + ".schematic"), this, false);
+    }
+
+    @Override
+    public int costToUpgrade(int tier) {
+        return tier == 1 ? 0 : ((tier - 1) * 1500) - 500;
     }
 }

@@ -1,6 +1,7 @@
 package me.chasertw123.villagedefense.game.building;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
@@ -10,6 +11,8 @@ import me.chasertw123.villagedefense.utils.SchematicUtil;
 import org.bukkit.Location;
 
 public class BuildingChurch extends Building {
+
+    private ArrayList<Location> alters;
 
     public BuildingChurch(Location center) throws BuildingCreationException {
         super(BuildingType.CHURCH, center, new VillagerChurch(center), 1);
@@ -24,13 +27,33 @@ public class BuildingChurch extends Building {
         setTier(getTier() + 1);
 
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Church" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Church" + getTier() + ".schematic"), this, true);
 
     }
 
     @Override
     public void buildFirstTier(Main plugin) {
         // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Church" + getTier() + ".schematic"), this);
+        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Church" + getTier() + ".schematic"), this, false);
     }
+
+    @Override
+    public int costToUpgrade(int tier) {
+        return tier == 1 ? 0 : ((tier - 1) * 1500) - 500;
+    }
+
+    /**
+     * @return the alters
+     */
+    public ArrayList<Location> getAlters() {
+        return alters;
+    }
+
+    /**
+     * @param alters the alters to set
+     */
+    public void setAlters(ArrayList<Location> alters) {
+        this.alters = alters;
+    }
+
 }
