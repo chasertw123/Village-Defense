@@ -33,6 +33,14 @@ public class LobbyTimer extends BukkitRunnable {
     @Override
     public void run() {
 
+        if (plugin.getGame().getPlayers().size() < plugin.getGame().getPlayers().size()) {
+
+            for (GamePlayer gp : plugin.getGame().getPlayers())
+                gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "Game cancelled due to lack of players!");
+
+            this.cancel();
+        }
+
         if (timeLeft == 0) {
             cancel();
 
