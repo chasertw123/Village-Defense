@@ -6,6 +6,7 @@ import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
+import me.chasertw123.villagedefense.utils.ItemStackUtils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -38,7 +39,7 @@ public class PlayerInteractEntity implements Listener {
 
                 if (role.getName().equals("Healer")) {
 
-                    if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(role.getPrimaryAbility().getItemStack().getItemMeta().getDisplayName())) {
+                    if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                         if (!role.getPrimaryAbility().canUseAbility()) {
                             gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
@@ -62,6 +63,28 @@ public class PlayerInteractEntity implements Listener {
                         }
 
                         role.getPrimaryAbility().play(plugin, gp.getPlayer(), healed);
+                        return;
+                    }
+
+                    else if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+
+                        if (!role.getSecondaryAbility().canUseAbility()) {
+                            gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getSecondaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
+                            return;
+                        }
+
+                        if (gp.getMana() < role.getPrimaryAbility().getManaCost()) {
+                            gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "Not enough mana!");
+                            gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
+                            return;
+                        }
+
+                        if (!(event.getRightClicked() instanceof Player))
+                            return;
+
+                        Player shielded = (Player) event.getRightClicked();
+
+                        role.getSecondaryAbility().play(plugin, event.getPlayer(), shielded);
                         return;
                     }
                 }

@@ -207,7 +207,7 @@ public abstract class Enemy {
 
         entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, random.nextInt(maxDroppedGold) + 1))));
 
-        entity.setCustomName((boss ? ChatColor.YELLOW + "[" + ChatColor.BLUE + "BOSS" + ChatColor.YELLOW + "]" : "") + customName);
+        entity.setCustomName((boss ? ChatColor.YELLOW + "[" + ChatColor.BLUE + "BOSS" + ChatColor.YELLOW + "] " + ChatColor.RESET : "") + customName);
         entity.setCustomNameVisible(true);
 
         if (armor != null)

@@ -59,6 +59,23 @@ public class PlayerInteract implements Listener {
                             role.getPrimaryAbility().play(plugin, gp.getPlayer(), gp.getPlayer());
                             return;
                         }
+
+                        else if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+
+                            if (!role.getSecondaryAbility().canUseAbility()) {
+                                gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getSecondaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
+                                return;
+                            }
+
+                            if (gp.getMana() < role.getPrimaryAbility().getManaCost()) {
+                                gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "Not enough mana!");
+                                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
+                                return;
+                            }
+
+                            role.getSecondaryAbility().play(plugin, event.getPlayer(), event.getPlayer());
+                            return;
+                        }
                     }
                 }
             }

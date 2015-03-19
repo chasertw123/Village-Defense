@@ -62,25 +62,27 @@ public class Heal extends Ability {
         double radius = 5;
 
         for (double y = 5; y >= 0; y -= 0.007) {
+
             radius = y / 3;
+
             double x = radius * Math.cos(3 * y);
             double z = radius * Math.sin(3 * y);
-
             double y2 = 5 - y;
 
             Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
-            loc.getWorld().spigot().playEffect(loc2, Effect.HAPPY_VILLAGER, 0, 0, 0, 0, 0, 0, 1, 64);
+            loc.getWorld().spigot().playEffect(loc2, Effect.HAPPY_VILLAGER, 0, 0, 0, 0, 0, 0, 1, 32);
         }
 
         for (double y = 5; y >= 0; y -= 0.007) {
+
             radius = y / 3;
+
             double x = -(radius * Math.cos(3 * y));
             double z = -(radius * Math.sin(3 * y));
-
             double y2 = 5 - y;
 
             Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
-            loc.getWorld().spigot().playEffect(loc2, Effect.HAPPY_VILLAGER, 0, 0, 0, 0, 0, 0, 1, 64);
+            loc.getWorld().spigot().playEffect(loc2, Effect.HAPPY_VILLAGER, 0, 0, 0, 0, 0, 0, 1, 32);
         }
 
     }
