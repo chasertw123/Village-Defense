@@ -5,6 +5,7 @@ import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.game.GamePlayer;
 
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -35,7 +36,7 @@ public class Heal extends Ability {
             health = healed.getMaxHealth();
 
         healed.setHealth(health);
-        healed.getLocation().getWorld().spigot().playEffect(healed.getLocation().add(0.0D, 1.8D, 0.0D), Effect.HEART, 0, 0, 0.5F, 1F, 0.5F, 1F, 30, 64);
+        this.runHelix(healed);
 
         GamePlayer gp = plugin.getGame().getGamePlayer(healer);
 
@@ -53,5 +54,34 @@ public class Heal extends Ability {
             healer.playSound(healer.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
             healed.playSound(healed.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
         }
+    }
+
+    private void runHelix(Player p) {
+
+        Location loc = p.getLocation();
+        double radius = 5;
+
+        for (double y = 5; y >= 0; y -= 0.007) {
+            radius = y / 3;
+            double x = radius * Math.cos(3 * y);
+            double z = radius * Math.sin(3 * y);
+
+            double y2 = 5 - y;
+
+            Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
+            loc.getWorld().spigot().playEffect(loc2, Effect.HAPPY_VILLAGER, 0, 0, 0, 0, 0, 0, 1, 64);
+        }
+
+        for (double y = 5; y >= 0; y -= 0.007) {
+            radius = y / 3;
+            double x = -(radius * Math.cos(3 * y));
+            double z = -(radius * Math.sin(3 * y));
+
+            double y2 = 5 - y;
+
+            Location loc2 = new Location(loc.getWorld(), loc.getX() + x, loc.getY() + y2, loc.getZ() + z);
+            loc.getWorld().spigot().playEffect(loc2, Effect.HAPPY_VILLAGER, 0, 0, 0, 0, 0, 0, 1, 64);
+        }
+
     }
 }

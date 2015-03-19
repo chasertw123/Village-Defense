@@ -4,6 +4,7 @@ import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.role.Role;
+import me.chasertw123.villagedefense.utils.ItemStackUtils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -37,7 +38,7 @@ public class PlayerInteract implements Listener {
 
                     if (role.getName().equals("Healer")) {
 
-                        if (event.getPlayer().getItemInHand().getItemMeta().getDisplayName().equals(role.getPrimaryAbility().getItemStack().getItemMeta().getDisplayName())) {
+                        if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                             if (!role.getPrimaryAbility().canUseAbility()) {
                                 gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
