@@ -44,6 +44,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                     sender.sendMessage(plugin.getPrefix() + "/vd arena removeenemyspawn");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setbuilding");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setspawn");
+                    sender.sendMessage(plugin.getPrefix() + "/vd arena setlobby");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setroleselect");
                 }
 
@@ -152,6 +153,20 @@ public class VillageDefenseCmd implements CommandExecutor {
                         plugin.getArenaConfig().set("spawn", LocationUtils.serializeLoc(((Player) sender).getLocation()));
                         plugin.saveArenaConfig();
                         sender.sendMessage(plugin.getPrefix() + "You have set spawn to your location.");
+                    }
+                }
+
+                else if (args[1].equalsIgnoreCase("setlobby")) {
+
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
+                        return true;
+                    }
+
+                    else {
+                        plugin.getArenaConfig().set("lobby", LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                        plugin.saveArenaConfig();
+                        sender.sendMessage(plugin.getPrefix() + "You have set lobby to your location.");
                     }
                 }
 

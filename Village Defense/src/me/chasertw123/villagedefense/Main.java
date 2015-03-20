@@ -132,11 +132,14 @@ public class Main extends JavaPlugin implements Listener {
                 for (String s : arenayml.getStringList("enemyspawns"))
                     enemySpawnPoints.add(LocationUtils.deserializeLoc(s));
 
-            Location spawnLocation = null;
+            Location spawnLocation = null, lobbyLocation = null;
             if (arenayml.contains("spawn"))
                 spawnLocation = LocationUtils.deserializeLoc(arenayml.getString("spawn"));
 
-            Arena a = new Arena(buildings, enemySpawnPoints, spawnLocation, this);
+            if (arenayml.contains("lobby"))
+                lobbyLocation = LocationUtils.deserializeLoc(arenayml.getString("lobby"));
+
+            Arena a = new Arena(buildings, enemySpawnPoints, spawnLocation, lobbyLocation, this);
             game = new Game(a, this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0);
 
         } catch (VillageDefenseException e) {

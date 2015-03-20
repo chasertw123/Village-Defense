@@ -21,7 +21,7 @@ public abstract class Enemy {
 
     private EntityType entityType;
     private String customName = "";
-    private boolean boss, baby;
+    private boolean boss, baby = false, villager = false;
     private int minDroppedGold, maxDroppedGold, difficulty;
 
     private ItemStack weapon = null;
@@ -120,6 +120,20 @@ public abstract class Enemy {
      */
     public void setBaby(boolean baby) {
         this.baby = baby;
+    }
+
+    /**
+     * @return the villager
+     */
+    public boolean isZombieVillager() {
+        return villager;
+    }
+
+    /**
+     * @param villager the villager to set
+     */
+    public void setZombieVillager(boolean villager) {
+        this.villager = villager;
     }
 
     /**
@@ -226,8 +240,10 @@ public abstract class Enemy {
             for (PotionEffect effect : potionEffects)
                 entity.addPotionEffect(effect);
 
-        if (entity instanceof Zombie)
+        if (entity instanceof Zombie) {
             ((Zombie) entity).setBaby(baby);
+            ((Zombie) entity).setVillager(villager);
+        }
 
         else if (entity instanceof PigZombie)
             ((PigZombie) entity).setBaby(baby);

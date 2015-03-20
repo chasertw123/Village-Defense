@@ -13,14 +13,14 @@ public class Arena {
 
     private ArrayList<Building> buildings;
     private ArrayList<Location> enemySpawnPoints;
-    private Location centerSpawnLocation;
+    private Location centerSpawnLocation, lobbySpawnLocation;
 
     /**
      * @param buildings List of buildings
      * @param spawnLocation Center of player spawns
      * @throws ArenaCreationException When arena failed to create
      */
-    public Arena(ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Main plugin) throws ArenaCreationException {
+    public Arena(ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Location lobbyLocation, Main plugin) throws ArenaCreationException {
 
         Boolean[] bools = new Boolean[Building.buildingClasses.size()];
         Arrays.fill(bools, false);
@@ -43,9 +43,13 @@ public class Arena {
         if (spawnLocation == null)
             throw new ArenaCreationException("The arena spawn location cannot be null");
 
+        if (lobbyLocation == null)
+            throw new ArenaCreationException("The arena lobby spawn location cannot be null");
+
         if (enemySpawnPoints.size() < 1)
             throw new ArenaCreationException("There needs to be atleast 1 enemy spawnpoint set");
 
+        this.setLobbySpawnLocation(spawnLocation);
         this.setCenterSpawnLocation(spawnLocation);
         this.setBuildings(buildings);
         this.setEnemySpawnPoints(enemySpawnPoints);
@@ -101,5 +105,19 @@ public class Arena {
      */
     public void setEnemySpawnPoints(ArrayList<Location> enemySpawnPoints) {
         this.enemySpawnPoints = enemySpawnPoints;
+    }
+
+    /**
+     * @return the {@link Location} of lobbySpawnLocation
+     */
+    public Location getLobbySpawnLocation() {
+        return lobbySpawnLocation;
+    }
+
+    /**
+     * @param lobbySpawnLocation the {@link Location} to set
+     */
+    public void setLobbySpawnLocation(Location lobbySpawnLocation) {
+        this.lobbySpawnLocation = lobbySpawnLocation;
     }
 }
