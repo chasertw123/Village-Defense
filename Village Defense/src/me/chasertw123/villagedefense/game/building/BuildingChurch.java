@@ -9,13 +9,15 @@ import me.chasertw123.villagedefense.game.villager.VillagerChurch;
 import me.chasertw123.villagedefense.utils.SchematicUtil;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class BuildingChurch extends Building {
 
     private ArrayList<Location> alters;
 
     public BuildingChurch(Location center) throws BuildingCreationException {
-        super(BuildingType.CHURCH, center, new VillagerChurch(center), 1);
+        super(BuildingType.CHURCH, center, new VillagerChurch(center), 1, new ItemStack(Material.ENCHANTED_BOOK), "This building allows you to recieve random buffs or may even hurt you. The higher level the building the better chance for high level buffs.");
     }
 
     @Override

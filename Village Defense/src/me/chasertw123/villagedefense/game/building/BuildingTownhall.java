@@ -8,11 +8,13 @@ import me.chasertw123.villagedefense.game.villager.VillagerMayor;
 import me.chasertw123.villagedefense.utils.SchematicUtil;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class BuildingTownhall extends Building {
 
     public BuildingTownhall(Location center) throws BuildingCreationException {
-        super(BuildingType.TOWNHALL, center, new VillagerMayor(center), 1);
+        super(BuildingType.TOWNHALL, center, new VillagerMayor(center), 1, new ItemStack(Material.NETHER_STAR), "This building allows you to upgrade all the buildings in the village including this one. This higher level this building the higher you can upgrade others.");
     }
 
     @Override

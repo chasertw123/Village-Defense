@@ -8,11 +8,13 @@ import me.chasertw123.villagedefense.game.villager.VillagerFarmer;
 import me.chasertw123.villagedefense.utils.SchematicUtil;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class BuildingFarmer extends Building {
 
     public BuildingFarmer(Location center) throws BuildingCreationException {
-        super(BuildingType.FARMER, center, new VillagerFarmer(center), 3);
+        super(BuildingType.FARMER, center, new VillagerFarmer(center), 3, new ItemStack(Material.COOKIE), "This building supplies you with food to keep you regenerating hearts! The higher level the building the better the food!");
     }
 
     @Override

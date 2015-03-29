@@ -8,11 +8,13 @@ import me.chasertw123.villagedefense.game.villager.VillagerArmorsmith;
 import me.chasertw123.villagedefense.utils.SchematicUtil;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 public class BuildingArmorsmith extends Building {
 
     public BuildingArmorsmith(Location center) throws BuildingCreationException {
-        super(BuildingType.ARMORSMITH, center, new VillagerArmorsmith(center), 1);
+        super(BuildingType.ARMORSMITH, center, new VillagerArmorsmith(center), 1, new ItemStack(Material.IRON_CHESTPLATE), "This building allows you and your teammates to upgrade your armor so you can absorb more damage! The higher level the building the stringer armor you can buy.");
     }
 
     @Override

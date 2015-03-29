@@ -181,16 +181,17 @@ public class Main extends JavaPlugin implements Listener {
         for (Player p : Bukkit.getOnlinePlayers())
             this.getStatsManager().saveStats(p);
 
-        for (Building b : game.getArena().getBuildings()) {
-            b.getVillager().getLoc().getChunk().load();
-            if (b.getVillager().getVil() != null) {
-                for (Entity e : b.getVillager().getVil().getNearbyEntities(1, 1, 1))
-                    if (e.getPassenger() == b.getVillager().getVil())
-                        e.remove();
+        if (game.getArena() != null)
+            for (Building b : game.getArena().getBuildings()) {
+                b.getVillager().getLoc().getChunk().load();
+                if (b.getVillager().getVil() != null) {
+                    for (Entity e : b.getVillager().getVil().getNearbyEntities(1, 1, 1))
+                        if (e.getPassenger() == b.getVillager().getVil())
+                            e.remove();
 
-                b.getVillager().getVil().remove();
+                    b.getVillager().getVil().remove();
+                }
             }
-        }
 
         for (RoleSelect rs : RoleSelect.roleSelectObjects) {
             rs.getSpawnLocation().getChunk().load();

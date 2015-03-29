@@ -33,7 +33,7 @@ public class SchematicUtil {
 
             if (display)
                 b.getCenter().getWorld().playSound(b.getCenter(), Sound.ANVIL_USE, 1F, 1F);
-
+            // You could first destroy the old one by just getting how big it is 
             for (int x = 0; x < cc.getWidth(); x++)
                 for (int y = 0; y < cc.getHeight(); y++)
                     for (int z = 0; z < cc.getLength(); z++) {

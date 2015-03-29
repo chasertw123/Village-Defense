@@ -3,6 +3,7 @@ package me.chasertw123.villagedefense.game.villager;
 import java.util.Random;
 
 import me.chasertw123.villagedefense.game.GamePlayer;
+import me.chasertw123.villagedefense.game.building.Building;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -47,9 +48,51 @@ public class VillagerMayor extends Villager {
     @Override
     public Inventory makeInventory(GamePlayer player) {
 
-        Inventory inv = Bukkit.createInventory(null, 9, ChatColor.UNDERLINE + "Building Upgrade Menu");
+        int total = Building.buildingObjects.size();
+        int totalRows = (int) Math.ceil(total / 4.0);
+
+        Inventory inv = Bukkit.createInventory(null, totalRows * 9, ChatColor.UNDERLINE + "Building Upgrade Menu");
+
+        int count = 0;
+        for (Building b : Building.buildingObjects) {
+
+            int currentRow = (int) Math.floor(count / 4.0);
+            int collumn = 0;
+
+            if (currentRow == totalRows) {
+
+                if (total % 4 == 0)
+                    collumn = (count % 4) * 2 + 1;
+
+                else if (total % 4 == 1)
+                    collumn = 5;
+
+                else if (total % 4 == 2)
+                    if (count % 4 == 1)
+                        collumn = 4;
+                    else
+                        collumn = 6;
+
+                else if (count % 4 == 1)
+                    collumn = 3;
+
+                else if (count % 4 == 1)
+                    collumn = 5;
+
+                else
+                    collumn = 7;
+
+            } else {
+                collumn = (count % 4) * 2 + 1;
+            }
+
+            int slot = currentRow * 9 + collumn;
+
+            inv.setItem(slot, b.getItemStack());
+
+            count++;
+        }
 
         return inv;
     }
-
 }

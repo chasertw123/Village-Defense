@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
 import me.chasertw123.villagedefense.game.villager.Villager;
+import me.chasertw123.villagedefense.utils.FancyItemStack;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class Building {
 
@@ -15,21 +18,35 @@ public abstract class Building {
     private Location center;
     private Villager villager;
     private String name;
+    private ItemStack itemStack;
 
     public static ArrayList<Class<? extends Building>> buildingClasses = new ArrayList<Class<? extends Building>>();
+    public static ArrayList<Building> buildingObjects = new ArrayList<Building>();
 
-    public Building(BuildingType type, Location center, Villager villager, int maxTier) throws BuildingCreationException {
+    public Building(BuildingType type, Location center, Villager villager, int maxTier, ItemStack itemStack, String description) throws BuildingCreationException {
 
         if (maxTier < 1)
             throw new BuildingCreationException("A building's max tier is lower than one!");
+
+        if (!this.getClass().getSimpleName().startsWith("Building"))
+            throw new BuildingCreationException("A building's class name is not setup properly!");
 
         this.type = type;
         this.center = center;
         this.villager = villager;
         this.maxTier = maxTier;
-        this.name = this.getClass().getSimpleName();
+        this.name = this.getClass().getSimpleName().replaceAll("Building", "") + " Building";
+
+        FancyItemStack is = new FancyItemStack(itemStack);
+
+        is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + name);
+        is.addFancyLore(description, ChatColor.WHITE.toString());
+        is.addLore("", ChatColor.BLUE + "Level: " + ChatColor.GOLD + tier + "/" + maxTier, ChatColor.BLUE + "Cost to Upgrade: " + ChatColor.GOLD + costToUpgrade(tier + 1));
+
+        this.itemStack = is;
 
         villager.setBuilding(this);
+        buildingObjects.add(this);
     }
 
     /**
@@ -110,6 +127,15 @@ public abstract class Building {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Get the {@link ItemStack} representing the {@link Building}
+     * 
+     * @return {@link ItemStack} representing the {@link Building}
+     */
+    public ItemStack getItemStack() {
+        return itemStack;
     }
 
     /**
