@@ -18,6 +18,6 @@ public class BabyTerror extends Enemy {
         super.setBaby(true);
         super.setArmorContents(new FancyItemStack(Material.GOLD_HELMET).addUnsafeEnchant(Enchantment.DURABILITY, 20), new FancyItemStack(Material.GOLD_HELMET).addUnsafeEnchant(Enchantment.DURABILITY, 20), new FancyItemStack(Material.GOLD_HELMET).addUnsafeEnchant(Enchantment.DURABILITY, 20), new FancyItemStack(Material.GOLD_HELMET).addUnsafeEnchant(Enchantment.DURABILITY, 20));
         super.setWeaponItemStack(new FancyItemStack(Material.IRON_SWORD).addUnsafeEnchant(Enchantment.DAMAGE_ALL, 3).addUnsafeEnchant(Enchantment.KNOCKBACK, 5));
-        super.setPotionEffects(new PotionEffect[] { new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 7), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 2) });
+        super.setPotionEffects(new PotionEffect[] { new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 4), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 2) });
     }
 }

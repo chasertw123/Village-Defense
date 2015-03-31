@@ -9,7 +9,7 @@ public class Tank extends Enemy {
     public Tank() {
         super(EntityType.IRON_GOLEM, 30, 8, 20);
 
-        super.setPotionEffects(new PotionEffect[] { new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1), new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 1) });
+        super.setPotionEffects(new PotionEffect[] { new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1), new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 1) });
     }
 
 }

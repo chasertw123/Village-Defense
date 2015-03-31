@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 public class BuildingWeaponsmith extends Building {
 
     public BuildingWeaponsmith(Location center) throws BuildingCreationException {
-        super(BuildingType.WEAPONSMITH, center, new VillagerWeaponsmith(center), 1, new ItemStack(Material.IRON_SWORD), "This building allows you and your teammates to upgrade your weapons so they deal more damage! The higher level the building the stronger the weapons you can buy.");
+        super(BuildingType.WEAPONSMITH, center, new VillagerWeaponsmith(center), 1, new ItemStack(Material.BOW), "This building allows you and your teammates to upgrade your weapons so they deal more damage! The higher level the building the stronger the weapons you can buy.");
     }
 
     @Override

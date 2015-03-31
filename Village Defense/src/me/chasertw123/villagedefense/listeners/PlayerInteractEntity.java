@@ -97,7 +97,7 @@ public class PlayerInteractEntity implements Listener {
             if (event.getRightClicked() == b.getVillager().getVil()) {
 
                 for (GamePlayer gp : plugin.getGame().getPlayers())
-                    if (gp.isEqualToPlayer(event.getPlayer())) {
+                    if (gp.isEqualToPlayer(event.getPlayer()) && gp.getRole() != null) {
                         gp.getPlayer().openInventory(b.getVillager().makeInventory(gp));
                     }
 

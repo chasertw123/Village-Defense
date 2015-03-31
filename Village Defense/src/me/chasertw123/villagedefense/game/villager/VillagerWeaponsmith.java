@@ -45,11 +45,11 @@ public class VillagerWeaponsmith extends Villager {
 
         if (player.getToolTier(ToolType.WEAPON) >= player.getRole().getMaxTier(ToolType.WEAPON))
             for (int slot = 0; slot < inv.getSize(); slot++)
-                inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Your weapon has reached it's max level!"));
+                inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.YELLOW + "[" + ChatColor.BLUE + "Weapon Level Maxed!" + ChatColor.YELLOW + "]"));
 
         else if (player.getRole().getBuildingTier(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON) + 1) < getBuilding().getTier())
             for (int slot = 0; slot < inv.getSize(); slot++)
-                inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Building level too low to upgrade your weapon!"));
+                inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.YELLOW + "[" + ChatColor.BLUE + "Building Level Too Low!" + ChatColor.YELLOW + "]"));
 
         else {
 

@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.chasertw123.villagedefense.Main;
+import me.chasertw123.villagedefense.game.GamePlayer;
+import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.utils.LocationUtils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -39,18 +42,19 @@ public class VillageDefenseCmd implements CommandExecutor {
                     return true;
                 }
 
-                else if (args.length == 1 || args[1].equalsIgnoreCase("help")) {
+                if (args.length == 1 || args[1].equalsIgnoreCase("help")) {
                     sender.sendMessage(plugin.getPrefix() + "/vd arena addenemyspawn");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena removeenemyspawn");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setbuilding");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setspawn");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setlobby");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setroleselect");
+                    return true;
                 }
 
                 else if (args[1].equalsIgnoreCase("addenemyspawn")) {
 
-                    if (args.length == 2) {
+                    if (args.length != 2) {
                         sender.sendMessage(plugin.getPrefix() + "/vd arena addenemyspawn");
                         return true;
                     }
@@ -73,7 +77,7 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("removeenemyspawn")) {
 
-                    if (args.length == 2) {
+                    if (args.length != 3) {
                         sender.sendMessage(plugin.getPrefix() + "/vd arena removeenemyspawn <id>");
                         return true;
                     }
@@ -105,7 +109,7 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("setbuilding")) {
 
-                    if (args.length == 2) {
+                    if (args.length != 3) {
                         sender.sendMessage(plugin.getPrefix() + "/vd arena setbuilding <building>");
                         String s = "";
 
@@ -144,6 +148,11 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("setspawn")) {
 
+                    if (args.length != 2) {
+                        sender.sendMessage(plugin.getPrefix() + "/vd setspawn");
+                        return true;
+                    }
+
                     if (!(sender instanceof Player)) {
                         sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
                         return true;
@@ -157,6 +166,10 @@ public class VillageDefenseCmd implements CommandExecutor {
                 }
 
                 else if (args[1].equalsIgnoreCase("setlobby")) {
+
+                    if (args.length != 2) {
+                        sender.sendMessage(plugin.getPrefix() + "/vd setlobby");
+                    }
 
                     if (!(sender instanceof Player)) {
                         sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
@@ -172,7 +185,12 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("setroleselect")) {
 
-                    if (args.length == 2) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
+                        return true;
+                    }
+
+                    if (args.length != 3) {
 
                         sender.sendMessage(plugin.getPrefix() + "/vd arena setroleselect <role>");
                         String s = "";
@@ -188,11 +206,6 @@ public class VillageDefenseCmd implements CommandExecutor {
                             }
                         }
                         sender.sendMessage(plugin.getPrefix() + "Available roles: " + s);
-                        return true;
-                    }
-
-                    else if (!(sender instanceof Player)) {
-                        sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
                         return true;
                     }
 
@@ -213,12 +226,16 @@ public class VillageDefenseCmd implements CommandExecutor {
                             } catch (Exception e) {
                             }
                         }
+
                         sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "Role not found!");
+                        return true;
                     }
                 }
 
                 else {
+
                     sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "Unknown subcommand");
+                    return true;
                 }
 
             }
@@ -243,19 +260,56 @@ public class VillageDefenseCmd implements CommandExecutor {
                 }
 
                 else {
-                    for (Class<? extends Role> role : Role.roleClasses.keySet()) {
-                        try {
-                            Role r = role.newInstance();
 
-                            if (r.getName().equalsIgnoreCase(args[1])) {
-                                // TODO: set role
-                                return true;
-                            }
-                        } catch (Exception e) {
+                    if (!(sender instanceof Player)) {
+                        sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
+                        return true;
+                    }
+
+                    if (plugin.getGame().getGameState() == GameState.LOBBY || plugin.getGame().getGameState() == GameState.STARTING) {
+
+                        GamePlayer gp = plugin.getGame().getGamePlayer(((Player) sender));
+
+                        if (gp == null) {
+                            sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "An error has occured!");
+                            return true;
                         }
 
+                        for (Class<? extends Role> r : Role.roleClasses.keySet()) {
+
+                            try {
+
+                                Role role = r.newInstance();
+
+                                if (!args[1].equalsIgnoreCase(role.getName()))
+                                    continue;
+
+                                if (gp.getRole() == null || !gp.getRole().getName().equals(role.getName())) {
+                                    gp.setRole(role);
+                                    gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
+                                    gp.getPlayer().sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have selected the " + ChatColor.BLUE + role.getName() + ChatColor.YELLOW + " role!");
+                                    return true;
+                                }
+
+                                else {
+                                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You already have the role " + ChatColor.BLUE + role.getName() + ChatColor.YELLOW + " selected!");
+                                    gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CREEPER_HISS, 1F, 1F);
+                                    return true;
+                                }
+
+                            } catch (Exception e) {
+                            }
+
+                        }
                     }
+
+                    else {
+                        sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "You cannot change your role during the game!");
+                        return true;
+                    }
+
                     sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "Role not found!");
+                    return true;
                 }
 
             }

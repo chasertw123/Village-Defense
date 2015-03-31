@@ -4,6 +4,7 @@ import java.util.Random;
 
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.building.Building;
+import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -88,7 +89,19 @@ public class VillagerMayor extends Villager {
 
             int slot = currentRow * 9 + collumn;
 
-            inv.setItem(slot, b.getItemStack());
+            FancyItemStack is = new FancyItemStack(b.getItemStack());
+
+            if (b.getTier() != b.getMaxTier()) {
+                is.addLore(ChatColor.BLUE + "Cost to Upgrade: " + ChatColor.GOLD + b.costToUpgrade(b.getTier() + 1), "");
+
+                if (b.getTier() >= this.getBuilding().getTier() + 1)
+                    is.addLore(ChatColor.RED + "Not Upgrabeable");
+
+                else
+                    is.addLore(ChatColor.GREEN + "Upgradeable");
+            }
+
+            inv.setItem(slot, is);
 
             count++;
         }

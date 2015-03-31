@@ -17,7 +17,7 @@ public abstract class Building {
     private BuildingType type;
     private Location center;
     private Villager villager;
-    private String name;
+    private String name, description;
     private ItemStack itemStack;
 
     public static ArrayList<Class<? extends Building>> buildingClasses = new ArrayList<Class<? extends Building>>();
@@ -36,14 +36,8 @@ public abstract class Building {
         this.villager = villager;
         this.maxTier = maxTier;
         this.name = this.getClass().getSimpleName().replaceAll("Building", "") + " Building";
-
-        FancyItemStack is = new FancyItemStack(itemStack);
-
-        is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + name);
-        is.addFancyLore(description, ChatColor.WHITE.toString());
-        is.addLore("", ChatColor.BLUE + "Level: " + ChatColor.GOLD + tier + "/" + maxTier, ChatColor.BLUE + "Cost to Upgrade: " + ChatColor.GOLD + costToUpgrade(tier + 1));
-
-        this.itemStack = is;
+        this.description = description;
+        this.itemStack = itemStack;
 
         villager.setBuilding(this);
         buildingObjects.add(this);
@@ -135,7 +129,15 @@ public abstract class Building {
      * @return {@link ItemStack} representing the {@link Building}
      */
     public ItemStack getItemStack() {
-        return itemStack;
+
+        FancyItemStack is = new FancyItemStack(itemStack);
+
+        is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + name);
+
+        is.addFancyLore(description, ChatColor.WHITE.toString());
+        is.addLore("", ChatColor.BLUE + "Level: " + ChatColor.GOLD + tier + "/" + maxTier);
+
+        return is;
     }
 
     /**
