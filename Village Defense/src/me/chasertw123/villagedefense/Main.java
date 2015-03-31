@@ -42,6 +42,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
 
+    /* Notes
+     * 
+     * -=- Achievements -=-
+     * 
+     * Achievement Ideas
+     * - Beta Tester
+     * 
+     * Problem: How to store achievements over MySQL/FlatFile and effective
+     */
+
     private final String prefix = ChatColor.WHITE + "[" + ChatColor.GREEN + "VD" + ChatColor.WHITE + "]" + ChatColor.RESET + " ";
 
     private FileConfiguration arenayml;
