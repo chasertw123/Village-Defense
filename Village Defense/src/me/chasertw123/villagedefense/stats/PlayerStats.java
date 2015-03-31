@@ -1,10 +1,13 @@
 package me.chasertw123.villagedefense.stats;
 
+import java.util.HashMap;
+
 public class PlayerStats {
 
     private int mobKills, deaths, gamesPlayed, wavesPlayed, wavesWon, wavesLost, totalGoldEarned, totalGoldSpent;
+    private HashMap<String, Boolean> achievements;
 
-    public PlayerStats(int mobKills, int deaths, int gamesPlayed, int wavesPlayed, int wavesWon, int wavesLost, int totalGoldEarned, int totalGoldSpent) {
+    public PlayerStats(int mobKills, int deaths, int gamesPlayed, int wavesPlayed, int wavesWon, int wavesLost, int totalGoldEarned, int totalGoldSpent, HashMap<String, Boolean> achievements) {
         super();
         this.mobKills = mobKills;
         this.deaths = deaths;
@@ -14,6 +17,7 @@ public class PlayerStats {
         this.wavesLost = wavesLost;
         this.totalGoldEarned = totalGoldEarned;
         this.totalGoldSpent = totalGoldSpent;
+        this.achievements = achievements;
     }
 
     public int getMobKills() {
@@ -78,6 +82,14 @@ public class PlayerStats {
 
     public void setTotalGoldSpent(int totalGoldSpent) {
         this.totalGoldSpent = totalGoldSpent;
+    }
+
+    public HashMap<String, Boolean> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(HashMap<String, Boolean> achievements) {
+        this.achievements = achievements;
     }
 
     public int getStat(Stat stat) {

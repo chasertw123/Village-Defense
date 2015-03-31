@@ -1,5 +1,5 @@
 name: Village Defense
-version: 0.1
+version: 1.0 Beta
 depend: [WorldEdit]
 
 main: me.chasertw123.villagedefense.Main

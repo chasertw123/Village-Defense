@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import me.chasertw123.villagedefense.Main;
+import me.chasertw123.villagedefense.stats.achievements.Achievement;
+import me.chasertw123.villagedefense.stats.achievements.Achievements;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -62,9 +64,12 @@ public class StatsManager {
                 Class.forName("com.mysql.jdbc.Driver");
 
                 Statement stmt = c.createStatement();
-                String sql = "CREATE TABLE IF NOT EXISTS villagedefense (uuid VARCHAR(36) not NULL, mobkills INT(64), deaths INT(64), gamesplayed INT(64), wavesplayed INT(64), waveswon INT(64), waveslost INT(64), totalgoldearned INT(64), totalgoldspent INT(64), PRIMARY KEY (uuid))";
+                String sql = "CREATE TABLE IF NOT EXISTS villagedefense (uuid CHAR(36) not NULL, mobkills INT(64), deaths INT(64), gamesplayed INT(64), wavesplayed INT(64), waveswon INT(64), waveslost INT(64), totalgoldearned INT(64), totalgoldspent INT(64), PRIMARY KEY (uuid))";
 
                 stmt.executeUpdate(sql);
+                stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `villagedefense_achievements` (uuid CHAR(36) not NULL, PRIMARY KEY (uuid))");
+
+                stmt.close();
 
             } catch (SQLException se) {
                 se.printStackTrace();
@@ -106,24 +111,110 @@ public class StatsManager {
         this.setStat(stat, this.getStat(stat, p) - 1, p);
     }
 
+    public void addAchievement(String id) {
+
+        if (plugin.usesSQL()) {
+
+            this.openConnection();
+
+            try {
+                System.out.println("Registering achievement " + id); // TODO; Remove debug line
+                c.createStatement().executeUpdate("ALTER TABLE `villagedefense_achievements` ADD " + id + " TINYINT(1)");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                this.closeConnection();
+            }
+        }
+    }
+
+    public void setAchievement(Achievement a, Player p, boolean has) {
+
+        stats.get(p.getUniqueId()).getAchievements().put(a.getId(), has);
+        if (!plugin.usesSQL()) {
+            statsyml.set(p.getUniqueId() + ".achievements." + a.getId(), has);
+
+            try {
+                statsyml.save(statsFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else {
+
+            this.openConnection();
+
+            try {
+                c.createStatement().executeUpdate("UPDATE `villagedefense_achievements` SET " + a.getId() + "=" + (has ? 1 : 0) + " WHERE uuid=" + p.getUniqueId().toString());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                this.closeConnection();
+            }
+        }
+    }
+
+    public boolean getAchievement(Achievement a, Player p) {
+        if (!stats.containsKey(p.getUniqueId()))
+            addStatsToMap(p);
+
+        return stats.get(p.getUniqueId()).getAchievements().get(a.getId());
+    }
+
+    public HashMap<String, Boolean> getAchievements(Player p) {
+        HashMap<String, Boolean> achievements = new HashMap<>();
+
+        if (plugin.usesSQL()) {
+            openConnection();
+
+            try {
+                PreparedStatement current = c.prepareStatement("SELECT * FROM `villagedefense_achievements` WHERE uuid=?;");
+
+                current.setString(1, p.getName());
+
+                ResultSet result = current.executeQuery();
+                result.next();
+
+                for (Achievement a : Achievements.ID_MAP.values())
+                    achievements.put(a.getId(), result.getBoolean(a.getId()));
+
+                current.close();
+                result.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                closeConnection();
+            }
+        } else
+            for (Achievement a : Achievements.ID_MAP.values()) {
+                if (statsyml.contains(p.getUniqueId() + ".achievements." + a.getId()))
+                    achievements.put(a.getId(), statsyml.getBoolean(p.getUniqueId() + ".achievements." + a.getId()));
+                else
+                    achievements.put(a.getId(), false);
+            }
+
+        return achievements;
+    }
+
     public void addStatsToMap(Player p) {
 
         if (!plugin.usesSQL()) {
 
             if (!statsyml.contains(p.getUniqueId().toString())) {
-                stats.put(p.getUniqueId(), new PlayerStats(0, 0, 0, 0, 0, 0, 0, 0));
+                stats.put(p.getUniqueId(), new PlayerStats(0, 0, 0, 0, 0, 0, 0, 0, new HashMap<String, Boolean>()));
                 this.saveStats(p);
                 return;
             }
 
             for (String key : statsyml.getConfigurationSection(p.getUniqueId().toString()).getKeys(false))
-                stats.put(p.getUniqueId(), new PlayerStats(statsyml.getInt(key + "." + Stat.MOBKILLS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.DEATHS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.GAMESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESWON.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESLOST.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDEARNED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDSPENT.toString().toLowerCase())));
+                stats.put(p.getUniqueId(), new PlayerStats(statsyml.getInt(key + "." + Stat.MOBKILLS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.DEATHS.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.GAMESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESPLAYED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESWON.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.WAVESLOST.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDEARNED.toString().toLowerCase()), statsyml.getInt(key + "." + Stat.TOTALGOLDSPENT.toString().toLowerCase()), getAchievements(p)));
         }
 
         else {
 
             if (!this.containsPlayer(p)) {
-                stats.put(p.getUniqueId(), new PlayerStats(0, 0, 0, 0, 0, 0, 0, 0));
+                stats.put(p.getUniqueId(), new PlayerStats(0, 0, 0, 0, 0, 0, 0, 0, new HashMap<String, Boolean>()));
                 this.saveStats(p);
                 return;
             }
@@ -160,7 +251,7 @@ public class StatsManager {
             for (int i = 0; i < s2.length; i++)
                 s2[i] = iterator.next().intValue();
 
-            stats.put(p.getUniqueId(), new PlayerStats(s2[0], s2[1], s2[2], s2[3], s2[4], s2[5], s2[6], s2[7]));
+            stats.put(p.getUniqueId(), new PlayerStats(s2[0], s2[1], s2[2], s2[3], s2[4], s2[5], s2[6], s2[7], getAchievements(p)));
         }
     }
 
@@ -169,6 +260,8 @@ public class StatsManager {
         if (!plugin.usesSQL()) {
             for (Stat stat : Stat.values())
                 statsyml.set(p.getUniqueId().toString() + "." + stat.toString().toLowerCase(), this.getStat(stat, p));
+            for (Achievement a : Achievements.ID_MAP.values())
+                statsyml.set(p.getUniqueId() + ".achievements." + a.getId(), stats.get(p.getUniqueId()).getAchievements().get(a.getId()));
 
             try {
                 statsyml.save(statsFile);
@@ -187,16 +280,33 @@ public class StatsManager {
 
             try {
 
+                String sets = "";
                 for (Stat stat : Stat.values()) {
-
-                    PreparedStatement stmt = c.prepareStatement("UPDATE `villagedefense` SET " + stat.toString().toLowerCase() + "=? WHERE uuid=?");
-
-                    stmt.setInt(1, this.getStat(stat, p));
-                    stmt.setString(2, p.getUniqueId().toString());
-                    stmt.executeUpdate();
-                    stmt.close();
+                    if (sets.equals(""))
+                        sets = stat.toString().toLowerCase() + "=" + this.getStat(stat, p);
+                    else
+                        sets += ", " + stat.toString().toLowerCase() + "=" + this.getStat(stat, p);
                 }
 
+                PreparedStatement stmt1 = c.prepareStatement("UPDATE `villagedefense` SET " + sets + " WHERE uuid=?");
+
+                stmt1.setString(1, p.getUniqueId().toString());
+                stmt1.executeUpdate();
+
+                String achievementSets = "";
+                for (Achievement a : Achievements.ID_MAP.values())
+                    if (achievementSets.equals(""))
+                        achievementSets = a.getId() + "=" + (this.getAchievement(a, p) ? 1 : 0);
+                    else
+                        achievementSets += ", " + a.getId() + "=" + (this.getAchievement(a, p) ? 1 : 0);
+
+                PreparedStatement stmt2 = c.prepareStatement("UPDATE `villagedefense_achievements` SET " + achievementSets + " WHERE uuid=?");
+
+                stmt2.setString(1, p.getUniqueId().toString());
+                stmt2.executeUpdate();
+
+                stmt1.close();
+                stmt2.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {

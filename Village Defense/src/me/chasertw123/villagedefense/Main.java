@@ -17,6 +17,7 @@ import me.chasertw123.villagedefense.game.enemy.Tank;
 import me.chasertw123.villagedefense.game.enemy.boss.BabyTerror;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
+import me.chasertw123.villagedefense.listeners.AchievementUnlock;
 import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
 import me.chasertw123.villagedefense.listeners.GameStart;
@@ -26,6 +27,7 @@ import me.chasertw123.villagedefense.listeners.PlayerInteractEntity;
 import me.chasertw123.villagedefense.listeners.PlayerJoin;
 import me.chasertw123.villagedefense.listeners.PlayerLogin;
 import me.chasertw123.villagedefense.stats.StatsManager;
+import me.chasertw123.villagedefense.stats.achievements.Achievements;
 import me.chasertw123.villagedefense.utils.LocationUtils;
 
 import org.bukkit.Bukkit;
@@ -42,7 +44,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
 
-    /* Notes
+    /* -=-=- Notes -=-=-
+     **********************************************************************************
      * 
      * -=- Achievements -=-
      * 
@@ -50,6 +53,22 @@ public class Main extends JavaPlugin implements Listener {
      * - Beta Tester
      * 
      * Problem: How to store achievements over MySQL/FlatFile and effective
+     * 
+     **********************************************************************************
+     * 
+     * -=- Multiple Maps -=-
+     * 
+     * Make it so player can vote on which map they play on
+     * 
+     * Problem: Game is currently designed for only one map
+     * 
+     **********************************************************************************
+     *
+     * -=- Complete Village -=-
+     * 
+     * Make listeners and inventories functional
+     *
+     **********************************************************************************
      */
 
     private final String prefix = ChatColor.WHITE + "[" + ChatColor.GREEN + "VD" + ChatColor.WHITE + "]" + ChatColor.RESET + " ";
@@ -74,6 +93,7 @@ public class Main extends JavaPlugin implements Listener {
 
         PluginManager pm = this.getServer().getPluginManager();
 
+        pm.registerEvents(new AchievementUnlock(this), this);
         pm.registerEvents(new EntityDamageByEntity(this), this);
         pm.registerEvents(new EntityTarget(this), this);
         pm.registerEvents(new GameStart(this), this);
@@ -167,6 +187,8 @@ public class Main extends JavaPlugin implements Listener {
         } catch (SecurityException e) {
             e.printStackTrace();
         }
+
+        new Achievements(this);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 

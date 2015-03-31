@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Spigot/Spigot/Spigot-API/target/spigot-api-1.8-R0.1-SNAPSHOT.jar" sourcepath="C:/Spigot/Bukkit/src/main/java/"/>
 	<classpathentry kind="lib" path="C:/Spigot/WorldEdit/target/worldedit-6.0.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Spigot/spigot-1.8.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
