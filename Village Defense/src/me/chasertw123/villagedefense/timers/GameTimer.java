@@ -10,12 +10,9 @@ import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.game.wave.Wave;
-import me.chasertw123.villagedefense.utils.ActionBarAPI;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
-import me.chasertw123.villagedefense.utils.Title;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -85,8 +82,8 @@ public class GameTimer extends BukkitRunnable {
             if (secondsTillNextWave == -1) {
                 secondsTillNextWave = plugin.getConfig().contains("timers.between-waves") ? plugin.getConfig().getInt("timers.between-waves") : 15;
 
-                for (GamePlayer gp : plugin.getGame().getPlayers())
-                    ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " seconds");
+                //for (GamePlayer gp : plugin.getGame().getPlayers())
+                //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " seconds");
 
                 return;
             }
@@ -102,9 +99,9 @@ public class GameTimer extends BukkitRunnable {
                 return;
             }
 
-            else if (secondsTillNextWave == 10 || secondsTillNextWave <= 5)
-                for (GamePlayer gp : plugin.getGame().getPlayers())
-                    ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " second" + ((secondsTillNextWave == 1) ? "" : "s"));
+            //else if (secondsTillNextWave == 10 || secondsTillNextWave <= 5)
+            //for (GamePlayer gp : plugin.getGame().getPlayers())
+            //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " second" + ((secondsTillNextWave == 1) ? "" : "s"));
 
             secondsTillNextWave--;
         }
@@ -121,13 +118,13 @@ public class GameTimer extends BukkitRunnable {
             e.printStackTrace();
         }
 
-        Title title = new Title(ChatColor.BLUE + "Wave " + wave.getWaveNumber(), "", 3, 5, 3);
+        //Title title = new Title(ChatColor.BLUE + "Wave " + wave.getWaveNumber(), "", 3, 5, 3);
 
-        if (wave.isBossWave())
-            title = new Title(ChatColor.BLUE + "Boss Wave", ChatColor.YELLOW + "(Wave " + wave.getWaveNumber() + ")", 3, 5, 3);
+        //if (wave.isBossWave())
+        //    title = new Title(ChatColor.BLUE + "Boss Wave", ChatColor.YELLOW + "(Wave " + wave.getWaveNumber() + ")", 3, 5, 3);
 
-        for (GamePlayer gp : plugin.getGame().getPlayers())
-            title.send(gp.getPlayer());
+        //for (GamePlayer gp : plugin.getGame().getPlayers())
+        //    title.send(gp.getPlayer());
 
     }
 }

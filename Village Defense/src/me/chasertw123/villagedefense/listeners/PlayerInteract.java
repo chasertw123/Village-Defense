@@ -36,9 +36,31 @@ public class PlayerInteract implements Listener {
                     if (role == null)
                         return;
 
+                    // Debug Ability Leveling
+                    if (event.getPlayer().isSneaking()) {
+
+                        if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack()) && role.getPrimaryAbility().getTier() <= role.getPrimaryAbility().getMaxTier()) {
+                            role.getPrimaryAbility().setTier(role.getPrimaryAbility().getTier() + 1);
+                            gp.getPlayer().getInventory().setItemInHand(role.getPrimaryAbility().getItemStack());
+                            gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getPrimaryAbility().getTier() + ChatColor.YELLOW + "!");
+                            return;
+                        }
+
+                        else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack()) && role.getSecondaryAbility().getTier() <= role.getSecondaryAbility().getMaxTier()) {
+                            role.getSecondaryAbility().setTier(role.getSecondaryAbility().getTier() + 1);
+                            gp.getPlayer().getInventory().setItemInHand(role.getSecondaryAbility().getItemStack());
+                            gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getSecondaryAbility().getTier() + ChatColor.YELLOW + "!");
+                            return;
+                        }
+
+                        // TODO: Add debug leveling to tertiary and ultra abilities
+
+                        return;
+                    }
+
                     if (role.getName().equals("Healer")) {
 
-                        if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+                        if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                             if (!role.getPrimaryAbility().canUseAbility()) {
                                 gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
@@ -60,7 +82,7 @@ public class PlayerInteract implements Listener {
                             return;
                         }
 
-                        else if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+                        else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
 
                             if (!role.getSecondaryAbility().canUseAbility()) {
                                 gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getSecondaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
@@ -73,7 +95,27 @@ public class PlayerInteract implements Listener {
                                 return;
                             }
 
-                            role.getSecondaryAbility().play(plugin, event.getPlayer(), event.getPlayer());
+                            role.getSecondaryAbility().play(plugin, gp.getPlayer(), gp.getPlayer());
+                            return;
+                        }
+                    }
+
+                    else if (role.getName().equals("Assassin")) {
+
+                        if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+
+                            if (!role.getPrimaryAbility().canUseAbility()) {
+                                gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
+                                return;
+                            }
+
+                            if (gp.getMana() < role.getPrimaryAbility().getManaCost()) {
+                                gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "Not enough mana!");
+                                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
+                                return;
+                            }
+
+                            role.getPrimaryAbility().play(plugin, gp.getPlayer());
                             return;
                         }
                     }

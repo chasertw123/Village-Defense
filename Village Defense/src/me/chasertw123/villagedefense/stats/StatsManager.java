@@ -82,7 +82,7 @@ public class StatsManager {
         }
 
         for (Player p : Bukkit.getOnlinePlayers())
-            this.addStatsToMap(p);
+            this.loadStats(p);
     }
 
     public int getStat(Stat stat, Player p) {
@@ -156,8 +156,8 @@ public class StatsManager {
     }
 
     public boolean getAchievement(Achievement a, Player p) {
-        if (!stats.containsKey(p.getUniqueId()))
-            addStatsToMap(p);
+        if (!stats.containsKey(p.getUniqueId()) || !stats.get(p.getUniqueId()).getAchievements().containsKey(a.getId()))
+            loadStats(p);
 
         return stats.get(p.getUniqueId()).getAchievements().get(a.getId());
     }
@@ -166,7 +166,8 @@ public class StatsManager {
         HashMap<String, Boolean> achievements = new HashMap<>();
 
         if (plugin.usesSQL()) {
-            openConnection();
+
+            this.openConnection();
 
             try {
                 PreparedStatement current = c.prepareStatement("SELECT * FROM `villagedefense_achievements` WHERE uuid=?;");
@@ -184,20 +185,23 @@ public class StatsManager {
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
-                closeConnection();
+                this.closeConnection();
             }
-        } else
+        }
+
+        else {
             for (Achievement a : Achievements.ID_MAP.values()) {
                 if (statsyml.contains(p.getUniqueId() + ".achievements." + a.getId()))
                     achievements.put(a.getId(), statsyml.getBoolean(p.getUniqueId() + ".achievements." + a.getId()));
                 else
                     achievements.put(a.getId(), false);
             }
+        }
 
         return achievements;
     }
 
-    public void addStatsToMap(Player p) {
+    public void loadStats(Player p) {
 
         if (!plugin.usesSQL()) {
 
@@ -258,8 +262,10 @@ public class StatsManager {
     public void saveStats(Player p) {
 
         if (!plugin.usesSQL()) {
+
             for (Stat stat : Stat.values())
                 statsyml.set(p.getUniqueId().toString() + "." + stat.toString().toLowerCase(), this.getStat(stat, p));
+
             for (Achievement a : Achievements.ID_MAP.values())
                 statsyml.set(p.getUniqueId() + ".achievements." + a.getId(), stats.get(p.getUniqueId()).getAchievements().get(a.getId()));
 
@@ -269,6 +275,7 @@ public class StatsManager {
                 plugin.sendConsoleSevere("Failed to save stats.yml!");
             }
 
+            return;
         }
 
         else {

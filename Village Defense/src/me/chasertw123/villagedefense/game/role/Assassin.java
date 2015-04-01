@@ -2,7 +2,8 @@ package me.chasertw123.villagedefense.game.role;
 
 import java.util.ArrayList;
 
-import me.chasertw123.villagedefense.exceptions.RoleCreationException;
+import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
+import me.chasertw123.villagedefense.game.abilities.Dash;
 import me.chasertw123.villagedefense.game.tools.Tool;
 import me.chasertw123.villagedefense.game.tools.ToolSet;
 import me.chasertw123.villagedefense.game.tools.ToolType;
@@ -19,8 +20,8 @@ import org.bukkit.inventory.meta.BannerMeta;
 
 public class Assassin extends Role {
 
-    public Assassin() throws RoleCreationException {
-        super("Assassin", 90, 140, 150, null, null, null, null, setToolSets(), new ItemStack(Material.NETHER_STAR), "This role acts has a high damage dealer taking down a majority of enemies. You have low mana, high attack, a huge speed boost," + " but you can't take much damage before you die.");
+    public Assassin() throws VillageDefenseException {
+        super("Assassin", 90, 140, 150, new Dash(), null, null, null, setToolSets(), new ItemStack(Material.NETHER_STAR), "This role acts has a high damage dealer taking down a majority of enemies. You have low mana, high attack, a huge speed boost," + " but you can't take much damage before you die.");
     }
 
     @Override

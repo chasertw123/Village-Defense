@@ -192,7 +192,7 @@ public class Main extends JavaPlugin implements Listener {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
-            this.getStatsManager().addStatsToMap(p);
+            this.getStatsManager().loadStats(p);
             this.getGame().getPlayers().add(new GamePlayer(null, p));
 
             if (this.getGame().getPlayers().size() >= this.getGame().getMinPlayers() && this.getGame().getGameState() == GameState.LOBBY)

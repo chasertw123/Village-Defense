@@ -1,6 +1,7 @@
 package me.chasertw123.villagedefense.stats.achievements.standard;
 
 import me.chasertw123.villagedefense.Main;
+import me.chasertw123.villagedefense.events.AchievementUnlockEvent;
 import me.chasertw123.villagedefense.stats.achievements.Achievement;
 
 import org.bukkit.event.EventHandler;
@@ -18,6 +19,6 @@ public class BetaTester extends Achievement implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (plugin.getDescription().getVersion().toLowerCase().contains("beta"))
-            plugin.getStatsManager().setAchievement(this, event.getPlayer(), true);
+            plugin.getServer().getPluginManager().callEvent(new AchievementUnlockEvent(event.getPlayer(), this));
     }
 }

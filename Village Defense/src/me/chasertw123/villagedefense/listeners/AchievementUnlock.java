@@ -32,18 +32,26 @@ public class AchievementUnlock implements Listener {
         plugin.getStatsManager().setAchievement(event.getAchievement(), event.getPlayer(), true);
         event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
 
-        TextComponent b = new TextComponent("["), m = new TextComponent("Achievement Unlocked");
+        TextComponent line = new TextComponent("----------------"), b = new TextComponent(" ["), m = new TextComponent("Achievement Unlocked");
+        ComponentBuilder cb = new ComponentBuilder("\n\n");
 
-        b.setColor(ChatColor.YELLOW);
+        cb.append("   You unlokced the ").color(ChatColor.YELLOW);
+        cb.append(event.getAchievement().getFriendlyname()).color(ChatColor.BLUE);
+        cb.append(" achievement!   ").color(ChatColor.YELLOW);
+        cb.append("\n\n");
+
         m.setColor(ChatColor.BLUE);
 
+        b.setColor(ChatColor.YELLOW);
         b.addExtra(m);
-        b.addExtra("]");
+        b.addExtra("] ");
 
-        ComponentBuilder cb = new ComponentBuilder("You unlokced the ").color(ChatColor.YELLOW).append(event.getAchievement().getFriendlyname()).color(ChatColor.BLUE).append(" achievement!").color(ChatColor.YELLOW);
+        line.setColor(ChatColor.STRIKETHROUGH);
+        line.addExtra(b);
+        line.addExtra("----------------");
 
-        b.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, cb.create()));
+        line.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, cb.create()));
 
-        event.getPlayer().spigot().sendMessage(b);
+        event.getPlayer().spigot().sendMessage(line);
     }
 }

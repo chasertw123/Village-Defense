@@ -7,7 +7,6 @@ import java.util.Random;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.role.Role;
-import me.chasertw123.villagedefense.utils.ActionBarAPI;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -33,7 +32,7 @@ public class LobbyTimer extends BukkitRunnable {
     @Override
     public void run() {
 
-        if (plugin.getGame().getPlayers().size() < plugin.getGame().getPlayers().size()) {
+        if (plugin.getGame().getPlayers().size() < plugin.getGame().getMinPlayers()) {
 
             for (GamePlayer gp : plugin.getGame().getPlayers())
                 gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "Game cancelled due to lack of players!");
@@ -51,7 +50,7 @@ public class LobbyTimer extends BukkitRunnable {
                     gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "The have recieved the " + ChatColor.BLUE + gp.getRole().getName() + ChatColor.YELLOW + " role randomly!");
                 }
 
-                ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
+                //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
                 gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
 
             }
@@ -61,8 +60,8 @@ public class LobbyTimer extends BukkitRunnable {
             return;
         }
 
-        for (GamePlayer gp : plugin.getGame().getPlayers())
-            ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.BLUE + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
+        //for (GamePlayer gp : plugin.getGame().getPlayers())
+        //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.BLUE + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
 
         timeLeft--;
 
