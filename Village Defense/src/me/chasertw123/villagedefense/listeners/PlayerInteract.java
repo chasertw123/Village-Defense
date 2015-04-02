@@ -39,14 +39,14 @@ public class PlayerInteract implements Listener {
                     // Debug Ability Leveling
                     if (event.getPlayer().isSneaking()) {
 
-                        if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack()) && role.getPrimaryAbility().getTier() <= role.getPrimaryAbility().getMaxTier()) {
+                        if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack()) && role.getPrimaryAbility().getTier() < role.getPrimaryAbility().getMaxTier()) {
                             role.getPrimaryAbility().setTier(role.getPrimaryAbility().getTier() + 1);
                             gp.getPlayer().getInventory().setItemInHand(role.getPrimaryAbility().getItemStack());
                             gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getPrimaryAbility().getTier() + ChatColor.YELLOW + "!");
                             return;
                         }
 
-                        else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack()) && role.getSecondaryAbility().getTier() <= role.getSecondaryAbility().getMaxTier()) {
+                        else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack()) && role.getSecondaryAbility().getTier() < role.getSecondaryAbility().getMaxTier()) {
                             role.getSecondaryAbility().setTier(role.getSecondaryAbility().getTier() + 1);
                             gp.getPlayer().getInventory().setItemInHand(role.getSecondaryAbility().getItemStack());
                             gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getSecondaryAbility().getTier() + ChatColor.YELLOW + "!");

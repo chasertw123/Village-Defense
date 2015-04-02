@@ -2,6 +2,7 @@ package me.chasertw123.villagedefense.game.villager;
 
 import me.chasertw123.villagedefense.game.GamePlayer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -36,8 +37,8 @@ public class VillagerChurch extends Villager {
 
     @Override
     public Inventory makeInventory(GamePlayer player) {
-        // TODO Auto-generated method stub
-        return null;
+
+        return Bukkit.createInventory(null, 9);
     }
 
 }

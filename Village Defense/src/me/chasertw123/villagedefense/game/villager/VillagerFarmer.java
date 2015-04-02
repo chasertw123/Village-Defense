@@ -80,6 +80,6 @@ public class VillagerFarmer extends Villager {
     }
 
     private FancyItemStack getFoodItem(Material material, int amount, int tier, int priceperunit, double foodheal, double nourishment) {
-        return new FancyItemStack(material, amount, ChatColor.GREEN + "" + ChatColor.BOLD + "Food" + StringUtils.fancyTierString(tier)).addLore("", ChatColor.GOLD + "Food Bars Filled: " + ChatColor.BLUE + foodheal, ChatColor.GOLD + "Saturation: " + ChatColor.BLUE + nourishment, ChatColor.GOLD + "Amount: " + ChatColor.BLUE + amount, "", ChatColor.GOLD + "Price: " + ChatColor.BLUE + (amount * priceperunit));
+        return new FancyItemStack(material, amount, ChatColor.GREEN + "" + ChatColor.BOLD + "Food" + StringUtils.fancyTierString(tier)).addLore("", ChatColor.BLUE + "Food Bars Filled: " + ChatColor.GOLD + foodheal, ChatColor.BLUE + "Saturation: " + ChatColor.GOLD + nourishment, ChatColor.BLUE + "Amount: " + ChatColor.GOLD + amount, "", ChatColor.BLUE + "Price: " + ChatColor.GOLD + (amount * priceperunit));
     }
 }

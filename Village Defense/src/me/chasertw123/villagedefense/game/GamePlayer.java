@@ -160,7 +160,7 @@ public class GamePlayer {
      * @see #setGold(int)
      */
     public void decrementGold(int gold) {
-        setGold(getMana() - gold);
+        setGold(getGold() - gold);
     }
 
     /**

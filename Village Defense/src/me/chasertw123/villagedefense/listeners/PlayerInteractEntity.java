@@ -8,7 +8,6 @@ import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.utils.ItemStackUtils;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -100,11 +99,6 @@ public class PlayerInteractEntity implements Listener {
                     if (gp.isEqualToPlayer(event.getPlayer()) && gp.getRole() != null) {
                         gp.getPlayer().openInventory(b.getVillager().makeInventory(gp));
                     }
-
-                if (b.getTier() < b.getMaxTier()) {
-                    b.levelUp(plugin);
-                    Bukkit.broadcastMessage(plugin.getPrefix() + event.getPlayer().getName() + " upgarded " + b.getName() + " to tier " + b.getTier());
-                }
 
                 event.setCancelled(true);
             }

@@ -32,4 +32,24 @@ public class ItemStackUtils {
 
         return true;
     }
+
+    public static boolean itemStacksHaveSameName(ItemStack i1, ItemStack i2) {
+
+        if (i1.hasItemMeta() && !i2.hasItemMeta())
+            return false;
+
+        if (!i1.hasItemMeta() && i2.hasItemMeta())
+            return false;
+
+        if (i1.getItemMeta().hasDisplayName() && !i2.getItemMeta().hasDisplayName())
+            return false;
+
+        if (!i1.getItemMeta().hasDisplayName() && i2.getItemMeta().hasDisplayName())
+            return false;
+
+        if (!i1.getItemMeta().getDisplayName().equals(i2.getItemMeta().getDisplayName()))
+            return false;
+
+        return true;
+    }
 }
