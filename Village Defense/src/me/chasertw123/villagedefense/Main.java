@@ -63,14 +63,7 @@ public class Main extends JavaPlugin implements Listener {
      * 
      * Problem: Game is currently designed for only one map
      * 
-     **********************************************************************************
-     *
-     * -=- Complete Village -=-
-     * 
-     * Make listeners and inventories functional
-     *
-     **********************************************************************************
-     */
+     **********************************************************************************/
 
     private final String prefix = ChatColor.WHITE + "[" + ChatColor.GREEN + "VD" + ChatColor.WHITE + "]" + ChatColor.RESET + " ";
 
