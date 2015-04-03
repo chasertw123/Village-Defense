@@ -33,6 +33,7 @@ public class PlayerDisconnect implements Listener {
     @SuppressWarnings("unchecked")
     private void handleLeave(Player p) {
 
+        plugin.getVoteManager().votes.remove(p);
         plugin.getStatsManager().saveStats(p);
 
         for (GamePlayer gp : (ArrayList<GamePlayer>) plugin.getGame().getPlayers().clone())
