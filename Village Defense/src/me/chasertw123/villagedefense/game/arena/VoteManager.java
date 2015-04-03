@@ -54,7 +54,11 @@ public class VoteManager {
         }
 
         public int compare(Arena a, Arena b) {
-            if (base.get(a).getCount() <= base.get(b).getCount()) {
+            if (a == null || b == null)
+                return 1;
+            else if (base.get(a) == null || base.get(b) == null)
+                return 1;
+            else if (base.get(a).getCount() <= base.get(b).getCount()) {
                 return 1;
             } else {
                 return -1;
