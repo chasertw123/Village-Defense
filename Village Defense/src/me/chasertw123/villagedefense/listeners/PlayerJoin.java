@@ -3,6 +3,7 @@ package me.chasertw123.villagedefense.listeners;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -37,6 +38,12 @@ public class PlayerJoin implements Listener {
             int amount = plugin.getGame().getMinPlayers() - plugin.getGame().getPlayers().size();
             Bukkit.broadcastMessage(plugin.getPrefix() + "We need " + amount + " more player" + ((amount == 1) ? "" : "s") + " to join!");
         }
+
+        if (plugin.getGame().getGameState() == GameState.LOBBY)
+            plugin.getScoreboardManager().giveScoreboard(event.getPlayer(), ScoreboardType.VOTING);
+
+        else if (plugin.getGame().getGameState() == GameState.STARTING)
+            plugin.getScoreboardManager().giveScoreboard(event.getPlayer(), ScoreboardType.STARTING);
 
     }
 }

@@ -35,7 +35,7 @@ public class AchievementUnlock implements Listener {
         TextComponent line = new TextComponent("----------------"), b = new TextComponent(" ["), m = new TextComponent("Achievement Unlocked");
         ComponentBuilder cb = new ComponentBuilder("\n\n");
 
-        cb.append("   You unlokced the ").color(ChatColor.YELLOW);
+        cb.append("   You unlocked the ").color(ChatColor.YELLOW);
         cb.append(event.getAchievement().getFriendlyname()).color(ChatColor.BLUE);
         cb.append(" achievement!   ").color(ChatColor.YELLOW);
         cb.append("\n\n");

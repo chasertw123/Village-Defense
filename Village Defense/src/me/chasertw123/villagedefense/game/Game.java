@@ -30,10 +30,7 @@ public class Game {
      * @throws GameCreationException when minimum and maximum players are set
      * incorrectly
      */
-    public Game(Arena arena, int minPlayers, int maxPlayers) throws GameCreationException {
-
-        if (arena == null)
-            throw new GameCreationException("The arena cannot be null!");
+    public Game(int minPlayers, int maxPlayers) throws GameCreationException {
 
         if (minPlayers == 0 || maxPlayers == 0)
             throw new GameCreationException("Either minimum players or maximum players was set to 0!");
@@ -41,7 +38,6 @@ public class Game {
         if (minPlayers > maxPlayers)
             throw new GameCreationException("The minimum amount of players is larger than the maximum." + " (MinPlayers: " + minPlayers + " > MaxPlayers: " + maxPlayers);
 
-        this.arena = arena;
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.gameState = GameState.LOBBY;
@@ -53,6 +49,14 @@ public class Game {
      */
     public Arena getArena() {
         return arena;
+    }
+
+    /**
+     * 
+     * @param arena {@link Arena} this {@link Game} instance uses
+     */
+    public void setArena(Arena arena) {
+        this.arena = arena;
     }
 
     /**

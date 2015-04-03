@@ -6,7 +6,9 @@ import java.util.Random;
 
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
+import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.role.Role;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -55,6 +57,13 @@ public class LobbyTimer extends BukkitRunnable {
 
             }
 
+            Arena a = plugin.getVoteManager().getArena();
+
+            if (a == null)
+                plugin.getGame().setArena(plugin.getArenas().get(new Random().nextInt(plugin.getArenas().size())));
+            else
+                plugin.getGame().setArena(a);
+
             new GameTimer(plugin);
 
             return;
@@ -62,6 +71,8 @@ public class LobbyTimer extends BukkitRunnable {
 
         //for (GamePlayer gp : plugin.getGame().getPlayers())
         //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.BLUE + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
+
+        plugin.getScoreboardManager().updateScoreboard(ScoreboardType.STARTING);
 
         timeLeft--;
 

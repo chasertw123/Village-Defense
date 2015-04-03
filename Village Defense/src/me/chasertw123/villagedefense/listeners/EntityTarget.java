@@ -26,17 +26,18 @@ public class EntityTarget implements Listener {
             if (event.getEntity() == rs.getEntity())
                 event.setCancelled(true);
 
-        if (plugin.getGame().getWave() != null)
-            for (LivingEntity le : plugin.getGame().getWave().getEnemies())
-                if (event.getEntity() == le && !(event.getTarget() instanceof Player)) {
+        if (plugin.getGame() != null)
+            if (plugin.getGame().getWave() != null)
+                for (LivingEntity le : plugin.getGame().getWave().getEnemies())
+                    if (event.getEntity() == le && !(event.getTarget() instanceof Player)) {
 
-                    if (plugin.getGame().getPlayers().size() == 0) {
-                        event.setCancelled(true);
-                        return;
+                        if (plugin.getGame().getPlayers().size() == 0) {
+                            event.setCancelled(true);
+                            return;
+                        }
+
+                        event.setTarget(getClosestGamePlayer(event.getEntity()));
                     }
-
-                    event.setTarget(getClosestGamePlayer(event.getEntity()));
-                }
 
     }
 

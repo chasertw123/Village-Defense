@@ -11,12 +11,15 @@ import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.arena.Arena;
+import me.chasertw123.villagedefense.game.arena.VoteManager;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.enemy.Minion;
 import me.chasertw123.villagedefense.game.enemy.Tank;
 import me.chasertw123.villagedefense.game.enemy.boss.BabyTerror;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardManager;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.listeners.AchievementUnlock;
 import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
@@ -59,7 +62,9 @@ public class Main extends JavaPlugin implements Listener {
      * 
      * -=- Multiple Maps -=-
      * 
-     * Make it so player can vote on which map they play on
+     * Multiple Maps
+     * Make it so players can vote on which map they play on
+     * Then after a game can chose to rate it from 1 to 10
      * 
      * Problem: Game is currently designed for only one map
      * 
@@ -70,8 +75,12 @@ public class Main extends JavaPlugin implements Listener {
     private FileConfiguration arenayml;
     private File arenaFile = new File(getDataFolder().getAbsoluteFile() + File.separator + "arena.yml");
 
+    private ArrayList<Arena> arenas = new ArrayList<>();
     private Game game;
+
     private StatsManager statsManager;
+    private VoteManager voteManager;
+    private ScoreboardManager scoreboardManager;
 
     private boolean usesSQL;
 
@@ -84,6 +93,7 @@ public class Main extends JavaPlugin implements Listener {
         usesSQL = this.getConfig().getBoolean("sql.use", false);
 
         statsManager = new StatsManager(this);
+        scoreboardManager = new ScoreboardManager(this);
 
         PluginManager pm = this.getServer().getPluginManager();
 
@@ -141,31 +151,43 @@ public class Main extends JavaPlugin implements Listener {
             // Boss Monsters
             new BabyTerror();
 
+            Location lobbyLocation = null;
+
             for (Class<? extends Role> r : Role.roleClasses.keySet())
                 if (arenayml.contains("roleselector." + r.getSimpleName()))
                     new RoleSelect(LocationUtils.deserializeLoc(arenayml.getString("roleselector." + r.getSimpleName())), Role.roleClasses.get(r), r).spawnEntity();
 
-            ArrayList<Building> buildings = new ArrayList<>();
-
-            for (Class<? extends Building> b : Building.buildingClasses)
-                if (arenayml.contains("buildings." + b.getSimpleName()))
-                    buildings.add(b.getDeclaredConstructor(Location.class).newInstance(LocationUtils.deserializeLoc(arenayml.getString("buildings." + b.getSimpleName()))));
-
-            ArrayList<Location> enemySpawnPoints = new ArrayList<>();
-
-            if (arenayml.contains("enemyspawns"))
-                for (String s : arenayml.getStringList("enemyspawns"))
-                    enemySpawnPoints.add(LocationUtils.deserializeLoc(s));
-
-            Location spawnLocation = null, lobbyLocation = null;
-            if (arenayml.contains("spawn"))
-                spawnLocation = LocationUtils.deserializeLoc(arenayml.getString("spawn"));
-
             if (arenayml.contains("lobby"))
                 lobbyLocation = LocationUtils.deserializeLoc(arenayml.getString("lobby"));
 
-            Arena a = new Arena(buildings, enemySpawnPoints, spawnLocation, lobbyLocation, this);
-            game = new Game(a, this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0);
+            if (this.getArenaConfig().contains("arena"))
+                for (String arenaName : getArenaConfig().getConfigurationSection("arena").getKeys(false)) {
+
+                    String pre = "arena." + arenaName + ".";
+                    ArrayList<Building> buildings = new ArrayList<>();
+
+                    for (Class<? extends Building> b : Building.buildingClasses)
+                        if (arenayml.contains(pre + "buildings." + b.getSimpleName()))
+                            buildings.add(b.getDeclaredConstructor(Location.class).newInstance(LocationUtils.deserializeLoc(arenayml.getString(pre + "buildings." + b.getSimpleName()))));
+
+                    ArrayList<Location> enemySpawnPoints = new ArrayList<>();
+
+                    if (arenayml.contains(pre + "enemyspawns"))
+                        for (String s : arenayml.getStringList(pre + "enemyspawns"))
+                            enemySpawnPoints.add(LocationUtils.deserializeLoc(s));
+
+                    Location spawnLocation = null;
+                    if (arenayml.contains(pre + "spawn"))
+                        spawnLocation = LocationUtils.deserializeLoc(arenayml.getString(pre + "spawn"));
+
+                    Arena a = new Arena(arenaName, buildings, enemySpawnPoints, spawnLocation, lobbyLocation, this);
+
+                    arenas.add(a);
+
+                    sendConsoleInfo("Registered Arena: " + a.getName());
+                }
+
+            game = new Game(this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0);
 
         } catch (VillageDefenseException e) {
             e.printStackTrace();
@@ -183,11 +205,17 @@ public class Main extends JavaPlugin implements Listener {
             e.printStackTrace();
         }
 
+        voteManager = new VoteManager();
+
         new Achievements(this);
 
         for (Player p : Bukkit.getOnlinePlayers()) {
 
             this.getStatsManager().loadStats(p);
+
+            if (this.getGame() == null)
+                continue;
+
             this.getGame().getPlayers().add(new GamePlayer(null, p));
 
             if (this.getGame().getPlayers().size() >= this.getGame().getMinPlayers() && this.getGame().getGameState() == GameState.LOBBY)
@@ -199,6 +227,12 @@ public class Main extends JavaPlugin implements Listener {
             else if (this.getGame().getPlayers().size() < this.getGame().getMinPlayers()) {
                 int amount = this.getGame().getMinPlayers() - this.getGame().getPlayers().size();
                 Bukkit.broadcastMessage(this.getPrefix() + "We need " + amount + " more player" + ((amount == 1) ? "" : "s") + " to join!");
+
+                if (this.getGame().getGameState() == GameState.LOBBY)
+                    this.getScoreboardManager().giveScoreboard(p, ScoreboardType.VOTING);
+
+                else if (this.getGame().getGameState() == GameState.STARTING)
+                    this.getScoreboardManager().giveScoreboard(p, ScoreboardType.STARTING);
             }
         }
     }
@@ -208,17 +242,18 @@ public class Main extends JavaPlugin implements Listener {
         for (Player p : Bukkit.getOnlinePlayers())
             this.getStatsManager().saveStats(p);
 
-        if (game.getArena() != null)
-            for (Building b : game.getArena().getBuildings()) {
-                b.getVillager().getLoc().getChunk().load();
-                if (b.getVillager().getVil() != null) {
-                    for (Entity e : b.getVillager().getVil().getNearbyEntities(1, 1, 1))
-                        if (e.getPassenger() == b.getVillager().getVil())
-                            e.remove();
+        if (this.getGame() != null)
+            if (game.getArena() != null)
+                for (Building b : game.getArena().getBuildings()) {
+                    b.getVillager().getLoc().getChunk().load();
+                    if (b.getVillager().getVil() != null) {
+                        for (Entity e : b.getVillager().getVil().getNearbyEntities(1, 1, 1))
+                            if (e.getPassenger() == b.getVillager().getVil())
+                                e.remove();
 
-                    b.getVillager().getVil().remove();
+                        b.getVillager().getVil().remove();
+                    }
                 }
-            }
 
         for (RoleSelect rs : RoleSelect.roleSelectObjects) {
             rs.getSpawnLocation().getChunk().load();
@@ -258,6 +293,18 @@ public class Main extends JavaPlugin implements Listener {
 
     public StatsManager getStatsManager() {
         return statsManager;
+    }
+
+    public VoteManager getVoteManager() {
+        return voteManager;
+    }
+
+    public ScoreboardManager getScoreboardManager() {
+        return scoreboardManager;
+    }
+
+    public ArrayList<Arena> getArenas() {
+        return arenas;
     }
 
     public boolean usesSQL() {

@@ -6,6 +6,7 @@ import java.util.List;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
+import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.utils.LocationUtils;
@@ -33,6 +34,7 @@ public class VillageDefenseCmd implements CommandExecutor {
             sender.sendMessage(plugin.getPrefix() + "/vd arena");
             sender.sendMessage(plugin.getPrefix() + "/vd role");
             sender.sendMessage(plugin.getPrefix() + "/vd gold");
+            sender.sendMessage(plugin.getPrefix() + "/vd vote");
         }
 
         else {
@@ -45,10 +47,12 @@ public class VillageDefenseCmd implements CommandExecutor {
                 }
 
                 if (args.length == 1 || args[1].equalsIgnoreCase("help") || args[1].equalsIgnoreCase("?")) {
+                    sender.sendMessage(plugin.getPrefix() + "- Arena specific commands -");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena addenemyspawn");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena removeenemyspawn");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setbuilding");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setspawn");
+                    sender.sendMessage(plugin.getPrefix() + "- Arena unspecific commands -");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setlobby");
                     sender.sendMessage(plugin.getPrefix() + "/vd arena setroleselect");
                     return true;
@@ -56,8 +60,8 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("addenemyspawn")) {
 
-                    if (args.length != 2) {
-                        sender.sendMessage(plugin.getPrefix() + "/vd arena addenemyspawn");
+                    if (args.length != 3) {
+                        sender.sendMessage(plugin.getPrefix() + "/vd arena addenemyspawn <arena>");
                         return true;
                     }
 
@@ -68,10 +72,11 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                     else {
 
-                        List<String> ls = (plugin.getArenaConfig().contains("enemyspawns")) ? plugin.getArenaConfig().getStringList("enemyspawns") : new ArrayList<String>();
+                        String pre = "arena." + args[2] + ".";
+                        List<String> ls = (plugin.getArenaConfig().contains(pre + "enemyspawns")) ? plugin.getArenaConfig().getStringList(pre + "enemyspawns") : new ArrayList<String>();
 
                         ls.add(LocationUtils.serializeLoc(((Player) sender).getLocation()));
-                        plugin.getArenaConfig().set("enemyspawns", ls);
+                        plugin.getArenaConfig().set(pre + "enemyspawns", ls);
                         plugin.saveArenaConfig();
                         sender.sendMessage(plugin.getPrefix() + "You have added a spawnpoint with id " + (ls.size() - 1) + " at your location.");
                     }
@@ -79,8 +84,8 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("removeenemyspawn")) {
 
-                    if (args.length != 3) {
-                        sender.sendMessage(plugin.getPrefix() + "/vd arena removeenemyspawn <id>");
+                    if (args.length != 4) {
+                        sender.sendMessage(plugin.getPrefix() + "/vd arena removeenemyspawn <id> <arena>");
                         return true;
                     }
 
@@ -96,11 +101,12 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                     else {
 
-                        List<String> ls = (plugin.getArenaConfig().contains("enemyspawns")) ? plugin.getArenaConfig().getStringList("enemyspawns") : new ArrayList<String>();
+                        String pre = "arena." + args[3] + ".";
+                        List<String> ls = (plugin.getArenaConfig().contains(pre + "enemyspawns")) ? plugin.getArenaConfig().getStringList(pre + "enemyspawns") : new ArrayList<String>();
 
                         try {
                             ls.remove(Integer.parseInt(args[2]));
-                            plugin.getArenaConfig().set("enemyspawns", ls);
+                            plugin.getArenaConfig().set(pre + "enemyspawns", ls);
                             plugin.saveArenaConfig();
                             sender.sendMessage(plugin.getPrefix() + "You have removed " + args[2] + " from the enemies.");
                         } catch (IndexOutOfBoundsException e) {
@@ -111,8 +117,8 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("setbuilding")) {
 
-                    if (args.length != 3) {
-                        sender.sendMessage(plugin.getPrefix() + "/vd arena setbuilding <building>");
+                    if (args.length != 4) {
+                        sender.sendMessage(plugin.getPrefix() + "/vd arena setbuilding <building> <arena>");
                         String s = "";
 
                         for (Class<? extends Building> b : Building.buildingClasses) {
@@ -136,9 +142,10 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                     else {
 
+                        String pre = "arena." + args[3] + ".";
                         for (Class<? extends Building> b : Building.buildingClasses)
                             if (b.getSimpleName().equalsIgnoreCase(args[2])) {
-                                plugin.getArenaConfig().set("buildings." + b.getSimpleName(), LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                                plugin.getArenaConfig().set(pre + "buildings." + b.getSimpleName(), LocationUtils.serializeLoc(((Player) sender).getLocation()));
                                 plugin.saveArenaConfig();
                                 sender.sendMessage(plugin.getPrefix() + "You have set " + b.getSimpleName() + " to your location.");
                                 return true;
@@ -150,8 +157,8 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                 else if (args[1].equalsIgnoreCase("setspawn")) {
 
-                    if (args.length != 2) {
-                        sender.sendMessage(plugin.getPrefix() + "/vd arena setspawn");
+                    if (args.length != 3) {
+                        sender.sendMessage(plugin.getPrefix() + "/vd arena setspawn <arena>");
                         return true;
                     }
 
@@ -161,7 +168,8 @@ public class VillageDefenseCmd implements CommandExecutor {
                     }
 
                     else {
-                        plugin.getArenaConfig().set("spawn", LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                        String pre = "arena." + args[2] + ".";
+                        plugin.getArenaConfig().set(pre + "spawn", LocationUtils.serializeLoc(((Player) sender).getLocation()));
                         plugin.saveArenaConfig();
                         sender.sendMessage(plugin.getPrefix() + "You have set spawn to your location.");
                     }
@@ -518,6 +526,34 @@ public class VillageDefenseCmd implements CommandExecutor {
                     return true;
                 }
 
+            }
+
+            else if (args[0].equalsIgnoreCase("vote")) {
+
+                if (args.length != 2) {
+                    sender.sendMessage(plugin.getPrefix() + "/vd vote <Arena>");
+                    return true;
+                }
+
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(plugin.getPrefix() + "You need to be ingame for this command!");
+                    return true;
+                }
+
+                String arenaName = args[1];
+                boolean successful = false;
+
+                for (Arena a : plugin.getArenas()) {
+                    if (a.getName().equalsIgnoreCase(arenaName)) {
+                        plugin.getVoteManager().addVote((Player) sender, a);
+                        successful = true;
+                    }
+                }
+
+                if (successful)
+                    sender.sendMessage(plugin.getPrefix() + "You have added a vote to " + arenaName);
+                else
+                    sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "Couldn't find arena!");
             }
         }
 

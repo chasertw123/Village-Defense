@@ -14,13 +14,16 @@ public class Arena {
     private ArrayList<Building> buildings;
     private ArrayList<Location> enemySpawnPoints;
     private Location centerSpawnLocation, lobbySpawnLocation;
+    private String name;
 
     /**
      * @param buildings List of buildings
      * @param spawnLocation Center of player spawns
      * @throws ArenaCreationException When arena failed to create
      */
-    public Arena(ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Location lobbyLocation, Main plugin) throws ArenaCreationException {
+    public Arena(String name, ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Location lobbyLocation, Main plugin) throws ArenaCreationException {
+
+        this.name = name;
 
         Boolean[] bools = new Boolean[Building.buildingClasses.size()];
         Arrays.fill(bools, false);
@@ -119,5 +122,13 @@ public class Arena {
      */
     public void setLobbySpawnLocation(Location lobbySpawnLocation) {
         this.lobbySpawnLocation = lobbySpawnLocation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
