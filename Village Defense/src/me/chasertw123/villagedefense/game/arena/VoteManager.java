@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import me.chasertw123.villagedefense.Main;
+
 import org.bukkit.entity.Player;
 
 public class VoteManager {
@@ -14,15 +16,15 @@ public class VoteManager {
         votes.put(p, a);
     }
 
-    public Arena getArena() {
-        TreeMap<Arena, ArenaCounter> counts = getArenaCounter();
+    public Arena getArena(Main plugin) {
+        TreeMap<Arena, ArenaCounter> counts = getArenaCounter(plugin);
         if (counts.size() != 0)
             return counts.firstKey();
         else
             return null;
     }
 
-    public TreeMap<Arena, ArenaCounter> getArenaCounter() {
+    public TreeMap<Arena, ArenaCounter> getArenaCounter(Main plugin) {
         HashMap<Arena, ArenaCounter> counts = new HashMap<Arena, ArenaCounter>();
 
         for (Arena a : votes.values()) {
@@ -35,7 +37,10 @@ public class VoteManager {
         ValueComparator bvc = new ValueComparator(counts);
         TreeMap<Arena, ArenaCounter> sorted_map = new TreeMap<Arena, ArenaCounter>(bvc);
         sorted_map.putAll(counts);
-        //TODO: Add maps with 0 votes.
+
+        for (Arena a : plugin.getArenas())
+            if (!sorted_map.containsKey(a))
+                sorted_map.put(a, new ArenaCounter());
 
         return sorted_map;
     }
@@ -58,7 +63,7 @@ public class VoteManager {
     }
 
     public class ArenaCounter {
-        int count = 1;
+        int count = 0;
 
         public ArenaCounter incrementCount() {
             count++;

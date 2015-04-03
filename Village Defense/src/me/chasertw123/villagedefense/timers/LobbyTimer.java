@@ -57,7 +57,7 @@ public class LobbyTimer extends BukkitRunnable {
 
             }
 
-            Arena a = plugin.getVoteManager().getArena();
+            Arena a = plugin.getVoteManager().getArena(plugin);
 
             if (a == null)
                 plugin.getGame().setArena(plugin.getArenas().get(new Random().nextInt(plugin.getArenas().size())));

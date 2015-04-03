@@ -44,7 +44,7 @@ public class ScoreboardManager {
                 obj.getScore(pre + "Map votes").setScore(score--);
                 obj.getScore(ChatColor.BOLD + "").setScore(score--);
 
-                for (Entry<Arena, ArenaCounter> entry : plugin.getVoteManager().getArenaCounter().entrySet()) {
+                for (Entry<Arena, ArenaCounter> entry : plugin.getVoteManager().getArenaCounter(plugin).entrySet()) {
                     if (score == 2)
                         break;
                     obj.getScore(pre + entry.getKey().getName() + ":" + spec + entry.getValue().getCount()).setScore(score--);
