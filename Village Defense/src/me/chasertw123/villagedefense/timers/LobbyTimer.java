@@ -49,6 +49,7 @@ public class LobbyTimer extends BukkitRunnable {
 
                 if (gp.getRole() == null) {
                     gp.setRole(getRandomRole());
+                    plugin.getScoreboardManager().updateScoreboard(ScoreboardType.STARTING, ScoreboardType.VOTING);
                     gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "The have recieved the " + ChatColor.BLUE + gp.getRole().getName() + ChatColor.YELLOW + " role randomly!");
                 }
 
@@ -64,7 +65,7 @@ public class LobbyTimer extends BukkitRunnable {
             else
                 plugin.getGame().setArena(a);
 
-            new GameTimer(plugin);
+            plugin.getGame().setTimer(new GameTimer(plugin));
 
             return;
         }
@@ -76,6 +77,10 @@ public class LobbyTimer extends BukkitRunnable {
 
         timeLeft--;
 
+    }
+
+    public int getTime() {
+        return timeLeft;
     }
 
     private Role getRandomRole() {

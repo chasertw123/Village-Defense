@@ -37,7 +37,7 @@ public class Shield extends Ability {
 
         GamePlayer gp = plugin.getGame().getGamePlayer(shielder);
 
-        gp.getRole().getSecondaryAbility().resetCooldown();
+        this.resetCooldown();
         gp.decrementMana(getManaCost());
 
         if (shielder == shielded) {

@@ -10,11 +10,14 @@ import me.chasertw123.villagedefense.timers.LobbyTimer;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Game {
 
     private Arena arena;
     private int minPlayers, maxPlayers;
+
+    private BukkitRunnable timer = null;
 
     private GameState gameState = GameState.DISABLED;
     private Wave wave;
@@ -125,6 +128,20 @@ public class Game {
     }
 
     /**
+     * @return the timer
+     */
+    public BukkitRunnable getTimer() {
+        return timer;
+    }
+
+    /**
+     * @param timer the timer to set
+     */
+    public void setTimer(BukkitRunnable timer) {
+        this.timer = timer;
+    }
+
+    /**
      * 
      * @return the current {@link Wave} instance
      */
@@ -148,7 +165,7 @@ public class Game {
     public void startGame(Main plugin) {
 
         setGameState(GameState.STARTING);
-        new LobbyTimer(plugin);
+        setTimer(new LobbyTimer(plugin));
 
     }
 

@@ -10,6 +10,7 @@ import me.chasertw123.villagedefense.Main;
 import org.bukkit.entity.Player;
 
 public class VoteManager {
+
     public HashMap<Player, Arena> votes = new HashMap<Player, Arena>();
 
     public void addVote(Player p, Arena a) {

@@ -45,7 +45,7 @@ public class Dash extends Ability {
 
             new PlayOutDashParticles(gp, charge, plugin);
 
-            gp.getRole().getPrimaryAbility().resetCooldown();
+            this.resetCooldown();
             gp.decrementMana(getManaCost());
         }
 

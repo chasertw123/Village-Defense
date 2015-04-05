@@ -40,7 +40,7 @@ public class Heal extends Ability {
 
         GamePlayer gp = plugin.getGame().getGamePlayer(healer);
 
-        gp.getRole().getPrimaryAbility().resetCooldown();
+        this.resetCooldown();
         gp.decrementMana(getManaCost());
 
         if (healer == healed) {

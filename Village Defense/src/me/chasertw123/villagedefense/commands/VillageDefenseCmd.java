@@ -9,6 +9,7 @@ import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.utils.LocationUtils;
 
 import org.bukkit.Bukkit;
@@ -296,6 +297,7 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                                 if (gp.getRole() == null || !gp.getRole().getName().equals(role.getName())) {
                                     gp.setRole(role);
+                                    plugin.getScoreboardManager().updateScoreboard(ScoreboardType.STARTING, ScoreboardType.VOTING);
                                     gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
                                     gp.getPlayer().sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have selected the " + ChatColor.BLUE + role.getName() + ChatColor.YELLOW + " role!");
                                     return true;
@@ -540,6 +542,11 @@ public class VillageDefenseCmd implements CommandExecutor {
                     return true;
                 }
 
+                if (plugin.getGame().getGameState() != GameState.LOBBY) {
+                    sender.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You cannot vote during a game!");
+                    return true;
+                }
+
                 String arenaName = args[1];
                 boolean successful = false;
 
@@ -547,13 +554,15 @@ public class VillageDefenseCmd implements CommandExecutor {
                     if (a.getName().equalsIgnoreCase(arenaName)) {
                         plugin.getVoteManager().addVote((Player) sender, a);
                         successful = true;
+                        arenaName = a.getName();
+                        plugin.getScoreboardManager().updateScoreboard(ScoreboardType.VOTING);
                     }
                 }
 
                 if (successful)
-                    sender.sendMessage(plugin.getPrefix() + "You have added a vote to " + arenaName);
+                    sender.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have added a vote to " + ChatColor.BLUE + arenaName + ChatColor.YELLOW + "!");
                 else
-                    sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "Couldn't find arena!");
+                    sender.sendMessage(plugin.getPrefix() + ChatColor.RED + "Couldn't find the arena " + arenaName + "!");
             }
         }
 

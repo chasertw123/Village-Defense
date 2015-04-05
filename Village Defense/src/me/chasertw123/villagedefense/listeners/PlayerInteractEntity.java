@@ -6,6 +6,7 @@ import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.utils.ItemStackUtils;
 
 import org.bukkit.ChatColor;
@@ -118,6 +119,7 @@ public class PlayerInteractEntity implements Listener {
 
                                     if (gp.getRole() == null || !gp.getRole().getName().equals(role.getName())) {
                                         gp.setRole(role);
+                                        plugin.getScoreboardManager().updateScoreboard(ScoreboardType.STARTING, ScoreboardType.VOTING);
                                         event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
                                         event.getPlayer().sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have selected the " + ChatColor.BLUE + role.getName() + ChatColor.YELLOW + " role!");
                                     }

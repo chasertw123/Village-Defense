@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,6 +35,7 @@ public class PlayerDisconnect implements Listener {
     private void handleLeave(Player p) {
 
         plugin.getVoteManager().votes.remove(p);
+        plugin.getScoreboardManager().updateScoreboard(ScoreboardType.VOTING);
         plugin.getStatsManager().saveStats(p);
 
         for (GamePlayer gp : (ArrayList<GamePlayer>) plugin.getGame().getPlayers().clone())
