@@ -40,7 +40,6 @@ public abstract class Building {
         this.itemStack = itemStack;
 
         villager.setBuilding(this);
-        buildingObjects.add(this);
     }
 
     /**

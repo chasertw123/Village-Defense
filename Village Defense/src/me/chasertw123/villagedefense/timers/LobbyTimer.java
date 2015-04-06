@@ -25,8 +25,17 @@ public class LobbyTimer extends BukkitRunnable {
 
         timeLeft = plugin.getConfig().contains("timers.lobby") ? plugin.getConfig().getInt("timers.lobby") : 30;
 
-        for (GamePlayer gp : plugin.getGame().getPlayers())
+        Arena a = plugin.getVoteManager().getArena(plugin);
+
+        if (a == null)
+            plugin.getGame().setArena(plugin.getArenas().get(new Random().nextInt(plugin.getArenas().size())));
+        else
+            plugin.getGame().setArena(a);
+
+        for (GamePlayer gp : plugin.getGame().getPlayers()) {
             gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.LEVEL_UP, 1F, 1F);
+            plugin.getScoreboardManager().giveScoreboard(gp.getPlayer(), ScoreboardType.STARTING);
+        }
 
         this.runTaskTimer(plugin, 20L, 20L);
     }
@@ -57,13 +66,6 @@ public class LobbyTimer extends BukkitRunnable {
                 gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
 
             }
-
-            Arena a = plugin.getVoteManager().getArena(plugin);
-
-            if (a == null)
-                plugin.getGame().setArena(plugin.getArenas().get(new Random().nextInt(plugin.getArenas().size())));
-            else
-                plugin.getGame().setArena(a);
 
             plugin.getGame().setTimer(new GameTimer(plugin));
 

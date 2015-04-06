@@ -95,6 +95,22 @@ public class Wave {
     }
 
     /**
+     * Get enemies left
+     * 
+     * @return the number of enemies left in the {@link Wave}
+     */
+    public int getEnemiesLeft() {
+
+        int livingCount = 0;
+
+        for (LivingEntity le : enemies)
+            if (le != null && !le.isDead())
+                livingCount++;
+
+        return livingCount;
+    }
+
+    /**
      * @return the enemies a {@link ArrayList} of {@link LivingEntity} that are
      * spawned from {@link Enemy}
      */

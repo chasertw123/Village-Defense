@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.GameCreationException;
 import me.chasertw123.villagedefense.game.arena.Arena;
+import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.wave.Wave;
 import me.chasertw123.villagedefense.timers.LobbyTimer;
 
@@ -13,6 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Game {
+
+    private Main plugin;
 
     private Arena arena;
     private int minPlayers, maxPlayers;
@@ -33,7 +36,9 @@ public class Game {
      * @throws GameCreationException when minimum and maximum players are set
      * incorrectly
      */
-    public Game(int minPlayers, int maxPlayers) throws GameCreationException {
+    public Game(int minPlayers, int maxPlayers, Main plugin) throws GameCreationException {
+
+        this.plugin = plugin;
 
         if (minPlayers == 0 || maxPlayers == 0)
             throw new GameCreationException("Either minimum players or maximum players was set to 0!");
@@ -60,6 +65,11 @@ public class Game {
      */
     public void setArena(Arena arena) {
         this.arena = arena;
+
+        for (Building b : getArena().getBuildings()) {
+            b.buildFirstTier(plugin);
+            Building.buildingObjects.add(b);
+        }
     }
 
     /**

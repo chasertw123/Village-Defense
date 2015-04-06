@@ -8,6 +8,7 @@ import me.chasertw123.villagedefense.events.GameStartEvent;
 import me.chasertw123.villagedefense.exceptions.InvalidEnemySpawnExcpetion;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
+import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.game.wave.Wave;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
@@ -48,6 +49,8 @@ public class GameTimer extends BukkitRunnable {
             gp.getPlayer().teleport(plugin.getGame().getArena().getRandomLocation());
 
             gp.setMana(gp.getMaxMana());
+
+            plugin.getScoreboardManager().giveScoreboard(gp.getPlayer(), ScoreboardType.INGAME);
         }
 
         playWave(new Wave(wave, difficulty, false, plugin));
@@ -96,6 +99,8 @@ public class GameTimer extends BukkitRunnable {
 
                 playWave(new Wave(wave, difficulty, wave % 5 == 0, plugin));
 
+                plugin.getScoreboardManager().updateScoreboard(ScoreboardType.INGAME);
+
                 return;
             }
 
@@ -105,6 +110,9 @@ public class GameTimer extends BukkitRunnable {
 
             secondsTillNextWave--;
         }
+
+        for (GamePlayer gp : plugin.getGame().getPlayers())
+            plugin.getScoreboardManager().giveScoreboard(gp.getPlayer(), ScoreboardType.INGAME);
     }
 
     private void playWave(Wave wave) {
@@ -126,5 +134,9 @@ public class GameTimer extends BukkitRunnable {
         //for (GamePlayer gp : plugin.getGame().getPlayers())
         //    title.send(gp.getPlayer());
 
+    }
+
+    public int getWave() {
+        return wave;
     }
 }

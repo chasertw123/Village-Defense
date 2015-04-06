@@ -180,14 +180,14 @@ public class Main extends JavaPlugin implements Listener {
                     if (arenayml.contains(pre + "spawn"))
                         spawnLocation = LocationUtils.deserializeLoc(arenayml.getString(pre + "spawn"));
 
-                    Arena a = new Arena(arenaName, buildings, enemySpawnPoints, spawnLocation, lobbyLocation, this);
+                    Arena a = new Arena(arenaName, buildings, enemySpawnPoints, spawnLocation, lobbyLocation);
 
                     arenas.add(a);
 
                     sendConsoleInfo("Registered Arena: " + a.getName());
                 }
 
-            game = new Game(this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0);
+            game = new Game(this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0, this);
 
         } catch (VillageDefenseException e) {
             e.printStackTrace();
@@ -227,13 +227,13 @@ public class Main extends JavaPlugin implements Listener {
             else if (this.getGame().getPlayers().size() < this.getGame().getMinPlayers()) {
                 int amount = this.getGame().getMinPlayers() - this.getGame().getPlayers().size();
                 Bukkit.broadcastMessage(this.getPrefix() + "We need " + amount + " more player" + ((amount == 1) ? "" : "s") + " to join!");
-
-                if (this.getGame().getGameState() == GameState.LOBBY)
-                    this.getScoreboardManager().giveScoreboard(p, ScoreboardType.VOTING);
-
-                else if (this.getGame().getGameState() == GameState.STARTING)
-                    this.getScoreboardManager().giveScoreboard(p, ScoreboardType.STARTING);
             }
+
+            if (this.getGame().getGameState() == GameState.LOBBY)
+                this.getScoreboardManager().giveScoreboard(p, ScoreboardType.VOTING);
+
+            else if (this.getGame().getGameState() == GameState.STARTING)
+                this.getScoreboardManager().giveScoreboard(p, ScoreboardType.STARTING);
         }
     }
 

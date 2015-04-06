@@ -5,6 +5,7 @@ import java.util.HashMap;
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.DuplicateAchievementIDException;
 import me.chasertw123.villagedefense.stats.achievements.standard.BetaTester;
+import me.chasertw123.villagedefense.stats.achievements.standard.FirstTimer;
 
 public class Achievements {
 
@@ -14,7 +15,8 @@ public class Achievements {
         ID_MAP.clear();
 
         try {
-            registerAchievement(new BetaTester(plugin));
+            this.registerAchievement(new BetaTester(plugin));
+            this.registerAchievement(new FirstTimer(plugin));
         } catch (DuplicateAchievementIDException e) {
             e.printStackTrace();
         }

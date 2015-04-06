@@ -47,16 +47,14 @@ public class Achievement {
     }
 
     /**
-     * For achievement wich require to have a minimum of X kills
+     * For achievement which require to have a minimum of X kills
      * 
      * Called on:
      * 
      * - Player kill // TODO
      * 
      * @param p
-     * @return
      */
-    public boolean check(Player p) {
-        return false;
+    public void check(Player p) {
     }
 }

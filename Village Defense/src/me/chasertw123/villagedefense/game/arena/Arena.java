@@ -3,7 +3,6 @@ package me.chasertw123.villagedefense.game.arena;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.ArenaCreationException;
 import me.chasertw123.villagedefense.game.building.Building;
 
@@ -21,7 +20,7 @@ public class Arena {
      * @param spawnLocation Center of player spawns
      * @throws ArenaCreationException When arena failed to create
      */
-    public Arena(String name, ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Location lobbyLocation, Main plugin) throws ArenaCreationException {
+    public Arena(String name, ArrayList<Building> buildings, ArrayList<Location> enemySpawnPoints, Location spawnLocation, Location lobbyLocation) throws ArenaCreationException {
 
         this.name = name;
 
@@ -56,9 +55,6 @@ public class Arena {
         this.setCenterSpawnLocation(spawnLocation);
         this.setBuildings(buildings);
         this.setEnemySpawnPoints(enemySpawnPoints);
-
-        for (Building b : buildings)
-            b.buildFirstTier(plugin);
     }
 
     /**

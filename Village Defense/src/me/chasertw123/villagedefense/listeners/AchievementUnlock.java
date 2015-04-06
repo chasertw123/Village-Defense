@@ -52,6 +52,8 @@ public class AchievementUnlock implements Listener {
 
         line.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, cb.create()));
 
+        event.getPlayer().sendMessage("");
         event.getPlayer().spigot().sendMessage(line);
+        event.getPlayer().sendMessage("");
     }
 }
