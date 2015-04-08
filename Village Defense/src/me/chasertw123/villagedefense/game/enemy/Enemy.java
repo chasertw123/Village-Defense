@@ -22,7 +22,7 @@ public abstract class Enemy {
     private EntityType entityType;
     private String customName = "";
     private boolean boss, baby = false, villager = false;
-    private int minDroppedGold, maxDroppedGold, difficulty;
+    private int minDroppedGold, maxDroppedGold, difficulty, experience;
 
     private ItemStack weapon = null;
     private ItemStack[] armor = null;
@@ -39,9 +39,10 @@ public abstract class Enemy {
      * @param minDroppedGold amount of gold dropped per kill
      * @param maxDroppedGold amount of gold dropped per kill
      */
-    public Enemy(EntityType entityType, int difficulty, int minDroppedGold, int maxDroppedGold) {
+    public Enemy(EntityType entityType, int difficulty, int experience, int minDroppedGold, int maxDroppedGold) {
         this.entityType = entityType;
         this.difficulty = difficulty;
+        this.experience = experience;
         this.minDroppedGold = minDroppedGold;
         this.maxDroppedGold = maxDroppedGold;
         this.boss = false;
@@ -56,9 +57,10 @@ public abstract class Enemy {
      * @param minDroppedGold amount of gold dropped per kill
      * @param maxDroppedGold amount of gold dropped per kill
      */
-    public Enemy(EntityType entityType, int minDroppedGold, int maxDroppedGold) {
+    public Enemy(EntityType entityType, int experience, int minDroppedGold, int maxDroppedGold) {
         this.entityType = entityType;
         this.difficulty = -1;
+        this.experience = experience;
         this.minDroppedGold = minDroppedGold;
         this.maxDroppedGold = maxDroppedGold;
         this.boss = true;
@@ -78,6 +80,13 @@ public abstract class Enemy {
      */
     public int getDifficulty() {
         return difficulty;
+    }
+
+    /**
+     * @return the experience rewarded for kill the {@link Enemy}
+     */
+    public int getExperience() {
+        return experience;
     }
 
     /**
@@ -220,6 +229,7 @@ public abstract class Enemy {
         LivingEntity entity = (LivingEntity) e;
 
         entity.setMetadata("gold", new FixedMetadataValue(plugin, (Math.max(minDroppedGold, random.nextInt(maxDroppedGold) + 1))));
+        entity.setMetadata("experience", new FixedMetadataValue(plugin, Math.max(0, experience)));
 
         entity.setCustomName((boss ? ChatColor.YELLOW + "[" + ChatColor.BLUE + "BOSS" + ChatColor.YELLOW + "] " + ChatColor.RESET : "") + customName);
         entity.setCustomNameVisible(true);

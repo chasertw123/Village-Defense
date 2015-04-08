@@ -48,28 +48,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
 
-    /* -=-=- Notes -=-=-
-     **********************************************************************************
-     * 
-     * -=- Achievements -=-
-     * 
-     * Achievement Ideas
-     * - Beta Tester
-     * 
-     * Problem: How to store achievements over MySQL/FlatFile and effective
-     * 
-     **********************************************************************************
-     * 
-     * -=- Multiple Maps -=-
-     * 
-     * Multiple Maps
-     * Make it so players can vote on which map they play on
-     * Then after a game can chose to rate it from 1 to 10
-     * 
-     * Problem: Game is currently designed for only one map
-     * 
-     **********************************************************************************/
-
     private final String prefix = ChatColor.WHITE + "[" + ChatColor.GREEN + "VD" + ChatColor.WHITE + "]" + ChatColor.RESET + " ";
 
     private FileConfiguration arenayml;
@@ -99,6 +77,7 @@ public class Main extends JavaPlugin implements Listener {
 
         pm.registerEvents(new AchievementUnlock(this), this);
         pm.registerEvents(new EntityDamageByEntity(this), this);
+        pm.registerEvents(new EntityTarget(this), this);
         pm.registerEvents(new EntityTarget(this), this);
         pm.registerEvents(new GameStart(this), this);
         pm.registerEvents(new InventoryClick(this), this);

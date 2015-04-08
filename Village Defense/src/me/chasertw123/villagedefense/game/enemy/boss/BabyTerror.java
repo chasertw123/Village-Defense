@@ -12,7 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 public class BabyTerror extends Enemy {
 
     public BabyTerror() {
-        super(EntityType.ZOMBIE, 50, 100);
+        super(EntityType.ZOMBIE, 100, 50, 100);
 
         super.setCustomName("Baby Terror");
         super.setBaby(true);
