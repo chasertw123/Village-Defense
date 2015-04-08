@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.BannerMeta;
 public class Archer extends Role {
 
     public Archer() throws RoleCreationException {
-        super("Archer", 100, 110, 220, null, null, null, null, setToolSets(), new ItemStack(Material.BOW), "This role acts as a marksman, dealing lots of damage from long distances. You have medium attack damage," + " a medium amount of mana, and a small speed buff.");
+        super("Archer", 220, 10, 110, 100, null, null, null, null, setToolSets(), new ItemStack(Material.BOW), "This role acts as a marksman, dealing lots of damage from long distances. You have medium attack damage," + " a medium amount of mana, and a small speed buff.");
     }
 
     @Override

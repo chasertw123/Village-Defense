@@ -12,8 +12,10 @@ import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.game.wave.Wave;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
+import me.chasertw123.villagedefense.utils.Title;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -22,7 +24,9 @@ public class GameTimer extends BukkitRunnable {
     private Main plugin;
 
     private int wave = 1, difficulty, secondsTillNextWave = -1;
+
     private Random r = new Random();
+    private Title title = new Title();
 
     public GameTimer(Main plugin) {
         difficulty = (plugin.getGame().getPlayers().size() * 12) + 5;
@@ -48,7 +52,7 @@ public class GameTimer extends BukkitRunnable {
             gp.setToolTiers(toolTiers);
             gp.getPlayer().teleport(plugin.getGame().getArena().getRandomLocation());
 
-            gp.setMana(gp.getMaxMana());
+            gp.setMana(gp.getRole().getMana());
 
             plugin.getScoreboardManager().giveScoreboard(gp.getPlayer(), ScoreboardType.INGAME);
         }
@@ -61,18 +65,16 @@ public class GameTimer extends BukkitRunnable {
     @Override
     public void run() {
 
-        int regen = r.nextInt(5) + 3;
-
         for (GamePlayer gp : plugin.getGame().getPlayers()) {
 
-            if (gp.getMana() + regen > gp.getMaxMana()) {
+            if (gp.getMana() + gp.getRole().getManaRegen() > gp.getRole().getMana()) {
 
-                if (gp.getMana() < gp.getMaxMana())
-                    gp.setMana(gp.getMaxMana());
+                if (gp.getMana() < gp.getRole().getMana())
+                    gp.setMana(gp.getRole().getMana());
             }
 
             else
-                gp.setMana(gp.getMana() + regen);
+                gp.setMana(gp.getMana() + gp.getRole().getManaRegen());
 
             gp.getRole().getPrimaryAbility().decrementCooldown();
             gp.getRole().getSecondaryAbility().decrementCooldown();
@@ -85,8 +87,8 @@ public class GameTimer extends BukkitRunnable {
             if (secondsTillNextWave == -1) {
                 secondsTillNextWave = plugin.getConfig().contains("timers.between-waves") ? plugin.getConfig().getInt("timers.between-waves") : 15;
 
-                //for (GamePlayer gp : plugin.getGame().getPlayers())
-                //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " seconds");
+                for (GamePlayer gp : plugin.getGame().getPlayers())
+                    title.sendActionbar(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " seconds");
 
                 return;
             }
@@ -104,9 +106,9 @@ public class GameTimer extends BukkitRunnable {
                 return;
             }
 
-            //else if (secondsTillNextWave == 10 || secondsTillNextWave <= 5)
-            //for (GamePlayer gp : plugin.getGame().getPlayers())
-            //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " second" + ((secondsTillNextWave == 1) ? "" : "s"));
+            else if (secondsTillNextWave == 10 || secondsTillNextWave <= 5)
+                for (GamePlayer gp : plugin.getGame().getPlayers())
+                    title.sendActionbar(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "Next wave will start in " + ChatColor.BLUE + secondsTillNextWave + ChatColor.YELLOW + " second" + ((secondsTillNextWave == 1) ? "" : "s"));
 
             secondsTillNextWave--;
         }
@@ -126,14 +128,13 @@ public class GameTimer extends BukkitRunnable {
             e.printStackTrace();
         }
 
-        //Title title = new Title(ChatColor.BLUE + "Wave " + wave.getWaveNumber(), "", 3, 5, 3);
+        for (GamePlayer gp : plugin.getGame().getPlayers()) {
+            if (wave.isBossWave())
+                title.sendTitles(gp.getPlayer(), 60, 100, 60, ChatColor.BLUE + "Boss Wave", ChatColor.YELLOW + "(Wave " + wave.getWaveNumber() + ")");
 
-        //if (wave.isBossWave())
-        //    title = new Title(ChatColor.BLUE + "Boss Wave", ChatColor.YELLOW + "(Wave " + wave.getWaveNumber() + ")", 3, 5, 3);
-
-        //for (GamePlayer gp : plugin.getGame().getPlayers())
-        //    title.send(gp.getPlayer());
-
+            else
+                title.sendTitle(gp.getPlayer(), 60, 100, 60, ChatColor.BLUE + "Wave " + wave.getWaveNumber());
+        }
     }
 
     public int getWave() {

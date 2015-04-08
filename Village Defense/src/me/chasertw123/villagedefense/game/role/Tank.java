@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.BannerMeta;
 public class Tank extends Role {
 
     public Tank() throws RoleCreationException {
-        super("Tank", 50, 85, 280, null, null, null, null, setToolSets(), new ItemStack(Material.DIAMOND_CHESTPLATE), "This role acts as the main damage taker of the team. You have a medium amount of attack damage, tons of mana," + " and are highly resistant to damage, but you are a little slow.");
+        super("Tank", 280, 20, 85, 140, null, null, null, null, setToolSets(), new ItemStack(Material.DIAMOND_CHESTPLATE), "This role acts as the main damage taker of the team. You have a medium amount of attack damage, tons of mana," + " and are highly resistant to damage, but you are a little slow.");
     }
 
     @Override

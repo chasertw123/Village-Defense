@@ -1,380 +1,133 @@
 package me.chasertw123.villagedefense.utils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.bukkit.Bukkit;
+import net.minecraft.server.v1_8_R2.IChatBaseComponent;
+import net.minecraft.server.v1_8_R2.PacketPlayOutChat;
+import net.minecraft.server.v1_8_R2.PacketPlayOutPlayerListHeaderFooter;
+import net.minecraft.server.v1_8_R2.PacketPlayOutTitle;
+import net.minecraft.server.v1_8_R2.PlayerConnection;
+
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-/**
- * Minecraft 1.8 Title
- * 
- * @version 1.0.4
- * @author Maxim Van de Wynckel
- */
 public class Title {
 
-    /* Title packet */
-    private Class<?> packetTitle;
-
-    /* Title packet actions ENUM */
-    private Class<?> packetActions;
-
-    /* Chat serializer */
-    private Class<?> nmsChatSerializer;
-    private Class<?> chatBaseComponent;
-
-    /* Title text and color */
-    private String title = "";
-    private ChatColor titleColor = ChatColor.WHITE;
-
-    /* Subtitle text and color */
-    private String subtitle = "";
-    private ChatColor subtitleColor = ChatColor.WHITE;
-
-    /* Title timings */
-    private int fadeInTime = -1;
-    private int stayTime = -1;
-    private int fadeOutTime = -1;
-    private boolean ticks = false;
-
-    private static final Map<Class<?>, Class<?>> CORRESPONDING_TYPES = new HashMap<Class<?>, Class<?>>();
-
     /**
-     * Create a new 1.8 title
+     * Sends a title to a Player.
      * 
-     * @param title Title
+     * @param p The Player to send the title to.
+     * @param fadeIn The time it takes for the title to fade in.
+     * @param stay The time that the title stays.
+     * @param fadeOut The time it takes for the title to fade out.
+     * @param title The String of the title. Color codes supported.
      */
-    public Title(String title) {
-        this.title = title;
-        loadClasses();
+    public void sendTitle(Player p, int fadeIn, int stay, int fadeOut, String title) {
+        sendAll(p, fadeIn, stay, fadeOut, title, null, null, null, null);
     }
 
     /**
-     * Create a new 1.8 title
+     * Sends a subtitle to a Player.
      * 
-     * @param title Title text
-     * @param subtitle Subtitle text
+     * @param p The Player to send the title to.
+     * @param fadeIn The time it takes for the title to fade in.
+     * @param stay The time that the title stays.
+     * @param fadeOut The time it takes for the title to fade out.
+     * @param subtitle The String of the subtitle. Color codes supported.
      */
-    public Title(String title, String subtitle) {
-        this.title = title;
-        this.subtitle = subtitle;
-        loadClasses();
+    public void sendSubtitle(Player p, int fadeIn, int stay, int fadeOut, String subtitle) {
+        sendAll(p, fadeIn, stay, fadeOut, null, subtitle, null, null, null);
     }
 
     /**
-     * Copy 1.8 title
+     * Sends a title and subtitle to a Player.
      * 
-     * @param title Title
+     * @param p The Player to send the titles to.
+     * @param fadeIn The time it takes for the title to fade in.
+     * @param stay The time that the title stays.
+     * @param fadeOut The time it takes for the title to fade out.
+     * @param title The String of the title. Color codes supported.
+     * @param subtitle The String of the subtitle. Color codes supported.
      */
-    public Title(Title title) {
-        // Copy title
-        this.title = title.title;
-        this.subtitle = title.subtitle;
-        this.titleColor = title.titleColor;
-        this.subtitleColor = title.subtitleColor;
-        this.fadeInTime = title.fadeInTime;
-        this.fadeOutTime = title.fadeOutTime;
-        this.stayTime = title.stayTime;
-        this.ticks = title.ticks;
-        loadClasses();
+    public void sendTitles(Player p, int fadeIn, int stay, int fadeOut, String title, String subtitle) {
+        sendAll(p, fadeIn, stay, fadeOut, title, subtitle, null, null, null);
     }
 
     /**
-     * Create a new 1.8 title
+     * Sends an action bar message to a Player.
      * 
-     * @param title Title text
-     * @param subtitle Subtitle text
-     * @param fadeInTime Fade in time
-     * @param stayTime Stay on screen time
-     * @param fadeOutTime Fade out time
+     * @param p The Player to send the actionbar to.
+     * @param text The String of the message. Color codes supported.
      */
-    public Title(String title, String subtitle, int fadeInTime, int stayTime, int fadeOutTime) {
-        this.title = title;
-        this.subtitle = subtitle;
-        this.fadeInTime = fadeInTime;
-        this.stayTime = stayTime;
-        this.fadeOutTime = fadeOutTime;
-        loadClasses();
+    public void sendActionbar(Player p, String text) {
+        sendAll(p, 0, 0, 0, null, null, text, null, null);
     }
 
     /**
-     * Load spigot and NMS classes
-     */
-    private void loadClasses() {
-        packetTitle = getNMSClass("PacketPlayOutTitle");
-        packetActions = getNMSClass("EnumTitleAction");
-        chatBaseComponent = getNMSClass("IChatBaseComponent");
-        nmsChatSerializer = getNMSClass("ChatSerializer");
-    }
-
-    /**
-     * Set title text
+     * Sends the tablist header and footer to a Player.
      * 
-     * @param title Title
+     * @param p The Player to send the tablist header/footer to.
+     * @param header The text in the header. Color codes supported.
+     * @param footer The text in the footer. Color codes supported.
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void sendTablist(Player p, String header, String footer) {
+        sendAll(p, 0, 0, 0, null, null, null, header, footer);
     }
 
     /**
-     * Get title text
-     * 
-     * @return Title text
+     * @param p The Player to send the "stuff" to.
+     * @param fadeIn The time it takes for the title to fade in.
+     * @param stay The time that the title stays.
+     * @param fadeOut The time it takes for the title to fade out.
+     * @param title The String of the title. Color codes supported.
+     * @param subtitle The String of the subtitle. Color codes supported.x
+     * @param actionText The String of the message. Color codes supported.
+     * @param header The text in the header. Color codes supported.
+     * @param footer The text in the footer. Color codes supported.
      */
-    public String getTitle() {
-        return this.title;
-    }
+    public void sendAll(Player p, int fadeIn, int stay, int fadeOut, String title, String subtitle, String actionText, String header, String footer) {
+        PlayerConnection playerConnection = ((CraftPlayer) p).getHandle().playerConnection;
 
-    /**
-     * Set subtitle text
-     * 
-     * @param subtitle Subtitle text
-     */
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
-    }
+        if (title != null && subtitle != null) {
+            PacketPlayOutTitle packetPlayOutTimes = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TIMES, null, fadeIn, stay, fadeOut);
+            playerConnection.sendPacket(packetPlayOutTimes);
+        }
 
-    /**
-     * Get subtitle text
-     * 
-     * @return Subtitle text
-     */
-    public String getSubtitle() {
-        return this.subtitle;
-    }
+        if (title != null) {
+            IChatBaseComponent titleComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', title) + "\"}");
+            PacketPlayOutTitle titlePacket = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, titleComponent);
+            playerConnection.sendPacket(titlePacket);
+        }
 
-    /**
-     * Set the title color
-     * 
-     * @param color Chat color
-     */
-    public void setTitleColor(ChatColor color) {
-        this.titleColor = color;
-    }
+        if (subtitle != null) {
+            IChatBaseComponent subtitleComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', subtitle) + "\"}");
+            PacketPlayOutTitle subtitlePacket = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, subtitleComponent);
+            playerConnection.sendPacket(subtitlePacket);
+        }
 
-    /**
-     * Set the subtitle color
-     * 
-     * @param color Chat color
-     */
-    public void setSubtitleColor(ChatColor color) {
-        this.subtitleColor = color;
-    }
+        if (actionText != null) {
+            IChatBaseComponent actionComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', actionText) + "\"}");
+            PacketPlayOutChat actionPacket = new PacketPlayOutChat(actionComponent, (byte) 2);
+            playerConnection.sendPacket(actionPacket);
+        }
 
-    /**
-     * Set title fade in time
-     * 
-     * @param time Time
-     */
-    public void setFadeInTime(int time) {
-        this.fadeInTime = time;
-    }
+        if (header != null || footer != null) {
+            header = header == null ? "" : ChatColor.translateAlternateColorCodes('&', header);
+            footer = footer == null ? "" : ChatColor.translateAlternateColorCodes('&', footer);
 
-    /**
-     * Set title fade out time
-     * 
-     * @param time Time
-     */
-    public void setFadeOutTime(int time) {
-        this.fadeOutTime = time;
-    }
+            IChatBaseComponent headerComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + header + "\"}");
+            IChatBaseComponent footerComponent = IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + footer + "\"}");
 
-    /**
-     * Set title stay time
-     * 
-     * @param time Time
-     */
-    public void setStayTime(int time) {
-        this.stayTime = time;
-    }
-
-    /**
-     * Set timings to ticks
-     */
-    public void setTimingsToTicks() {
-        ticks = true;
-    }
-
-    /**
-     * Set timings to seconds
-     */
-    public void setTimingsToSeconds() {
-        ticks = false;
-    }
-
-    /**
-     * Send the title to a player
-     * 
-     * @param player Player
-     */
-    public void send(Player player) {
-        if (packetTitle != null) {
-            // First reset previous settings
-            resetTitle(player);
+            PacketPlayOutPlayerListHeaderFooter packetTablist = new PacketPlayOutPlayerListHeaderFooter(headerComponent);
             try {
-                // Send timings first
-                Object handle = getHandle(player);
-                Object connection = getField(handle.getClass(), "playerConnection").get(handle);
-                Object[] actions = packetActions.getEnumConstants();
-                Method sendPacket = getMethod(connection.getClass(), "sendPacket");
-                Object packet = packetTitle.getConstructor(packetActions, chatBaseComponent, Integer.TYPE, Integer.TYPE, Integer.TYPE).newInstance(actions[2], null, fadeInTime * (ticks ? 1 : 20), stayTime * (ticks ? 1 : 20), fadeOutTime * (ticks ? 1 : 20));
-                // Send if set
-                if (fadeInTime != -1 && fadeOutTime != -1 && stayTime != -1)
-                    sendPacket.invoke(connection, packet);
-
-                // Send title
-                Object serialized = getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{text:\"" + ChatColor.translateAlternateColorCodes('&', title) + "\",color:" + titleColor.name().toLowerCase() + "}");
-                packet = packetTitle.getConstructor(packetActions, chatBaseComponent).newInstance(actions[0], serialized);
-                sendPacket.invoke(connection, packet);
-                if (subtitle != "") {
-                    // Send subtitle if present
-                    serialized = getMethod(nmsChatSerializer, "a", String.class).invoke(null, "{text:\"" + ChatColor.translateAlternateColorCodes('&', subtitle) + "\",color:" + subtitleColor.name().toLowerCase() + "}");
-                    packet = packetTitle.getConstructor(packetActions, chatBaseComponent).newInstance(actions[1], serialized);
-                    sendPacket.invoke(connection, packet);
-                }
+                Field field = packetTablist.getClass().getDeclaredField("b");
+                field.setAccessible(true);
+                field.set(packetTablist, footerComponent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            playerConnection.sendPacket(packetTablist);
         }
-    }
-
-    /**
-     * Broadcast the title to all players
-     */
-    public void broadcast() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            send(p);
-        }
-    }
-
-    /**
-     * Clear the title
-     * 
-     * @param player Player
-     */
-    public void clearTitle(Player player) {
-        try {
-            // Send timings first
-            Object handle = getHandle(player);
-            Object connection = getField(handle.getClass(), "playerConnection").get(handle);
-            Object[] actions = packetActions.getEnumConstants();
-            Method sendPacket = getMethod(connection.getClass(), "sendPacket");
-            Object packet = packetTitle.getConstructor(packetActions, chatBaseComponent).newInstance(actions[3], null);
-            sendPacket.invoke(connection, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Reset the title settings
-     * 
-     * @param player Player
-     */
-    public void resetTitle(Player player) {
-        try {
-            // Send timings first
-            Object handle = getHandle(player);
-            Object connection = getField(handle.getClass(), "playerConnection").get(handle);
-            Object[] actions = packetActions.getEnumConstants();
-            Method sendPacket = getMethod(connection.getClass(), "sendPacket");
-            Object packet = packetTitle.getConstructor(packetActions, chatBaseComponent).newInstance(actions[4], null);
-            sendPacket.invoke(connection, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Class<?> getPrimitiveType(Class<?> clazz) {
-        return CORRESPONDING_TYPES.containsKey(clazz) ? CORRESPONDING_TYPES.get(clazz) : clazz;
-    }
-
-    private Class<?>[] toPrimitiveTypeArray(Class<?>[] classes) {
-        int a = classes != null ? classes.length : 0;
-        Class<?>[] types = new Class<?>[a];
-        for (int i = 0; i < a; i++)
-            types[i] = getPrimitiveType(classes[i]);
-        return types;
-    }
-
-    private static boolean equalsTypeArray(Class<?>[] a, Class<?>[] o) {
-        if (a.length != o.length)
-            return false;
-        for (int i = 0; i < a.length; i++)
-            if (!a[i].equals(o[i]) && !a[i].isAssignableFrom(o[i]))
-                return false;
-        return true;
-    }
-
-    private Object getHandle(Object obj) {
-        try {
-            return getMethod("getHandle", obj.getClass()).invoke(obj);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Method getMethod(String name, Class<?> clazz, Class<?>... paramTypes) {
-        Class<?>[] t = toPrimitiveTypeArray(paramTypes);
-        for (Method m : clazz.getMethods()) {
-            Class<?>[] types = toPrimitiveTypeArray(m.getParameterTypes());
-            if (m.getName().equals(name) && equalsTypeArray(types, t))
-                return m;
-        }
-        return null;
-    }
-
-    private String getVersion() {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        String version = name.substring(name.lastIndexOf('.') + 1) + ".";
-        return version;
-    }
-
-    private Class<?> getNMSClass(String className) {
-        String fullName = "net.minecraft.server." + getVersion() + className;
-        Class<?> clazz = null;
-        try {
-            clazz = Class.forName(fullName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return clazz;
-    }
-
-    private Field getField(Class<?> clazz, String name) {
-        try {
-            Field field = clazz.getDeclaredField(name);
-            field.setAccessible(true);
-            return field;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    private Method getMethod(Class<?> clazz, String name, Class<?>... args) {
-        for (Method m : clazz.getMethods())
-            if (m.getName().equals(name) && (args.length == 0 || ClassListEqual(args, m.getParameterTypes()))) {
-                m.setAccessible(true);
-                return m;
-            }
-        return null;
-    }
-
-    private boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
-        boolean equal = true;
-        if (l1.length != l2.length)
-            return false;
-        for (int i = 0; i < l1.length; i++)
-            if (l1[i] != l2[i]) {
-                equal = false;
-                break;
-            }
-        return equal;
     }
 }

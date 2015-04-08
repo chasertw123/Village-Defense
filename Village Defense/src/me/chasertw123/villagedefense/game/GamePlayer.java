@@ -14,7 +14,7 @@ public class GamePlayer {
 
     private Role role;
     private UUID player_uuid;
-    private int gold = 0, mana = 0, maxMana = 0, dr = 100, sb = 100;
+    private int gold = 0, mana = 0;
     private HashMap<ToolType, Integer> toolTiers;
     private boolean dead = false, arrow = false;
 
@@ -108,10 +108,7 @@ public class GamePlayer {
             getPlayer().getInventory().setArmorContents(null);
             getPlayer().getInventory().setHelmet(role.getBanner());
 
-            dr = role.getBaseDamageReduction();
-            sb = role.getBaseSpeedBoost();
-            mana = role.getBaseMana();
-            maxMana = role.getBaseMana();
+            mana = role.getMana();
         }
     }
 
@@ -164,48 +161,6 @@ public class GamePlayer {
     }
 
     /**
-     * Get max mana of {@link GamePlayer}
-     * 
-     * @return the max mana
-     * @see #setMaxMana(int)
-     */
-    public int getMaxMana() {
-        return maxMana;
-    }
-
-    /**
-     * Update max mana
-     * 
-     * @param mana new max mana amount
-     * @see #getMana()
-     */
-    public void setMaxMana(int maxMana) {
-        this.maxMana = maxMana;
-    }
-
-    /**
-     * Increment max mana with specified amount same as
-     * <code>setMaxMana(getMaxMana() + amount)</code>
-     * 
-     * @param mana to add to total max
-     * @see #setMaxMana(int)
-     */
-    public void incrementMaxMana(int maxMana) {
-        setMaxMana(getMaxMana() + maxMana);
-    }
-
-    /**
-     * Decrement max mana with specified amount same as
-     * <code>setMaxMana(getMaxMana() - amount)</code>
-     * 
-     * @param mana to add to total max
-     * @see #setMaxMana(int)
-     */
-    public void decrementMaxMana(int maxMana) {
-        setMaxMana(getMaxMana() - maxMana);
-    }
-
-    /**
      * Get mana of {@link GamePlayer}
      * 
      * @return the mana
@@ -249,55 +204,14 @@ public class GamePlayer {
     }
 
     /**
-     * Get damagereduction amount, 100 = default
-     * 
-     * @return Damage reduction amount in %
-     * @see {@link #setDamageReduction(int)} to set value
-     */
-    public int getDamageReduction() {
-        return dr;
-    }
-
-    /**
-     * Set damage reduction
-     * 
-     * @param dr new amount in %
-     * @see {@link #getDamageReduction()} to get value
-     */
-    public void setDamageReduction(int dr) {
-        this.dr = dr;
-    }
-
-    /**
-     * Get speedboost, 100 = default
-     * 
-     * @return Speed boost amount in %
-     * @see {@link #setSpeedBoost(int)} to set and {@link #applySpeedBoost()} to
-     * apply value
-     */
-    public int getSpeedBoost() {
-        return sb;
-    }
-
-    /**
-     * Set speedboost, 100 = default
-     * 
-     * @param sb Speed boost amount in %
-     * @see {@link #getSpeedBoost()} to get and {@link #applySpeedBoost()} to
-     * apply value
-     */
-    public void setSpeedBoost(int sb) {
-        this.sb = sb;
-    }
-
-    /**
      * Apply speedboost to player
      * 
      * @see {@link #getSpeedBoost()} to get and {@link #setSpeedBoost(int)} to
      * set value
      */
     public void applySpeedBoost() {
-        getPlayer().setWalkSpeed(0.2F * (sb / 100F));
+        if (role != null)
+            getPlayer().setWalkSpeed(0.2F * (getRole().getSpeedBoost() / 100F));
     }
 
     /**
@@ -307,7 +221,7 @@ public class GamePlayer {
      */
     public void updateManaBar() {
 
-        float percent = (float) getMana() / getMaxMana();
+        float percent = (float) getMana() / getRole().getMana();
 
         if (percent >= 1)
             percent = 0.9999F;

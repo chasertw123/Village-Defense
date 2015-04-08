@@ -22,7 +22,7 @@ import org.bukkit.inventory.meta.BannerMeta;
 public class Healer extends Role {
 
     public Healer() throws VillageDefenseException {
-        super("Healer", 100, 110, 280, new Heal(), new Shield(), null, null, setToolSets(), new ItemStack(Material.INK_SACK, 1, (short) 10), "This role acts as support healing and buffing their allies. You have high mana but low attack damage and a slight speed boost.");
+        super("Healer", 280, 20, 110, 100, new Heal(), new Shield(), null, null, setToolSets(), new ItemStack(Material.INK_SACK, 1, (short) 10), "This role acts as support healing and buffing their allies. You have high mana but low attack damage and a slight speed boost.");
     }
 
     @Override

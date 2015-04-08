@@ -21,37 +21,24 @@ import org.bukkit.inventory.PlayerInventory;
 public abstract class Role {
 
     private String name;
-    private int bdr, bsb, bm;
+    private int mana, manaRegen, speedBoost, damageReduction, roleExperience, level = 1;
     private ArrayList<ToolSet> toolSets;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
 
     public static HashMap<Class<? extends Role>, EntityType> roleClasses = new HashMap<Class<? extends Role>, EntityType>();
 
-    /**
-     * Create a role instance
-     * 
-     * @param name of {@link Role}
-     * @param bdr base damage reduction of {@link Role}
-     * @param bsb base speed boost of {@link Role}
-     * @param bm base mana of {@link Role}
-     * @param primaryAbility Primary {@link Ability} of {@link Role}
-     * @param secondaryAbility Secondary {@link Ability} of {@link Role}
-     * @param tertiaryAbility Tertiary {@link Ability} of {@link Role}
-     * @param ultraAbility Ultra {@link Ability} of {@link Role}
-     * @param toolSets {@link ArrayList} of {@link ToolSet} for {@link Role}
-     * @param itemStack {@link ItemStack} logo
-     * @param description Description of {@link Role}
-     * 
-     * @throws RoleCreationException when failed to create.
-     */
-    public Role(String name, int bdr, int bsb, int bm, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, ArrayList<ToolSet> toolSets, ItemStack itemStack, String description) throws RoleCreationException {
-
+    public Role(String name, int baseMana, int baseManaRegen, int baseSpeedBoost, int baseDamageReduction, Ability primaryAbility, Ability secondaryAbility, Ability tertiaryAbility, Ability ultraAbility, ArrayList<ToolSet> toolSets, ItemStack itemStack, String description) throws RoleCreationException {
         this.name = name;
-        this.bdr = bdr;
-        this.bsb = bsb;
-        this.bm = bm;
+        this.mana = baseMana;
+        this.manaRegen = baseManaRegen;
+        this.speedBoost = baseSpeedBoost;
+        this.damageReduction = baseDamageReduction;
         this.toolSets = toolSets;
+        this.primaryAbility = primaryAbility;
+        this.secondaryAbility = secondaryAbility;
+        this.tertiaryAbility = tertiaryAbility;
+        this.ultraAbility = ultraAbility;
 
         int chestplate = 0, leggings = 0, boots = 0, weapon = 0;
 
@@ -70,48 +57,26 @@ public abstract class Role {
                 ++weapon;
         }
 
-        if (chestplate != 1 || leggings != 1 || boots != 1 || weapon != 1)
-            throw new RoleCreationException("Too many or too little ToolSets have been set!");
+        if (chestplate < 1 || leggings < 1 || boots < 1 || weapon < 1)
+            throw new RoleCreationException("Too little ToolSets have been set!");
 
-        if (primaryAbility != null)
-            this.primaryAbility = primaryAbility;
+        try {
 
-        else
-            try {
+            if (this.primaryAbility == null)
                 this.primaryAbility = new NoAbility(AbilityType.PRIMARY);
-            } catch (AbilityCreationException e) {
-                e.printStackTrace();
-            }
 
-        if (secondaryAbility != null)
-            this.secondaryAbility = secondaryAbility;
-
-        else
-            try {
+            if (this.secondaryAbility == null)
                 this.secondaryAbility = new NoAbility(AbilityType.SECONDARY);
-            } catch (AbilityCreationException e) {
-                e.printStackTrace();
-            }
 
-        if (tertiaryAbility != null)
-            this.tertiaryAbility = tertiaryAbility;
-
-        else
-            try {
+            if (this.tertiaryAbility == null)
                 this.tertiaryAbility = new NoAbility(AbilityType.TERTIARY);
-            } catch (AbilityCreationException e) {
-                e.printStackTrace();
-            }
 
-        if (ultraAbility != null)
-            this.ultraAbility = ultraAbility;
-
-        else
-            try {
+            if (this.ultraAbility == null)
                 this.ultraAbility = new NoAbility(AbilityType.ULTRA);
-            } catch (AbilityCreationException e) {
-                e.printStackTrace();
-            }
+
+        } catch (AbilityCreationException e) {
+            e.printStackTrace();
+        }
 
         FancyItemStack is = new FancyItemStack(itemStack);
         is.setDisplayName(ChatColor.GREEN + "" + ChatColor.BOLD + name);
@@ -128,24 +93,129 @@ public abstract class Role {
     }
 
     /**
-     * @return Base damage reduction in percent
+     * @return level of {@link Role}
      */
-    public int getBaseDamageReduction() {
-        return bdr;
+    public int getLevel() {
+        return level;
     }
 
     /**
-     * @return Base speed of ability in percent
+     * Set the level of {@link Role}
+     * 
+     * @param level the new level of the {@link Role}
      */
-    public int getBaseSpeedBoost() {
-        return bsb;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     /**
-     * @return Base mana of ability
+     * Get Max Level for {@link Role}
+     * 
+     * @return the max level for {@link Role}
      */
-    public int getBaseMana() {
-        return bm;
+    public int getMaxLevel() {
+        return (getPrimaryAbility().getMaxTier() + getSecondaryAbility().getMaxTier() + getTertiaryAbility().getMaxTier() + getUltraAbility().getMaxTier()) - 4;
+    }
+
+    /**
+     * Get the Mana Regen per second for {@link Role} level
+     * 
+     * @return Mana regen per seconf for {@link Role}
+     */
+    public int getManaRegen() {
+        return manaRegen;
+    }
+
+    /**
+     * Set the Mana Regen per second for {@link Role}
+     * 
+     * @param manaRegen Mana regen this {@link Role} can have
+     */
+    public void setManaRegen(int manaRegen) {
+        this.manaRegen = manaRegen;
+    }
+
+    /**
+     * Get the Max Mana for {@link Role} level
+     * 
+     * @return Max man {@link Role} has
+     */
+    public int getMana() {
+        return mana;
+    }
+
+    /**
+     * Set the Max Mana for {@link Role}
+     * 
+     * @param mana Max mana this {@link Role} can have
+     */
+    public void setMana(int mana) {
+        this.mana = mana;
+    }
+
+    /**
+     * @return Speed boost of {@link Role} in percent
+     */
+    public int getSpeedBoost() {
+        return speedBoost;
+    }
+
+    /**
+     * Set the speed boost of the {@link Role} in percent
+     * 
+     * @param speedBoost Speed increase in percent (100 is normal speed)
+     */
+    public void setSpeedBoost(int speedBoost) {
+        this.speedBoost = speedBoost;
+    }
+
+    /**
+     * @return Damage reduction of {@link Role} in percent
+     */
+    public int getDamageReduction() {
+        return damageReduction;
+    }
+
+    /**
+     * Set the damage reduction of the {@link Role} in percent
+     * 
+     * @param damageReduction Damage reduction increase in percent (100 is
+     * normal speed)
+     */
+    public void setDamageReduction(int damageReduction) {
+        this.damageReduction = damageReduction;
+    }
+
+    /**
+     * Get the current experience for {@link Role}
+     * 
+     * @return amount of experience {@link Role} has
+     */
+    public int getRoleExperience() {
+        return roleExperience;
+    }
+
+    /**
+     * Set the current experience for {@link Role}
+     * 
+     * @param roleExperience amount of experience {@link Role} has
+     */
+    public void setRoleExperience(int roleExperience) {
+        this.roleExperience = roleExperience;
+    }
+
+    /**
+     * Get the amount of experience required for a level
+     * 
+     * @param level the level you want the experience from
+     * @return the amount of experience for level
+     */
+    public int getLevelUpExperience(int level) {
+
+        if (level <= 1)
+            return 0;
+
+        return (int) Math.floor(level + 300 * Math.pow(2, level / 7));
     }
 
     /**
@@ -278,5 +348,4 @@ public abstract class Role {
             e.printStackTrace();
         }
     }
-
 }

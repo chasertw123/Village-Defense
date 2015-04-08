@@ -9,6 +9,7 @@ import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
+import me.chasertw123.villagedefense.utils.Title;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -19,6 +20,8 @@ public class LobbyTimer extends BukkitRunnable {
 
     private Main plugin;
     private int timeLeft;
+
+    private Title title = new Title();
 
     public LobbyTimer(Main plugin) {
         this.plugin = plugin;
@@ -62,7 +65,7 @@ public class LobbyTimer extends BukkitRunnable {
                     gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "The have recieved the " + ChatColor.BLUE + gp.getRole().getName() + ChatColor.YELLOW + " role randomly!");
                 }
 
-                //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
+                title.sendActionbar(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game has started.");
                 gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.ENDERDRAGON_GROWL, 1F, 1F);
 
             }
@@ -72,8 +75,8 @@ public class LobbyTimer extends BukkitRunnable {
             return;
         }
 
-        //for (GamePlayer gp : plugin.getGame().getPlayers())
-        //ActionBarAPI.send(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.BLUE + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
+        for (GamePlayer gp : plugin.getGame().getPlayers())
+            title.sendActionbar(gp.getPlayer(), plugin.getPrefix() + ChatColor.YELLOW + "The game will start in " + ChatColor.BLUE + timeLeft + ChatColor.YELLOW + " second" + ((timeLeft == 1) ? "." : "s."));
 
         plugin.getScoreboardManager().updateScoreboard(ScoreboardType.STARTING);
 
