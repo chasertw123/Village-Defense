@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.exceptions.RoleCreationException;
+import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.abilities.Ability;
 import me.chasertw123.villagedefense.game.abilities.AbilityType;
 import me.chasertw123.villagedefense.game.abilities.NoAbility;
@@ -21,7 +22,7 @@ import org.bukkit.inventory.PlayerInventory;
 public abstract class Role {
 
     private String name;
-    private int mana, manaRegen, speedBoost, damageReduction, roleExperience, level = 1;
+    private int mana, manaRegen, speedBoost, damageReduction, experience, level = 1, availableUpgrades = 0;
     private ArrayList<ToolSet> toolSets;
     private Ability primaryAbility, secondaryAbility, tertiaryAbility, ultraAbility;
     private ItemStack itemStack;
@@ -109,6 +110,35 @@ public abstract class Role {
     }
 
     /**
+     * @return the amount of times a {@link GamePlayer} can upgrade any of their
+     * {@link Ability}
+     */
+    public int getAvailableUpgrades() {
+        return availableUpgrades;
+    }
+
+    /**
+     * Set the amount of times a {@link GamePlayer} can upgrade any or their
+     * {@link Ability}
+     * 
+     * @param availableUpgrades amount of times a {@link GamePlayer} can upgrade
+     * any or their {@link Ability}
+     */
+    public void setAvailbleUpgrades(int availableUpgrades) {
+        this.availableUpgrades = availableUpgrades;
+    }
+
+    /**
+     * Level up the {@link Role}
+     */
+    public void levelUp() {
+        setLevel(getLevel() + 1);
+        setAvailbleUpgrades(getAvailableUpgrades() + 1);
+        setSpeedBoost(getSpeedBoost() + 2);
+        setDamageReduction(getDamageReduction() + 2);
+    }
+
+    /**
      * Get Max Level for {@link Role}
      * 
      * @return the max level for {@link Role}
@@ -191,8 +221,8 @@ public abstract class Role {
      * 
      * @return amount of experience {@link Role} has
      */
-    public int getRoleExperience() {
-        return roleExperience;
+    public int getExperience() {
+        return experience;
     }
 
     /**
@@ -200,8 +230,8 @@ public abstract class Role {
      * 
      * @param roleExperience amount of experience {@link Role} has
      */
-    public void setRoleExperience(int roleExperience) {
-        this.roleExperience = roleExperience;
+    public void setExperience(int experience) {
+        this.experience = experience;
     }
 
     /**

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+// Still a work in-progress
 public class SpinningBlade extends Ability {
 
     public SpinningBlade() throws AbilityCreationException {
