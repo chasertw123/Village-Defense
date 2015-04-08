@@ -4,6 +4,7 @@ import java.io.File;
 
 import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.BuildingCreationException;
+import me.chasertw123.villagedefense.exceptions.BuildingSpawnException;
 import me.chasertw123.villagedefense.game.villager.VillagerArmorsmith;
 import me.chasertw123.villagedefense.utils.SchematicUtil;
 
@@ -19,21 +20,26 @@ public class BuildingArmorsmith extends Building {
 
     @Override
     public void levelUp(Main plugin) {
-        // Build new tier, kill villagers, spawn new villager, update menus/
+
         if (getTier() >= getMaxTier())
             return;
 
         setTier(getTier() + 1);
 
-        // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Armorsmith" + getTier() + ".schematic"), this, true);
-
+        try {
+            SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Armorsmith" + getTier() + ".schematic"), this, true);
+        } catch (BuildingSpawnException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void buildFirstTier(Main plugin) {
-        // Generate structure and spawn villagers
-        SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Armorsmith" + getTier() + ".schematic"), this, false);
+        try {
+            SchematicUtil.build(new File(plugin.getDataFolder() + File.separator + "schematics", "Armorsmith" + getTier() + ".schematic"), this, false);
+        } catch (BuildingSpawnException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
