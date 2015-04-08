@@ -4,6 +4,7 @@ import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.game.GamePlayer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -44,13 +45,13 @@ public class Heal extends Ability {
         gp.decrementMana(getManaCost());
 
         if (healer == healed) {
-            healer.sendMessage(plugin.getPrefix() + "You healed yourself!");
+            healer.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You healed yourself!");
             healer.playSound(healer.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
         }
 
         else {
-            healer.sendMessage(plugin.getPrefix() + "You healed " + healed.getName() + "!");
-            healed.sendMessage(plugin.getPrefix() + healer.getName() + " healed you!");
+            healer.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You healed " + ChatColor.BLUE + healed.getName() + ChatColor.YELLOW + "!");
+            healed.sendMessage(plugin.getPrefix() + ChatColor.BLUE + healer.getName() + ChatColor.YELLOW + " healed you!");
             healer.playSound(healer.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
             healed.playSound(healed.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
         }
