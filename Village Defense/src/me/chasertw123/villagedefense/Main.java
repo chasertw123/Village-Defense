@@ -41,6 +41,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
@@ -69,9 +70,6 @@ public class Main extends JavaPlugin implements Listener {
         this.saveDefaultConfig();
 
         usesSQL = this.getConfig().getBoolean("sql.use", false);
-
-        statsManager = new StatsManager(this);
-        scoreboardManager = new ScoreboardManager(this);
 
         PluginManager pm = this.getServer().getPluginManager();
 
@@ -184,6 +182,8 @@ public class Main extends JavaPlugin implements Listener {
             e.printStackTrace();
         }
 
+        statsManager = new StatsManager(this);
+        scoreboardManager = new ScoreboardManager(this);
         voteManager = new VoteManager();
 
         new Achievements(this);
@@ -205,7 +205,7 @@ public class Main extends JavaPlugin implements Listener {
 
             else if (this.getGame().getPlayers().size() < this.getGame().getMinPlayers()) {
                 int amount = this.getGame().getMinPlayers() - this.getGame().getPlayers().size();
-                Bukkit.broadcastMessage(this.getPrefix() + "We need " + amount + " more player" + ((amount == 1) ? "" : "s") + " to join!");
+                Bukkit.broadcastMessage(this.getPrefix() + ChatColor.YELLOW + "We need " + ChatColor.BLUE + amount + ChatColor.YELLOW + " more player" + ((amount == 1) ? "" : "s") + " to join!");
             }
 
             if (this.getGame().getGameState() == GameState.LOBBY)
@@ -221,7 +221,7 @@ public class Main extends JavaPlugin implements Listener {
         for (Player p : Bukkit.getOnlinePlayers())
             this.getStatsManager().saveStats(p);
 
-        if (this.getGame() != null)
+        if (this.getGame() != null) {
             if (game.getArena() != null)
                 for (Building b : game.getArena().getBuildings()) {
                     b.getVillager().getLoc().getChunk().load();
@@ -233,6 +233,12 @@ public class Main extends JavaPlugin implements Listener {
                         b.getVillager().getVil().remove();
                     }
                 }
+
+            if (game.getWave() != null)
+                for (LivingEntity le : game.getWave().getEnemies())
+                    if (le != null)
+                        le.remove();
+        }
 
         for (RoleSelect rs : RoleSelect.roleSelectObjects) {
             rs.getSpawnLocation().getChunk().load();

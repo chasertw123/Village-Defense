@@ -37,74 +37,79 @@ public class PlayerInteract implements Listener {
                         if (role == null)
                             return;
 
-                        if (event.getPlayer().isSneaking() && role.getAvailableUpgrades() > 0) {
+                        if (event.getPlayer().isSneaking())
+                            if (role.getAvailableUpgrades() > 0) {
 
-                            if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+                                if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
-                                event.setCancelled(true);
+                                    event.setCancelled(true);
 
-                                if (role.getPrimaryAbility().getTier() < role.getPrimaryAbility().getMaxTier()) {
-                                    role.getPrimaryAbility().setTier(role.getPrimaryAbility().getTier() + 1);
-                                    gp.getPlayer().getInventory().setItemInHand(role.getPrimaryAbility().getItemStack());
-                                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getPrimaryAbility().getTier() + ChatColor.YELLOW + "!");
+                                    if (role.getPrimaryAbility().getTier() < role.getPrimaryAbility().getMaxTier()) {
+                                        role.getPrimaryAbility().setTier(role.getPrimaryAbility().getTier() + 1);
+                                        gp.getPlayer().getInventory().setItemInHand(role.getPrimaryAbility().getItemStack());
+                                        gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getPrimaryAbility().getTier() + ChatColor.YELLOW + "!");
+                                        return;
+                                    }
+
+                                    gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
+                                    gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
                                     return;
                                 }
 
-                                gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
-                                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
-                                return;
-                            }
+                                else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
 
-                            else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+                                    event.setCancelled(true);
 
-                                event.setCancelled(true);
+                                    if (role.getSecondaryAbility().getTier() < role.getSecondaryAbility().getMaxTier()) {
+                                        role.getSecondaryAbility().setTier(role.getSecondaryAbility().getTier() + 1);
+                                        gp.getPlayer().getInventory().setItemInHand(role.getSecondaryAbility().getItemStack());
+                                        gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getSecondaryAbility().getTier() + ChatColor.YELLOW + "!");
+                                        return;
+                                    }
 
-                                if (role.getSecondaryAbility().getTier() < role.getSecondaryAbility().getMaxTier()) {
-                                    role.getSecondaryAbility().setTier(role.getSecondaryAbility().getTier() + 1);
-                                    gp.getPlayer().getInventory().setItemInHand(role.getSecondaryAbility().getItemStack());
-                                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getSecondaryAbility().getTier() + ChatColor.YELLOW + "!");
+                                    gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
+                                    gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
                                     return;
                                 }
 
-                                gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
-                                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
-                                return;
-                            }
+                                else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getTertiaryAbility().getItemStack())) {
 
-                            else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getTertiaryAbility().getItemStack())) {
+                                    event.setCancelled(true);
 
-                                event.setCancelled(true);
+                                    if (role.getTertiaryAbility().getTier() < role.getTertiaryAbility().getMaxTier()) {
+                                        role.getTertiaryAbility().setTier(role.getTertiaryAbility().getTier() + 1);
+                                        gp.getPlayer().getInventory().setItemInHand(role.getTertiaryAbility().getItemStack());
+                                        gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getTertiaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getTertiaryAbility().getTier() + ChatColor.YELLOW + "!");
+                                        return;
+                                    }
 
-                                if (role.getTertiaryAbility().getTier() < role.getTertiaryAbility().getMaxTier()) {
-                                    role.getTertiaryAbility().setTier(role.getTertiaryAbility().getTier() + 1);
-                                    gp.getPlayer().getInventory().setItemInHand(role.getTertiaryAbility().getItemStack());
-                                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getTertiaryAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getTertiaryAbility().getTier() + ChatColor.YELLOW + "!");
+                                    gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getTertiaryAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
+                                    gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
                                     return;
                                 }
 
-                                gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getTertiaryAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
-                                gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
-                                return;
-                            }
+                                else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getUltraAbility().getItemStack())) {
 
-                            else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getUltraAbility().getItemStack())) {
+                                    event.setCancelled(true);
 
-                                event.setCancelled(true);
+                                    if (role.getUltraAbility().getTier() < role.getUltraAbility().getMaxTier()) {
+                                        role.getUltraAbility().setTier(role.getUltraAbility().getTier() + 1);
+                                        gp.getPlayer().getInventory().setItemInHand(role.getUltraAbility().getItemStack());
+                                        gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getUltraAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getUltraAbility().getTier() + ChatColor.YELLOW + "!");
+                                        return;
+                                    }
 
-                                if (role.getUltraAbility().getTier() < role.getUltraAbility().getMaxTier()) {
-                                    role.getUltraAbility().setTier(role.getUltraAbility().getTier() + 1);
-                                    gp.getPlayer().getInventory().setItemInHand(role.getUltraAbility().getItemStack());
-                                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have leveled up the " + ChatColor.BLUE + role.getUltraAbility().getName() + ChatColor.YELLOW + " ability to level " + ChatColor.BLUE + role.getUltraAbility().getTier() + ChatColor.YELLOW + "!");
+                                    gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getUltraAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
+                                    gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
                                     return;
                                 }
+                            }
 
-                                gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getUltraAbility().getName() + ChatColor.YELLOW + " is already at it's max level!");
+                            else {
+                                gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You have no avaiable ability upgrades!");
                                 gp.getPlayer().playSound(gp.getPlayer().getLocation(), Sound.CHICKEN_EGG_POP, 1F, 1F);
                                 return;
                             }
-
-                            return;
-                        }
 
                         if (role.getName().equals("Healer")) {
 
@@ -154,9 +159,9 @@ public class PlayerInteract implements Listener {
 
                         else if (role.getName().equals("Assassin")) {
 
-                            event.setCancelled(true);
-
                             if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+
+                                event.setCancelled(true);
 
                                 if (!role.getPrimaryAbility().canUseAbility()) {
                                     gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");

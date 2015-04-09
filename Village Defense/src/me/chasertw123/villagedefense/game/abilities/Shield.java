@@ -4,6 +4,7 @@ import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.game.GamePlayer;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -41,13 +42,13 @@ public class Shield extends Ability {
         gp.decrementMana(getManaCost());
 
         if (shielder == shielded) {
-            shielder.sendMessage(plugin.getPrefix() + "You shielded yourself!");
+            shielder.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You shielded yourself!");
             shielder.playSound(shielder.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
         }
 
         else {
-            shielder.sendMessage(plugin.getPrefix() + "You shielded " + shielded.getName() + "!");
-            shielded.sendMessage(plugin.getPrefix() + shielder.getName() + " shielded you!");
+            shielder.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You shielded " + ChatColor.BLUE + shielded.getName() + ChatColor.YELLOW + "!");
+            shielded.sendMessage(plugin.getPrefix() + ChatColor.BLUE + shielder.getName() + ChatColor.YELLOW + " shielded you!");
             shielder.playSound(shielder.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
             shielded.playSound(shielded.getLocation(), Sound.ORB_PICKUP, 1F, 1F);
         }

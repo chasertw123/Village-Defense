@@ -36,7 +36,7 @@ public class PlayerJoin implements Listener {
 
         else if (plugin.getGame().getPlayers().size() < plugin.getGame().getMinPlayers()) {
             int amount = plugin.getGame().getMinPlayers() - plugin.getGame().getPlayers().size();
-            Bukkit.broadcastMessage(plugin.getPrefix() + "We need " + amount + " more player" + ((amount == 1) ? "" : "s") + " to join!");
+            Bukkit.broadcastMessage(plugin.getPrefix() + ChatColor.YELLOW + "We need " + ChatColor.BLUE + amount + ChatColor.YELLOW + " more player" + ((amount == 1) ? "" : "s") + " to join!");
         }
 
         if (plugin.getGame().getGameState() == GameState.LOBBY)
