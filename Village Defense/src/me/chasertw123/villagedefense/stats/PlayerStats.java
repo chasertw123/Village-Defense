@@ -4,7 +4,8 @@ import java.util.HashMap;
 
 public class PlayerStats {
 
-    private int mobKills, deaths, gamesPlayed, wavesPlayed, wavesWon, wavesLost, totalGoldEarned, totalGoldSpent;
+    private int mobKills, deaths, gamesPlayed, wavesPlayed, wavesWon, wavesLost, totalExperienceEarned, totalGoldEarned, totalGoldSpent;
+    private int gameMobKills, gameDeaths, gameWavesPlayed, gameExperienceEarned, gameGoldEarned;
     private HashMap<String, Boolean> achievements;
 
     public PlayerStats(int mobKills, int deaths, int gamesPlayed, int wavesPlayed, int wavesWon, int wavesLost, int totalGoldEarned, int totalGoldSpent, HashMap<String, Boolean> achievements) {
@@ -20,70 +21,6 @@ public class PlayerStats {
         this.achievements = achievements;
     }
 
-    public int getMobKills() {
-        return mobKills;
-    }
-
-    public int getDeaths() {
-        return deaths;
-    }
-
-    public int getGamesPlayed() {
-        return gamesPlayed;
-    }
-
-    public int getWavesPlayed() {
-        return wavesPlayed;
-    }
-
-    public int getWavesWon() {
-        return wavesWon;
-    }
-
-    public int getWavesLost() {
-        return wavesLost;
-    }
-
-    public int getTotalGoldEarned() {
-        return totalGoldEarned;
-    }
-
-    public int getTotalGoldSpent() {
-        return totalGoldSpent;
-    }
-
-    public void setMobKills(int mobKills) {
-        this.mobKills = mobKills;
-    }
-
-    public void setDeaths(int deaths) {
-        this.deaths = deaths;
-    }
-
-    public void setGamesPlayed(int gamesPlayed) {
-        this.gamesPlayed = gamesPlayed;
-    }
-
-    public void setWavesPlayed(int wavesPlayed) {
-        this.wavesPlayed = wavesPlayed;
-    }
-
-    public void setWavesWon(int wavesWon) {
-        this.wavesWon = wavesWon;
-    }
-
-    public void setWavesLost(int wavesLost) {
-        this.wavesLost = wavesLost;
-    }
-
-    public void setTotalGoldEarned(int totalGoldEarned) {
-        this.totalGoldEarned = totalGoldEarned;
-    }
-
-    public void setTotalGoldSpent(int totalGoldSpent) {
-        this.totalGoldSpent = totalGoldSpent;
-    }
-
     public HashMap<String, Boolean> getAchievements() {
         return achievements;
     }
@@ -92,71 +29,95 @@ public class PlayerStats {
         this.achievements = achievements;
     }
 
+    public int getGameStat(Stat stat) {
+
+        switch (stat) {
+
+            case MOBKILLS:
+                return gameMobKills;
+
+            case DEATHS:
+                return gameDeaths;
+
+                // TODO: Finsih per game stats
+        }
+
+        return -1;
+    }
+
     public int getStat(Stat stat) {
 
         switch (stat) {
 
             case DEATHS:
-                return getDeaths();
+                return deaths;
 
             case GAMESPLAYED:
-                return getGamesPlayed();
+                return gamesPlayed;
 
             case MOBKILLS:
-                return getMobKills();
+                return mobKills;
 
             case TOTALGOLDEARNED:
-                return getTotalGoldEarned();
+                return totalGoldEarned;
 
             case TOTALGOLDSPENT:
-                return getTotalGoldSpent();
+                return totalGoldSpent;
 
             case WAVESLOST:
-                return getWavesLost();
+                return wavesLost;
 
             case WAVESPLAYED:
-                return getWavesPlayed();
+                return wavesPlayed;
 
             case WAVESWON:
-                return getWavesWon();
+                return wavesWon;
+
+            case TOTALEXPERIENCEEARNED:
+                return totalExperienceEarned;
         }
 
         return -1;
     }
 
     public void setStat(Stat stat, int i) {
+
         switch (stat) {
 
             case DEATHS:
-                setDeaths(i);
+                this.deaths = i;
                 break;
 
             case GAMESPLAYED:
-                setGamesPlayed(i);
+                this.gamesPlayed = i;
                 break;
 
             case MOBKILLS:
-                setMobKills(i);
+                this.mobKills = i;
                 break;
 
             case TOTALGOLDEARNED:
-                setTotalGoldEarned(i);
+                this.totalGoldEarned = i;
                 break;
 
             case TOTALGOLDSPENT:
-                setTotalGoldSpent(i);
+                this.totalGoldSpent = i;
                 break;
 
             case WAVESLOST:
-                setWavesLost(i);
+                this.wavesLost = i;
                 break;
 
             case WAVESPLAYED:
-                setWavesPlayed(i);
+                this.wavesPlayed = i;
                 break;
 
             case WAVESWON:
-                setWavesWon(i);
+                this.wavesWon = i;
+                break;
+
+            case TOTALEXPERIENCEEARNED:
+                this.totalExperienceEarned = i;
                 break;
         }
     }

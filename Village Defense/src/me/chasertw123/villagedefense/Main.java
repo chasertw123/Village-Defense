@@ -2,11 +2,9 @@ package me.chasertw123.villagedefense;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import me.chasertw123.villagedefense.commands.VillageDefenseCmd;
-import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
 import me.chasertw123.villagedefense.game.Game;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
@@ -15,7 +13,9 @@ import me.chasertw123.villagedefense.game.arena.VoteManager;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.enemy.Minion;
 import me.chasertw123.villagedefense.game.enemy.Tank;
+import me.chasertw123.villagedefense.game.enemy.Villager;
 import me.chasertw123.villagedefense.game.enemy.boss.BabyTerror;
+import me.chasertw123.villagedefense.game.enemy.boss.BlackDeath;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.game.scoreboard.ScoreboardManager;
@@ -123,10 +123,12 @@ public class Main extends JavaPlugin implements Listener {
 
             // Regular Monsters
             new Minion();
+            new Villager();
             new Tank();
 
             // Boss Monsters
             new BabyTerror();
+            new BlackDeath();
 
             Location lobbyLocation = null;
 
@@ -166,19 +168,7 @@ public class Main extends JavaPlugin implements Listener {
 
             game = new Game(this.getConfig().contains("players.min") ? this.getConfig().getInt("players.min") : 0, this.getConfig().contains("players.max") ? this.getConfig().getInt("players.max") : 0, this);
 
-        } catch (VillageDefenseException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (SecurityException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
