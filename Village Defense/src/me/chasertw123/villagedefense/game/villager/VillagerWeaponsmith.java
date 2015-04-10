@@ -51,15 +51,8 @@ public class VillagerWeaponsmith extends Villager {
             for (int slot = 0; slot < inv.getSize(); slot++)
                 inv.setItem(slot, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.YELLOW + "[" + ChatColor.BLUE + "Building Level Too Low" + ChatColor.YELLOW + "]"));
 
-        else {
-
-            inv.setItem(1, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.DARK_PURPLE + "Current Item -->"));
-            inv.setItem(5, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.DARK_PURPLE + "Current Item -->"));
-            inv.setItem(3, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.DARK_PURPLE + "<-- Current Item"));
-            inv.setItem(7, new FancyItemStack(Material.WOOL, 1, (short) 15, ChatColor.DARK_PURPLE + "<-- Current Item"));
-            inv.setItem(2, player.getRole().getItemStack(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON)));
-            inv.setItem(6, new FancyItemStack(player.getRole().getItemStack(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON) + 1)).setLore("", ChatColor.GOLD + "Price: " + ChatColor.AQUA + player.getRole().getCost(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON) + 1)));
-        }
+        else
+            inv.setItem(4, new FancyItemStack(player.getRole().getItemStack(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON) + 1)).setLore("", ChatColor.GOLD + "Price: " + ChatColor.AQUA + player.getRole().getCost(ToolType.WEAPON, player.getToolTier(ToolType.WEAPON) + 1)));
 
         return inv;
     }

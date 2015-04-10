@@ -134,6 +134,8 @@ public abstract class Role {
     public void levelUp() {
         setLevel(getLevel() + 1);
         setAvailbleUpgrades(getAvailableUpgrades() + 1);
+        setMana((int) (getMana() / 4) + getMana());
+        setManaRegen(getManaRegen() + 2);
         setSpeedBoost(getSpeedBoost() + 2);
         setDamageReduction(getDamageReduction() + 2);
     }

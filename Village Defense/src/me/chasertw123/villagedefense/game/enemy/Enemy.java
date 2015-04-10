@@ -12,6 +12,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -23,6 +25,7 @@ public abstract class Enemy {
     private String customName = "";
     private boolean boss, baby = false, villager = false;
     private int minDroppedGold, maxDroppedGold, difficulty, experience;
+    private SkeletonType skeletonType = SkeletonType.NORMAL;
 
     private ItemStack weapon = null;
     private ItemStack[] armor = null;
@@ -139,10 +142,28 @@ public abstract class Enemy {
     }
 
     /**
+     * Set type of {@link Zombie}
+     * 
      * @param villager the villager to set
      */
     public void setZombieVillager(boolean villager) {
         this.villager = villager;
+    }
+
+    /**
+     * @return type of {@link Skeleton}
+     */
+    public SkeletonType getSkeletonType() {
+        return skeletonType;
+    }
+
+    /**
+     * Set type of {@link Skeleton}
+     * 
+     * @param skeletonType The new {@link SkeletonType} of {@link Skeleton}
+     */
+    public void setSkeletonType(SkeletonType skeletonType) {
+        this.skeletonType = skeletonType;
     }
 
     /**
@@ -236,9 +257,13 @@ public abstract class Enemy {
 
         if (armor != null)
             entity.getEquipment().setArmorContents(armor.clone());
+        else
+            entity.getEquipment().setArmorContents(null);
 
         if (weapon != null)
             entity.getEquipment().setItemInHand(weapon.clone());
+        else
+            entity.getEquipment().setItemInHand(null);
 
         entity.getEquipment().setHelmetDropChance(0F);
         entity.getEquipment().setChestplateDropChance(0F);
@@ -257,6 +282,9 @@ public abstract class Enemy {
 
         else if (entity instanceof PigZombie)
             ((PigZombie) entity).setBaby(baby);
+
+        else if (entity instanceof Skeleton)
+            ((Skeleton) entity).setSkeletonType(skeletonType);
 
         entity.setFireTicks(0);
         entity.setHealth(entity.getMaxHealth());
