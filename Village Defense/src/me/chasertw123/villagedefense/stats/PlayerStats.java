@@ -5,7 +5,6 @@ import java.util.HashMap;
 public class PlayerStats {
 
     private int mobKills, deaths, gamesPlayed, wavesPlayed, wavesWon, wavesLost, totalExperienceEarned, totalGoldEarned, totalGoldSpent;
-    private int gameMobKills, gameDeaths, gameWavesPlayed, gameExperienceEarned, gameGoldEarned;
     private HashMap<String, Boolean> achievements;
 
     public PlayerStats(int mobKills, int deaths, int gamesPlayed, int wavesPlayed, int wavesWon, int wavesLost, int totalGoldEarned, int totalGoldSpent, HashMap<String, Boolean> achievements) {
@@ -27,22 +26,6 @@ public class PlayerStats {
 
     public void setAchievements(HashMap<String, Boolean> achievements) {
         this.achievements = achievements;
-    }
-
-    public int getGameStat(Stat stat) {
-
-        switch (stat) {
-
-            case MOBKILLS:
-                return gameMobKills;
-
-            case DEATHS:
-                return gameDeaths;
-
-                // TODO: Finsih per game stats
-        }
-
-        return -1;
     }
 
     public int getStat(Stat stat) {
