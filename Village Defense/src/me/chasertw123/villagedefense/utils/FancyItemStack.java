@@ -142,4 +142,15 @@ public class FancyItemStack extends ItemStack {
 
         return this;
     }
+
+    public FancyItemStack setUnbreakable() {
+
+        ItemMeta im = super.getItemMeta();
+
+        im.spigot().setUnbreakable(true);
+
+        super.setItemMeta(im);
+
+        return this;
+    }
 }

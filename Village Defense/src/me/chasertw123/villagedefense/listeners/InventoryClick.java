@@ -8,6 +8,7 @@ import me.chasertw123.villagedefense.game.building.BuildingType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 import me.chasertw123.villagedefense.utils.ItemStackUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -32,6 +33,61 @@ public class InventoryClick implements Listener {
                 return;
 
             GamePlayer gp = plugin.getGame().getGamePlayer((Player) event.getWhoClicked());
+
+            if (event.getInventory().getName().contains("Gold Transfer")) {
+
+                GamePlayer tgp = plugin.getGame().getGamePlayer(Bukkit.getPlayer(event.getInventory().getName().substring(16)));
+
+                if (tgp == null) {
+                    gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + event.getInventory().getName().substring(16) + ChatColor.YELLOW + " is no longer in the game!");
+                    return;
+                }
+
+                if (event.getCurrentItem().getItemMeta().getDisplayName().contains("1 Gold")) {
+
+                    if (gp.getGold() < 1) {
+                        gp.sendMessage(plugin.getPrefix() + "You do not have " + ChatColor.BLUE + "1" + ChatColor.YELLOW + " gold to spend!");
+                        return;
+                    }
+
+                    gp.decrementGold(1);
+                    tgp.incrementGold(1);
+                    tgp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + gp.getPlayerName() + ChatColor.YELLOW + " sent you " + ChatColor.BLUE + "1" + ChatColor.YELLOW + " gold!");
+                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You sent " + ChatColor.BLUE + tgp.getPlayerName() + ChatColor.BLUE + " 1" + ChatColor.YELLOW + " gold!");
+
+                    return;
+                }
+
+                else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("10 Gold")) {
+
+                    if (gp.getGold() < 10) {
+                        gp.sendMessage(plugin.getPrefix() + "You do not have " + ChatColor.BLUE + "10" + ChatColor.YELLOW + " gold to spend!");
+                        return;
+                    }
+
+                    gp.decrementGold(10);
+                    tgp.incrementGold(10);
+                    tgp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + gp.getPlayerName() + ChatColor.YELLOW + " sent you " + ChatColor.BLUE + "10" + ChatColor.YELLOW + " gold!");
+                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You sent " + ChatColor.BLUE + tgp.getPlayerName() + ChatColor.BLUE + " 10" + ChatColor.YELLOW + " gold!");
+
+                    return;
+                }
+
+                else if (event.getCurrentItem().getItemMeta().getDisplayName().contains("100 Gold")) {
+
+                    if (gp.getGold() < 100) {
+                        gp.sendMessage(plugin.getPrefix() + "You do not have " + ChatColor.BLUE + "100" + ChatColor.YELLOW + " gold to spend!");
+                        return;
+                    }
+
+                    gp.decrementGold(100);
+                    tgp.incrementGold(100);
+                    tgp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + gp.getPlayerName() + ChatColor.YELLOW + " sent you " + ChatColor.BLUE + "100" + ChatColor.YELLOW + " gold!");
+                    gp.sendMessage(plugin.getPrefix() + ChatColor.YELLOW + "You sent " + ChatColor.BLUE + tgp.getPlayerName() + ChatColor.BLUE + " 100" + ChatColor.YELLOW + " gold!");
+
+                    return;
+                }
+            }
 
             for (Building b : Building.buildingObjects) {
 

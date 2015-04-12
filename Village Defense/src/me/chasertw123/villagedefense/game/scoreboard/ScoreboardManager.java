@@ -109,10 +109,7 @@ public class ScoreboardManager {
                 obj.getScore(ChatColor.YELLOW + "" + ChatColor.BOLD + "Enemies Left:").setScore(score--);
                 obj.getScore(ChatColor.WHITE + "" + game.getWave().getEnemiesLeft()).setScore(score--);
                 obj.getScore(ChatColor.GOLD + "").setScore(score--);
-                obj.getScore(ChatColor.RED + "" + ChatColor.BOLD + "Map:").setScore(score--);
-                obj.getScore(ChatColor.WHITE + game.getArena().getName()).setScore(score--);
-                obj.getScore(ChatColor.GRAY + "").setScore(score--);
-                obj.getScore(ChatColor.LIGHT_PURPLE + "" + ChatColor.BOLD + "Class Info:").setScore(score--);
+                obj.getScore(ChatColor.RED + "" + ChatColor.BOLD + "Class Info:").setScore(score--);
                 obj.getScore(ChatColor.WHITE + "Level: " + gp.getRole().getLevel()).setScore(score--);
                 obj.getScore(ChatColor.WHITE + "Exp: " + gp.getRole().getExperience() + "/" + gp.getRole().getLevelUpExperience(gp.getRole().getLevel() + 1)).setScore(score--);
 

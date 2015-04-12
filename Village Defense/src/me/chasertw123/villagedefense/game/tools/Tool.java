@@ -1,5 +1,7 @@
 package me.chasertw123.villagedefense.game.tools;
 
+import me.chasertw123.villagedefense.utils.FancyItemStack;
+
 import org.bukkit.inventory.ItemStack;
 
 public class Tool {
@@ -14,7 +16,7 @@ public class Tool {
     }
 
     public ItemStack getItemStack() {
-        return itemStack;
+        return new FancyItemStack(itemStack).setUnbreakable();
     }
 
     public int getCost() {

@@ -7,14 +7,18 @@ import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
+import me.chasertw123.villagedefense.utils.FancyItemStack;
 import me.chasertw123.villagedefense.utils.ItemStackUtils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.inventory.Inventory;
 
 public class PlayerInteractEntity implements Listener {
 
@@ -30,9 +34,10 @@ public class PlayerInteractEntity implements Listener {
         if (plugin.getGame() != null)
             if (plugin.getGame().getGameState() == GameState.INGAME) {
 
+                GamePlayer gp = plugin.getGame().getGamePlayer(event.getPlayer());
+
                 if (event.getPlayer().getItemInHand() != null) {
 
-                    GamePlayer gp = plugin.getGame().getGamePlayer(event.getPlayer());
                     Role role = gp.getRole();
 
                     if (role == null)
@@ -90,6 +95,21 @@ public class PlayerInteractEntity implements Listener {
                         }
                     }
 
+                }
+
+                if (event.getRightClicked() instanceof Player && event.getPlayer().isSneaking()) {
+
+                    GamePlayer tgp = plugin.getGame().getGamePlayer((Player) event.getRightClicked());
+                    String name = tgp.getPlayerName();
+
+                    Inventory inv = Bukkit.createInventory(null, 9, "Gold Transfer » " + name);
+
+                    inv.setItem(1, new FancyItemStack(Material.GOLD_NUGGET, ChatColor.BLUE + "1 Gold " + ChatColor.GOLD + "»" + ChatColor.BLUE + name).addLore("").addFancyLore("Transfer 1 gold from your account to " + name + "'s account!", ChatColor.WHITE.toString()));
+                    inv.setItem(1, new FancyItemStack(Material.GOLD_INGOT, ChatColor.BLUE + "10 Gold " + ChatColor.GOLD + "»" + ChatColor.BLUE + name).addLore("").addFancyLore("Transfer 10 gold from your account to " + name + "'s account!", ChatColor.WHITE.toString()));
+                    inv.setItem(1, new FancyItemStack(Material.GOLD_BLOCK, ChatColor.BLUE + "100 Gold " + ChatColor.GOLD + "»" + ChatColor.BLUE + name).addLore("").addFancyLore("Transfer 100 gold from your account to " + name + "'s account!", ChatColor.WHITE.toString()));
+
+                    gp.getPlayer().openInventory(inv);
+                    return;
                 }
             }
 

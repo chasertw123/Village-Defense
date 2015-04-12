@@ -27,6 +27,9 @@ public class EntityDeath implements Listener {
         if (plugin.getGame() != null && plugin.getGame().getWave() != null)
             if (plugin.getGame().getWave().getEnemies().contains(event.getEntity())) {
 
+                event.setDroppedExp(0);
+                event.getDrops().clear();
+
                 if (event.getEntity().getKiller() instanceof Player) {
 
                     GamePlayer gp = plugin.getGame().getGamePlayer((Player) event.getEntity().getKiller());

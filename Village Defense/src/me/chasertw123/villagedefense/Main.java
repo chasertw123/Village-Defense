@@ -22,6 +22,7 @@ import me.chasertw123.villagedefense.game.scoreboard.ScoreboardManager;
 import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.listeners.AchievementUnlock;
 import me.chasertw123.villagedefense.listeners.EntityDamageByEntity;
+import me.chasertw123.villagedefense.listeners.EntityDeath;
 import me.chasertw123.villagedefense.listeners.EntityTarget;
 import me.chasertw123.villagedefense.listeners.GameStart;
 import me.chasertw123.villagedefense.listeners.InventoryClick;
@@ -76,6 +77,7 @@ public class Main extends JavaPlugin implements Listener {
         pm.registerEvents(new AchievementUnlock(this), this);
         pm.registerEvents(new EntityDamageByEntity(this), this);
         pm.registerEvents(new EntityTarget(this), this);
+        pm.registerEvents(new EntityDeath(this), this);
         pm.registerEvents(new EntityTarget(this), this);
         pm.registerEvents(new GameStart(this), this);
         pm.registerEvents(new InventoryClick(this), this);
