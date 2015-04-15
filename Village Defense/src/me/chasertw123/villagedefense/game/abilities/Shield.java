@@ -7,17 +7,15 @@ import me.chasertw123.villagedefense.game.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 public class Shield extends Ability {
 
     public Shield() throws AbilityCreationException {
-        super("Shield", 3, new int[] { 75, 75, 75 }, new int[] { 12, 17, 23 }, AbilityType.SECONDARY, new ItemStack(Material.INK_SACK, 1, (short) 10), "Right click a player to shield them or right click anything else to shield your self. This ability shields for 2 hearts per level and lasts for 10 seconds per level.");
+        super("Shield", 3, new int[] { 75, 75, 75 }, new int[] { 12, 17, 23 }, AbilityType.SECONDARY, "Right click a player to shield them or right click anything else to shield your self. This ability shields for 2 hearts per level and lasts for 10 seconds per level.");
     }
 
     @Override

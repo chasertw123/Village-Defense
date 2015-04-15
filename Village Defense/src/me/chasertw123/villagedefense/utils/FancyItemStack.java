@@ -14,6 +14,14 @@ public class FancyItemStack extends ItemStack {
         super(material);
     }
 
+    public FancyItemStack(Material material, int amount) {
+        super(material, amount);
+    }
+
+    public FancyItemStack(Material material, int amount, short data) {
+        super(material, amount, data);
+    }
+
     public FancyItemStack(Material material, int amount, short data, String display) {
         super(material, amount, data);
 

@@ -5,6 +5,7 @@ import me.chasertw123.villagedefense.exceptions.AbilityCreationException;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class Ability {
@@ -15,13 +16,13 @@ public abstract class Ability {
     private AbilityType abilityType;
     private ItemStack itemStack;
 
-    public Ability(String name, int maxTier, int[] manaCost, int[] cooldown, AbilityType abilityType, ItemStack itemStack, String description) throws AbilityCreationException {
+    public Ability(String name, int maxTier, int[] manaCost, int[] cooldown, AbilityType abilityType, String description) throws AbilityCreationException {
         this.name = name;
         this.maxTier = maxTier;
         this.manaCost = manaCost;
         this.cooldown = cooldown;
         this.abilityType = abilityType;
-        this.itemStack = new FancyItemStack(itemStack).addFancyLore(description, ChatColor.WHITE.toString());
+        this.itemStack = new FancyItemStack(Material.INK_SACK, 1, (short) 10).addFancyLore(description, ChatColor.WHITE.toString());
 
         if (manaCost.length != maxTier)
             throw new AbilityCreationException("Mana cost lenght is not valid for " + name + "! Manacost (" + manaCost.length + ") != max tier (" + maxTier + ")");

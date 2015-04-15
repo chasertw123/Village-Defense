@@ -6,10 +6,8 @@ import me.chasertw123.villagedefense.game.GamePlayer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class Dash extends Ability {
@@ -17,7 +15,7 @@ public class Dash extends Ability {
     private ChargeDash cd = null;
 
     public Dash() throws AbilityCreationException {
-        super("Dash", 3, new int[] { 35, 35, 35 }, new int[] { 4, 2, 0 }, AbilityType.PRIMARY, new ItemStack(Material.INK_SACK, 1, (short) 10), "Right click to begin charging up your dash right click again to dash or when dash is fully charged to will atoumaticlly dash.");
+        super("Dash", 3, new int[] { 35, 35, 35 }, new int[] { 4, 2, 0 }, AbilityType.PRIMARY, "Right click to begin charging up your dash right click again to dash or when dash is fully charged to will atoumaticlly dash.");
     }
 
     @Override
@@ -27,6 +25,9 @@ public class Dash extends Ability {
             return;
 
         Player player = (Player) args[0];
+
+        if (player == null)
+            return;
 
         if (cd != null) {
 

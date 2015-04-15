@@ -7,15 +7,13 @@ import me.chasertw123.villagedefense.game.GamePlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class Heal extends Ability {
 
     public Heal() throws AbilityCreationException {
-        super("Heal", 3, new int[] { 45, 35, 30 }, new int[] { 4, 3, 3 }, AbilityType.PRIMARY, new ItemStack(Material.INK_SACK, 1, (short) 10), "Right click a player to heal them or right click anything else to heal your self. This ability heals 1.5 hearts per level.");
+        super("Heal", 3, new int[] { 45, 35, 30 }, new int[] { 4, 3, 3 }, AbilityType.PRIMARY, "Right click a player to heal them or right click anything else to heal your self. This ability heals 1.5 hearts per level.");
     }
 
     @Override
