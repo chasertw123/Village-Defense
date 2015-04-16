@@ -2,7 +2,7 @@ package me.chasertw123.villagedefense.game.villager;
 
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
-import me.chasertw123.villagedefense.utils.StringUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -80,6 +80,6 @@ public class VillagerFarmer extends Villager {
     }
 
     private FancyItemStack getFoodItem(Material material, int amount, int tier, int priceperunit, double foodheal, double nourishment) {
-        return new FancyItemStack(material, amount, ChatColor.GREEN + "" + ChatColor.BOLD + "Food" + StringUtils.fancyTierString(tier)).addLore("", ChatColor.BLUE + "Food Bars Filled: " + ChatColor.GOLD + foodheal, ChatColor.BLUE + "Saturation: " + ChatColor.GOLD + nourishment, ChatColor.BLUE + "Amount: " + ChatColor.GOLD + amount, "", ChatColor.BLUE + "Price: " + ChatColor.GOLD + (amount * priceperunit));
+        return new FancyItemStack(material, amount, ChatColor.GREEN + "" + ChatColor.BOLD + "Food" + Utils.fancyTierString(tier)).addLore("", ChatColor.BLUE + "Food Bars Filled: " + ChatColor.GOLD + foodheal, ChatColor.BLUE + "Saturation: " + ChatColor.GOLD + nourishment, ChatColor.BLUE + "Amount: " + ChatColor.GOLD + amount, "", ChatColor.BLUE + "Price: " + ChatColor.GOLD + (amount * priceperunit));
     }
 }

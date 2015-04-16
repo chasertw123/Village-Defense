@@ -10,7 +10,7 @@ import me.chasertw123.villagedefense.game.arena.Arena;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
-import me.chasertw123.villagedefense.utils.LocationUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -76,7 +76,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                         String pre = "arena." + args[2] + ".";
                         List<String> ls = (plugin.getArenaConfig().contains(pre + "enemyspawns")) ? plugin.getArenaConfig().getStringList(pre + "enemyspawns") : new ArrayList<String>();
 
-                        ls.add(LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                        ls.add(Utils.serializeLoc(((Player) sender).getLocation()));
                         plugin.getArenaConfig().set(pre + "enemyspawns", ls);
                         plugin.saveArenaConfig();
                         sender.sendMessage(plugin.getPrefix() + "You have added a spawnpoint with id " + (ls.size() - 1) + " at your location.");
@@ -146,7 +146,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                         String pre = "arena." + args[3] + ".";
                         for (Class<? extends Building> b : Building.buildingClasses)
                             if (b.getSimpleName().equalsIgnoreCase(args[2])) {
-                                plugin.getArenaConfig().set(pre + "buildings." + b.getSimpleName(), LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                                plugin.getArenaConfig().set(pre + "buildings." + b.getSimpleName(), Utils.serializeLoc(((Player) sender).getLocation()));
                                 plugin.saveArenaConfig();
                                 sender.sendMessage(plugin.getPrefix() + "You have set " + b.getSimpleName() + " to your location.");
                                 return true;
@@ -170,7 +170,7 @@ public class VillageDefenseCmd implements CommandExecutor {
 
                     else {
                         String pre = "arena." + args[2] + ".";
-                        plugin.getArenaConfig().set(pre + "spawn", LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                        plugin.getArenaConfig().set(pre + "spawn", Utils.serializeLoc(((Player) sender).getLocation()));
                         plugin.saveArenaConfig();
                         sender.sendMessage(plugin.getPrefix() + "You have set spawn to your location.");
                     }
@@ -188,7 +188,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                     }
 
                     else {
-                        plugin.getArenaConfig().set("lobby", LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                        plugin.getArenaConfig().set("lobby", Utils.serializeLoc(((Player) sender).getLocation()));
                         plugin.saveArenaConfig();
                         sender.sendMessage(plugin.getPrefix() + "You have set lobby to your location.");
                     }
@@ -229,7 +229,7 @@ public class VillageDefenseCmd implements CommandExecutor {
                                 Role r = role.newInstance();
 
                                 if (r.getName().equalsIgnoreCase(args[2])) {
-                                    plugin.getArenaConfig().set("roleselector." + r.getName(), LocationUtils.serializeLoc(((Player) sender).getLocation()));
+                                    plugin.getArenaConfig().set("roleselector." + r.getName(), Utils.serializeLoc(((Player) sender).getLocation()));
                                     plugin.saveArenaConfig();
                                     sender.sendMessage(plugin.getPrefix() + "You have set " + r.getName() + "'s selector to your location.");
                                     return true;

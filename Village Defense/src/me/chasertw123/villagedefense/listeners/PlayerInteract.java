@@ -4,7 +4,7 @@ import me.chasertw123.villagedefense.Main;
 import me.chasertw123.villagedefense.game.GamePlayer;
 import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.role.Role;
-import me.chasertw123.villagedefense.utils.ItemStackUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -40,7 +40,7 @@ public class PlayerInteract implements Listener {
                         if (event.getPlayer().isSneaking())
                             if (role.getAvailableUpgrades() > 0) {
 
-                                if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+                                if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                                     event.setCancelled(true);
 
@@ -56,7 +56,7 @@ public class PlayerInteract implements Listener {
                                     return;
                                 }
 
-                                else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+                                else if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
 
                                     event.setCancelled(true);
 
@@ -72,7 +72,7 @@ public class PlayerInteract implements Listener {
                                     return;
                                 }
 
-                                else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getTertiaryAbility().getItemStack())) {
+                                else if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getTertiaryAbility().getItemStack())) {
 
                                     event.setCancelled(true);
 
@@ -88,7 +88,7 @@ public class PlayerInteract implements Listener {
                                     return;
                                 }
 
-                                else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getUltraAbility().getItemStack())) {
+                                else if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getUltraAbility().getItemStack())) {
 
                                     event.setCancelled(true);
 
@@ -113,7 +113,7 @@ public class PlayerInteract implements Listener {
 
                         if (role.getName().equals("Healer")) {
 
-                            if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+                            if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                                 event.setCancelled(true);
 
@@ -137,7 +137,7 @@ public class PlayerInteract implements Listener {
                                 return;
                             }
 
-                            else if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+                            else if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
 
                                 event.setCancelled(true);
 
@@ -159,7 +159,7 @@ public class PlayerInteract implements Listener {
 
                         else if (role.getName().equals("Assassin")) {
 
-                            if (ItemStackUtils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+                            if (Utils.areItemStacksSimilar(gp.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                                 event.setCancelled(true);
 

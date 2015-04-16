@@ -6,7 +6,7 @@ import me.chasertw123.villagedefense.game.GameState;
 import me.chasertw123.villagedefense.game.building.Building;
 import me.chasertw123.villagedefense.game.building.BuildingType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
-import me.chasertw123.villagedefense.utils.ItemStackUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -94,7 +94,7 @@ public class InventoryClick implements Listener {
                 if (b.getType() == BuildingType.TOWNHALL && b.getVillager().makeInventory(gp).getName().equals(event.getInventory().getName())) {
 
                     for (Building building : Building.buildingObjects)
-                        if (ItemStackUtils.itemStacksHaveSameName(event.getCurrentItem(), building.getItemStack())) {
+                        if (Utils.itemStacksHaveSameName(event.getCurrentItem(), building.getItemStack())) {
 
                             event.setCancelled(true);
 

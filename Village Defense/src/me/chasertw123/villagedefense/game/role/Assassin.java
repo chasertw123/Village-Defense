@@ -8,7 +8,7 @@ import me.chasertw123.villagedefense.game.tools.Tool;
 import me.chasertw123.villagedefense.game.tools.ToolSet;
 import me.chasertw123.villagedefense.game.tools.ToolType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
-import me.chasertw123.villagedefense.utils.StringUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -47,10 +47,10 @@ public class Assassin extends Role {
 
         ArrayList<ToolSet> toolSets = new ArrayList<ToolSet>();
 
-        toolSets.add(new ToolSet(ToolType.CHESTPLATE, new Tool(new FancyItemStack(Material.LEATHER_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Chestplate" + StringUtils.fancyTierString(1)), 0, 1)));
-        toolSets.add(new ToolSet(ToolType.LEGGINGS, new Tool(new FancyItemStack(Material.LEATHER_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Leggings" + StringUtils.fancyTierString(1)), 0, 1)));
-        toolSets.add(new ToolSet(ToolType.BOOTS, new Tool(new FancyItemStack(Material.LEATHER_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Boots" + StringUtils.fancyTierString(1)), 0, 1)));
-        toolSets.add(new ToolSet(ToolType.WEAPON, new Tool(new FancyItemStack(Material.IRON_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Weapon" + StringUtils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.CHESTPLATE, new Tool(new FancyItemStack(Material.LEATHER_CHESTPLATE, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Chestplate" + Utils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.LEGGINGS, new Tool(new FancyItemStack(Material.LEATHER_LEGGINGS, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Leggings" + Utils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.BOOTS, new Tool(new FancyItemStack(Material.LEATHER_BOOTS, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Boots" + Utils.fancyTierString(1)), 0, 1)));
+        toolSets.add(new ToolSet(ToolType.WEAPON, new Tool(new FancyItemStack(Material.IRON_SWORD, ChatColor.GREEN + "" + ChatColor.BOLD + "Assassin Weapon" + Utils.fancyTierString(1)), 0, 1)));
 
         return toolSets;
     }

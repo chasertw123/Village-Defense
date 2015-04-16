@@ -33,7 +33,7 @@ import me.chasertw123.villagedefense.listeners.PlayerJoin;
 import me.chasertw123.villagedefense.listeners.PlayerLogin;
 import me.chasertw123.villagedefense.stats.StatsManager;
 import me.chasertw123.villagedefense.stats.achievements.Achievements;
-import me.chasertw123.villagedefense.utils.LocationUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -136,10 +136,10 @@ public class Main extends JavaPlugin implements Listener {
 
             for (Class<? extends Role> r : Role.roleClasses.keySet())
                 if (arenayml.contains("roleselector." + r.getSimpleName()))
-                    new RoleSelect(LocationUtils.deserializeLoc(arenayml.getString("roleselector." + r.getSimpleName())), Role.roleClasses.get(r), r).spawnEntity();
+                    new RoleSelect(Utils.deserializeLoc(arenayml.getString("roleselector." + r.getSimpleName())), Role.roleClasses.get(r), r).spawnEntity();
 
             if (arenayml.contains("lobby"))
-                lobbyLocation = LocationUtils.deserializeLoc(arenayml.getString("lobby"));
+                lobbyLocation = Utils.deserializeLoc(arenayml.getString("lobby"));
 
             if (this.getArenaConfig().contains("arena"))
                 for (String arenaName : getArenaConfig().getConfigurationSection("arena").getKeys(false)) {
@@ -149,17 +149,17 @@ public class Main extends JavaPlugin implements Listener {
 
                     for (Class<? extends Building> b : Building.buildingClasses)
                         if (arenayml.contains(pre + "buildings." + b.getSimpleName()))
-                            buildings.add(b.getDeclaredConstructor(Location.class).newInstance(LocationUtils.deserializeLoc(arenayml.getString(pre + "buildings." + b.getSimpleName()))));
+                            buildings.add(b.getDeclaredConstructor(Location.class).newInstance(Utils.deserializeLoc(arenayml.getString(pre + "buildings." + b.getSimpleName()))));
 
                     ArrayList<Location> enemySpawnPoints = new ArrayList<>();
 
                     if (arenayml.contains(pre + "enemyspawns"))
                         for (String s : arenayml.getStringList(pre + "enemyspawns"))
-                            enemySpawnPoints.add(LocationUtils.deserializeLoc(s));
+                            enemySpawnPoints.add(Utils.deserializeLoc(s));
 
                     Location spawnLocation = null;
                     if (arenayml.contains(pre + "spawn"))
-                        spawnLocation = LocationUtils.deserializeLoc(arenayml.getString(pre + "spawn"));
+                        spawnLocation = Utils.deserializeLoc(arenayml.getString(pre + "spawn"));
 
                     Arena a = new Arena(arenaName, buildings, enemySpawnPoints, spawnLocation, lobbyLocation);
 

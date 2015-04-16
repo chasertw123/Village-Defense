@@ -8,7 +8,7 @@ import me.chasertw123.villagedefense.game.role.Role;
 import me.chasertw123.villagedefense.game.role.RoleSelect;
 import me.chasertw123.villagedefense.game.scoreboard.ScoreboardType;
 import me.chasertw123.villagedefense.utils.FancyItemStack;
-import me.chasertw123.villagedefense.utils.ItemStackUtils;
+import me.chasertw123.villagedefense.utils.Utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,7 +45,7 @@ public class PlayerInteractEntity implements Listener {
 
                     if (role.getName().equals("Healer")) {
 
-                        if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
+                        if (Utils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getPrimaryAbility().getItemStack())) {
 
                             if (!role.getPrimaryAbility().canUseAbility()) {
                                 gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getPrimaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getPrimaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
@@ -72,7 +72,7 @@ public class PlayerInteractEntity implements Listener {
                             return;
                         }
 
-                        else if (ItemStackUtils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
+                        else if (Utils.areItemStacksSimilar(event.getPlayer().getItemInHand(), role.getSecondaryAbility().getItemStack())) {
 
                             if (!role.getSecondaryAbility().canUseAbility()) {
                                 gp.sendMessage(plugin.getPrefix() + ChatColor.BLUE + role.getSecondaryAbility().getName() + ChatColor.YELLOW + " is still on cooldown for " + ChatColor.BLUE + role.getSecondaryAbility().getTimeRemaining() + ChatColor.YELLOW + " seconds!");
