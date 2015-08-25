@@ -2,7 +2,8 @@ package me.chasertw123.villagedefense.game.role;
 
 import java.util.ArrayList;
 
-import me.chasertw123.villagedefense.exceptions.RoleCreationException;
+import me.chasertw123.villagedefense.exceptions.VillageDefenseException;
+import me.chasertw123.villagedefense.game.abilities.ArrowStorm;
 import me.chasertw123.villagedefense.game.tools.Tool;
 import me.chasertw123.villagedefense.game.tools.ToolSet;
 import me.chasertw123.villagedefense.game.tools.ToolType;
@@ -19,8 +20,8 @@ import org.bukkit.inventory.meta.BannerMeta;
 
 public class Archer extends Role {
 
-    public Archer() throws RoleCreationException {
-        super("Archer", 220, 10, 110, 100, null, null, null, null, setToolSets(), new ItemStack(Material.BOW), "This role acts as a marksman, dealing lots of damage from long distances. You have medium attack damage," + " a medium amount of mana, and a small speed buff.");
+    public Archer() throws VillageDefenseException {
+        super("Archer", 220, 10, 110, 100, new ArrowStorm(), null, null, null, setToolSets(), new ItemStack(Material.BOW), "This role acts as a marksman, dealing lots of damage from long distances. You have medium attack damage," + " a medium amount of mana, and a small speed buff.");
     }
 
     @Override
